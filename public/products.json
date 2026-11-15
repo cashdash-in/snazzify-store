@@ -1,5 +1,166 @@
 [
  {
+  "id": "p1",
+  "code": "AC-7110",
+  "img": "set.jpg",
+  "cat": "Suits & Sets",
+  "name": "Chinon Silk Printed Top, Palazzo & Dupatta Set",
+  "price": 2099,
+  "sizes": [
+   "M (38)",
+   "L (40)",
+   "XL (42)",
+   "XXL (44)"
+  ],
+  "details": [
+   "Top in pure Chinon silk with digital print",
+   "Heavy stone work with fancy latkans",
+   "Heavy micro inner lining",
+   "Top length 41–42 inches",
+   "Palazzo and dupatta included"
+  ],
+  "addedAt": "2026-11-15T06:37:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
+  "id": "p2",
+  "code": "SZ-T02",
+  "img": "tissue.jpg",
+  "cat": "Sarees",
+  "name": "Pista Green Tissue Saree with Embroidered Blouse",
+  "price": 1899,
+  "details": [
+   "Shimmering tissue saree in pista green",
+   "Contrast bottle-green blouse with zari & sequin embroidery",
+   "Perfect for festive and wedding evenings"
+  ],
+  "addedAt": "2026-11-15T06:17:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
+  "id": "p3",
+  "code": "FS-K03",
+  "img": "latkan.jpg",
+  "cat": "Home & Festive",
+  "name": "\"First Karva Chauth\" Bangle Latkan Pair",
+  "price": 499,
+  "details": [
+   "Hand-made heart latkans with pearl jhumki drops",
+   "Mirror-work bangles",
+   "A sweet gift for a first Karva Chauth"
+  ],
+  "addedAt": "2026-11-15T05:57:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
+  "id": "p4",
+  "code": "BG-S04",
+  "img": "sling.jpg",
+  "cat": "Bags",
+  "name": "Handy Crossbody Sling Bag",
+  "price": 649,
+  "colours": [
+   "Black"
+  ],
+  "details": [
+   "Size approx. 10 × 8 inches",
+   "Spacious main compartment",
+   "Adjustable crossbody strap",
+   "Premium quality finish"
+  ],
+  "addedAt": "2026-11-15T05:37:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
+  "id": "p5",
+  "code": "BG-L05",
+  "img": "lotus.jpg",
+  "cat": "Bags",
+  "name": "Lotus Embossed Barrel Sling",
+  "price": 749,
+  "colours": [
+   "Tan Brown"
+  ],
+  "details": [
+   "Vintage-finish barrel sling",
+   "Hand-painted embossed lotus",
+   "Wide woven shoulder strap"
+  ],
+  "addedAt": "2026-11-15T05:17:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
+  "id": "p6",
+  "code": "BG-C06",
+  "img": "clutch.jpg",
+  "cat": "Bags",
+  "name": "Ivory Pearl Embellished Clutch",
+  "price": 1199,
+  "details": [
+   "Hard-case clutch with vine embroidery",
+   "Pearl and crystal detailing",
+   "Gem-stone clasp"
+  ],
+  "addedAt": "2026-11-15T04:57:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
+  "id": "p7",
+  "code": "HF-R07",
+  "img": "rangoli.jpg",
+  "cat": "Home & Festive",
+  "name": "Flower & Diya Rangoli Set",
+  "price": 599,
+  "details": [
+   "Reusable rangoli with pearl-flower petals",
+   "Matching mirror diya holders",
+   "Ready to place, no colours needed"
+  ],
+  "addedAt": "2026-11-15T04:37:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
+  "id": "p8",
+  "code": "HF-C08",
+  "img": "cups.jpg",
+  "cat": "Home & Festive",
+  "name": "12-Piece Floral Cup & Saucer Set",
+  "price": 1499,
+  "lead": "Made to order. Dispatch time confirmed on WhatsApp.",
+  "details": [
+   "6 cups and 6 saucers",
+   "Elegant floral print with gold rim",
+   "Comes in a gift box"
+  ],
+  "addedAt": "2026-11-15T04:17:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
+  "id": "p9",
+  "code": "HF-S09",
+  "img": "spice.jpg",
+  "cat": "Home & Festive",
+  "name": "Wooden Stand Spice Jar Set",
+  "price": 899,
+  "lead": "Made to order. Dispatch time confirmed on WhatsApp.",
+  "details": [
+   "Glass jars with carved wooden lids",
+   "Arched wooden display stand",
+   "Keeps spices fresh, looks lovely on the counter"
+  ],
+  "addedAt": "2026-11-15T03:57:23Z",
+  "seller": "",
+  "cost": null
+ },
+ {
   "id": "test1",
   "code": "TEST-01",
   "name": "Payment test item (not for sale)",
