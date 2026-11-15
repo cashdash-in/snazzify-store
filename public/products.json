@@ -1,1 +1,17 @@
-[]
+[
+ {
+  "id": "test1",
+  "code": "TEST-01",
+  "name": "Payment test item (not for sale)",
+  "cat": "Home & Festive",
+  "price": 1,
+  "img": "test.png",
+  "addedAt": "2026-11-15T05:26:32Z",
+  "hidden": true,
+  "details": [
+   "Used only to test the payment flow"
+  ],
+  "seller": "",
+  "cost": 0
+ }
+]

@@ -800,7 +800,8 @@ $$('.waL').forEach(a=>a.href=wa('Hi Snazzify!'));
 (async function init(){
   try { PRODUCTS = await fetch('/products.json', {cache:'no-store'}).then(r => r.json()); } catch(e) { PRODUCTS = []; }
   PRODUCTS.forEach(p => { p.addedAt = Date.parse(p.addedAt); p.expiresAt = p.addedAt + LIFE; });
-  live = PRODUCTS.filter(p => p.expiresAt > NOW && p.addedAt <= NOW);
+  const showHidden = /[?&]test\b/.test(location.search);
+  live = PRODUCTS.filter(p => p.expiresAt > NOW && p.addedAt <= NOW && (!p.hidden || showHidden));
   saved = store.get('saved', []).filter(byId);
   bag = store.get('bag', []).filter(i => byId(i.id));
   $('#mq').innerHTML = (`<span>${live.length?live.filter(isNew).length+' new pieces dropped today':'New drops landing soon'}</span><span>Every piece live for 7 days only</span><span>Free shipping across India</span><span>Prepaid via UPI, cards & netbanking</span><span>New drop daily at ${DROP_HOUR_IST} AM</span>`).repeat(4);
