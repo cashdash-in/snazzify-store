@@ -469,7 +469,7 @@ home(){
   return `
   <section class="wrap hero">
     <div>
-      <span class="pill"><i></i>${fresh.length} pieces dropped today · ${live.length} live now</span>
+      <span class="pill"><i></i>${live.length?`${fresh.length} pieces dropped today · ${live.length} live now`:'New drops landing soon'}</span>
       <h1>Fresh drops.<br><span class="hl">Every.</span> <span class="st">Single.</span><br>Day.</h1>
       <p class="lead">Handpicked sarees, sets, bags and festive finds land here every morning. Each piece stays for 7 days, then it's gone for good. Blink and you'll miss it.</p>
       <div class="ctas"><a class="btn dark" href="#shop">Shop today's drop →</a><a class="btn ghost" href="#about">How it works</a></div>
@@ -803,7 +803,7 @@ $$('.waL').forEach(a=>a.href=wa('Hi Snazzify!'));
   live = PRODUCTS.filter(p => p.expiresAt > NOW && p.addedAt <= NOW);
   saved = store.get('saved', []).filter(byId);
   bag = store.get('bag', []).filter(i => byId(i.id));
-  $('#mq').innerHTML = (`<span>${live.filter(isNew).length} new pieces dropped today</span><span>Every piece live for 7 days only</span><span>Free shipping across India</span><span>Prepaid via UPI, cards & netbanking</span><span>New drop daily at ${DROP_HOUR_IST} AM</span>`).repeat(4);
+  $('#mq').innerHTML = (`<span>${live.length?live.filter(isNew).length+' new pieces dropped today':'New drops landing soon'}</span><span>Every piece live for 7 days only</span><span>Free shipping across India</span><span>Prepaid via UPI, cards & netbanking</span><span>New drop daily at ${DROP_HOUR_IST} AM</span>`).repeat(4);
   counts(); route();
 })();
 </script>
