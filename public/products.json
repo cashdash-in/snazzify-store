@@ -5,7 +5,7 @@
   "img": "set.jpg",
   "cat": "Suits & Sets",
   "name": "Chinon Silk Printed Top, Palazzo & Dupatta Set",
-  "price": 2099,
+  "price": 2089,
   "sizes": [
    "M (38)",
    "L (40)",
@@ -21,7 +21,8 @@
   ],
   "addedAt": "2026-11-15T06:37:23Z",
   "seller": "",
-  "cost": null
+  "cost": 1500,
+  "ship": 100
  },
  {
   "id": "p2",
@@ -61,7 +62,7 @@
   "img": "sling.jpg",
   "cat": "Bags",
   "name": "Handy Crossbody Sling Bag",
-  "price": 649,
+  "price": 629,
   "colours": [
    "Black"
   ],
@@ -73,7 +74,8 @@
   ],
   "addedAt": "2026-11-15T05:37:23Z",
   "seller": "",
-  "cost": null
+  "cost": 400,
+  "ship": 80
  },
  {
   "id": "p5",
