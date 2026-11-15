@@ -45,3 +45,15 @@ Pricing rule: price = (cost + ship) × 1.3, rounded up to end in 9. `seller`, `c
 
 Every paid order appears in the Razorpay dashboard → Orders/Payments, with the customer's
 name, phone, address and items in **Notes**.
+
+## Admin page — snazzify.co.in/admin
+
+Orders, status tracking, sales & profit, and adding products from your phone.
+Needs these in Cloudflare Pages → Settings:
+- **Bindings → KV namespace**: variable name `STORE` → namespace `snazzify-store-data`
+- **Variables and secrets**: `ADMIN_PASSWORD` (Secret) and `RAZORPAY_WEBHOOK_SECRET` (Secret)
+- Razorpay Dashboard → Settings → Webhooks → URL `https://www.snazzify.co.in/api/razorpay-webhook`,
+  events `payment.captured` and `order.paid`, same secret as above.
+
+Product catalogue lives in KV once you save a product in the admin page
+(first load falls back to `lib/seed-products.json`). Costs and seller details are never sent to the public shop.

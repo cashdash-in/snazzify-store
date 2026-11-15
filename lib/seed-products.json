@@ -20,9 +20,11 @@
    "Palazzo and dupatta included"
   ],
   "addedAt": "2026-11-15T06:37:23Z",
-  "seller": "",
   "cost": 1500,
-  "ship": 100
+  "ship": 100,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "p2",
@@ -37,8 +39,10 @@
    "Perfect for festive and wedding evenings"
   ],
   "addedAt": "2026-11-15T06:17:23Z",
-  "seller": "",
-  "cost": null
+  "cost": null,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "p3",
@@ -53,8 +57,10 @@
    "A sweet gift for a first Karva Chauth"
   ],
   "addedAt": "2026-11-15T05:57:23Z",
-  "seller": "",
-  "cost": null
+  "cost": null,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "p4",
@@ -73,9 +79,11 @@
    "Premium quality finish"
   ],
   "addedAt": "2026-11-15T05:37:23Z",
-  "seller": "",
   "cost": 400,
-  "ship": 80
+  "ship": 80,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "p5",
@@ -93,8 +101,10 @@
    "Wide woven shoulder strap"
   ],
   "addedAt": "2026-11-15T05:17:23Z",
-  "seller": "",
-  "cost": null
+  "cost": null,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "p6",
@@ -109,8 +119,10 @@
    "Gem-stone clasp"
   ],
   "addedAt": "2026-11-15T04:57:23Z",
-  "seller": "",
-  "cost": null
+  "cost": null,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "p7",
@@ -125,8 +137,10 @@
    "Ready to place, no colours needed"
   ],
   "addedAt": "2026-11-15T04:37:23Z",
-  "seller": "",
-  "cost": null
+  "cost": null,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "p8",
@@ -142,8 +156,10 @@
    "Comes in a gift box"
   ],
   "addedAt": "2026-11-15T04:17:23Z",
-  "seller": "",
-  "cost": null
+  "cost": null,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "p9",
@@ -159,8 +175,10 @@
    "Keeps spices fresh, looks lovely on the counter"
   ],
   "addedAt": "2026-11-15T03:57:23Z",
-  "seller": "",
-  "cost": null
+  "cost": null,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  },
  {
   "id": "test1",
@@ -174,7 +192,9 @@
   "details": [
    "Used only to test the payment flow"
   ],
-  "seller": "",
-  "cost": 0
+  "cost": 0,
+  "sellerName": "",
+  "sellerPhone": "",
+  "sellerUpi": ""
  }
 ]

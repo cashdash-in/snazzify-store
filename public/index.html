@@ -798,7 +798,7 @@ $$('footer [data-cat]').forEach(a=>a.onclick=()=>{shopCat=a.dataset.cat;query=''
 $$('footer [data-faq]').forEach(a=>a.onclick=e=>{ if(location.hash==='#home'||!location.hash){ e.preventDefault(); $('#faq').scrollIntoView({behavior:'smooth'}); } else { setTimeout(()=>$('#faq')?.scrollIntoView(),50); } });
 $$('.waL').forEach(a=>a.href=wa('Hi Snazzify!'));
 (async function init(){
-  try { PRODUCTS = await fetch('/products.json', {cache:'no-store'}).then(r => r.json()); } catch(e) { PRODUCTS = []; }
+  try { PRODUCTS = await fetch('/api/products', {cache:'no-store'}).then(r => r.json()); } catch(e) { PRODUCTS = []; }
   PRODUCTS.forEach(p => { p.addedAt = Date.parse(p.addedAt); p.expiresAt = p.addedAt + LIFE; });
   const showHidden = /[?&]test\b/.test(location.search);
   live = PRODUCTS.filter(p => p.expiresAt > NOW && p.addedAt <= NOW && (!p.hidden || showHidden));
