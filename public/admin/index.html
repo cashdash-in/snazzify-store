@@ -218,11 +218,32 @@ function today(){
       <div class="hint" style="margin-top:4px">Customers can book without paying. You send them a video of the piece on WhatsApp with a pay link, and they pay only if they love it. You pay the seller only after the customer pays.</div></div>
       <button class="tg ${SETTINGS.seeBeforePay?'on':''}" id="sbp" aria-label="Turn See it before you pay on or off"></button></div>
       <div class="hint" id="sbpS" style="font-weight:800;color:${SETTINGS.seeBeforePay?'#1f7a4d':'var(--muted)'}">${SETTINGS.seeBeforePay?'ON: customers see this option at checkout':'OFF: customers can only pay now'}</div></div>
+    <div class="card" style="margin-top:10px"><div class="sw"><div><b style="font-size:16px">⚡ Pick it up in 30 mins</b>
+      <div class="hint" style="margin-top:4px">Every few hours, random products drop by a random discount for a short time. The discount applies to the product only, never to delivery. The server picks products and prices, so nobody can predict them.</div></div>
+      <button class="tg ${SETTINGS.flash?.on?'on':''}" id="fl" aria-label="Turn flash drops on or off"></button></div>
+      <div class="hint" id="flS" style="font-weight:800;color:${SETTINGS.flash?.on?'#1f7a4d':'var(--muted)'}">${SETTINGS.flash?.on?'ON':'OFF'}</div>
+      <form id="flf" style="display:grid;gap:8px">
+        <div class="three"><label>From (hour)<input name="startHour" type="number" min="0" max="23" value="${SETTINGS.flash?.startHour??10}"></label>
+          <label>Until (hour)<input name="endHour" type="number" min="1" max="24" value="${SETTINGS.flash?.endHour??22}"></label>
+          <label>Every (min)<input name="every" type="number" min="30" step="15" value="${SETTINGS.flash?.every??120}"></label></div>
+        <div class="three"><label>Lasts (min)<input name="minutes" type="number" min="5" value="${SETTINGS.flash?.minutes??30}"></label>
+          <label>Min % off<input name="minPct" type="number" min="1" max="60" value="${SETTINGS.flash?.minPct??5}"></label>
+          <label>Max % off<input name="maxPct" type="number" min="1" max="60" value="${SETTINGS.flash?.maxPct??25}"></label></div>
+        <label>Products per drop<input name="count" type="number" min="1" max="20" value="${SETTINGS.flash?.count??3}"></label>
+        <button class="btn ghost sm">Save drop settings</button></form></div>
     <h2>Latest orders</h2>
     <div class="list">${ORDERS.filter(o=>o.status!=='created').slice(0,5).map(orderRow).join('') || '<div class="empty">No paid orders yet. They\'ll appear here the moment a customer pays.</div>'}</div>`;
   $$('[data-f]').forEach(b => b.onclick = () => { oFilter = b.dataset.f; tab='orders'; shell(); });
   $$('[data-p]').forEach(b => b.onclick = () => { pFilter = b.dataset.p; tab='products'; shell(); });
   $('#addP').onclick = () => productForm();
+  const fstat = async () => { try { const f = await fetch('/api/flash',{cache:'no-store'}).then(r=>r.json()); const el=$('#flS'); if(!el) return;
+      el.textContent = !f.on ? 'OFF: no flash drops' : f.live ? `🔴 LIVE NOW: ${Object.keys(f.deals||{}).length} products, ends ${new Date(f.endsAt).toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'})}` : `ON: next drop at ${new Date(f.nextAt).toLocaleString('en-IN',{weekday:'short',hour:'numeric',minute:'2-digit'})}`; } catch {} };
+  fstat();
+  $('#fl').onclick = async () => { const on = !SETTINGS.flash?.on;
+    if (!confirm(on ? 'Turn ON "Pick it up in 30 mins"? Random discounts will start at the next drop time.' : 'Turn OFF "Pick it up in 30 mins"? Any live drop ends immediately.')) return;
+    try { SETTINGS = (await api('settings', {method:'POST', body: JSON.stringify({flash:{on}})})).settings; today(); toast(on ? 'Flash drops ON ⚡' : 'Flash drops OFF'); } catch(e) { toast(e.message); } };
+  $('#flf').onsubmit = async e => { e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
+    try { SETTINGS = (await api('settings', {method:'POST', body: JSON.stringify({flash:d})})).settings; toast('Saved'); fstat(); } catch(err) { toast(err.message); } };
   $('#sbp').onclick = async () => { const on = !SETTINGS.seeBeforePay;
     if (!confirm(on ? 'Turn ON "See it before you pay"? Customers will be able to book without paying.' : 'Turn OFF "See it before you pay"? Customers will have to pay at checkout.')) return;
     try { SETTINGS = (await api('settings', {method:'POST', body: JSON.stringify({seeBeforePay: on})})).settings; today(); toast(on ? 'Turned ON' : 'Turned OFF'); } catch(e) { toast(e.message); } };
@@ -287,7 +308,7 @@ function openOrder(ref){
     const upi = s.sellerUpi && !isNaN(owed) ? `upi://pay?pa=${encodeURIComponent(s.sellerUpi)}&pn=${encodeURIComponent(name)}&am=${owed}&cu=INR&tn=${encodeURIComponent('Snazzify ' + o.ref)}` : '';
     return `<div class="card"><h4>Seller · ${esc(name)}</h4>
       ${items.map(i=>`<div class="item"><img src="${img(i.img)}" alt=""><div><b>${esc(i.name)}</b><small>${i.code}${i.size?' · '+esc(i.size):''}${i.colour?' · '+esc(i.colour):''} · qty ${i.qty}</small>
-        <br><small>Seller price ${i.cost!=null?rupee((i.cost+(i.ship||0))):'not set'}</small></div><div class="amt" style="font-size:15px">${rupee(i.price*i.qty)}</div></div>`).join('')}
+        <br><small>Seller price ${i.cost!=null?rupee((i.cost+(i.ship||0))):'not set'}${i.flashPct?' · ⚡ '+i.flashPct+'% flash price':''}</small></div><div class="amt" style="font-size:15px">${rupee(i.price*i.qty)}</div></div>`).join('')}
       ${s.sellerPhone ? `<a class="btn wa" href="https://wa.me/${s.sellerPhone.length===10?'91'+s.sellerPhone:s.sellerPhone}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener" data-sent>📦 Send order to seller on WhatsApp</a>`
         : `<button class="btn ghost" data-copy="${esc(msg)}">📋 Copy order message for seller</button><div class="hint">Add the seller's WhatsApp number to this product to send in one tap.</div>`}
       ${upi ? `<a class="btn ghost" href="${upi}">💸 Pay ${esc(name)} ${rupee(owed)} by UPI</a><div class="hint">Opens your UPI app with the amount filled in. You enter your PIN.</div>`

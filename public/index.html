@@ -30,6 +30,30 @@ img{display:block;max-width:100%}
 .disp{font-family:var(--disp);letter-spacing:-.03em}
 
 /* marquee */
+.fbar{background:var(--lilac);color:var(--ink);text-align:center;font-size:13.5px;padding:9px 14px;font-weight:600}
+.fbar a{text-decoration:none;color:inherit}
+.fbar.live{background:var(--pink);color:#fff;animation:fpulse 1.6s ease-in-out infinite}
+@keyframes fpulse{50%{filter:brightness(1.12)}}
+.fbar .ft{font-variant-numeric:tabular-nums}
+@media(max-width:640px){.fbar .hs{display:none}.fbar{font-size:13px}}
+.tag.flash{background:var(--pink);color:#fff;font-variant-numeric:tabular-nums}
+.pr s,.bigpr s{font-size:.6em;color:var(--muted);margin-left:6px;font-weight:600}
+.flash{border-radius:28px;padding:30px;background:var(--lilac);position:relative;overflow:hidden}
+.flash.live{background:var(--ink);color:#fff}
+.flash .fh{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.flash .fk{font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--pink);margin-bottom:10px}
+.flash.live .fk{color:var(--lime)}
+.flash h2{font-family:var(--disp);font-weight:800;font-size:clamp(40px,7vw,80px);letter-spacing:-.05em;line-height:.88}
+.flash p{max-width:460px;margin-top:12px;font-size:15.5px;line-height:1.5}
+.fclock{background:var(--ink);color:#fff;border-radius:20px;padding:14px 20px;text-align:center}
+.flash.live .fclock{background:var(--pink)}
+.fclock small{font-size:11px;font-weight:800;letter-spacing:.12em;opacity:.7}
+.fclock b{display:block;font-family:var(--disp);font-size:44px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.flash.live .card{color:var(--ink)}
+.mys{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mc{aspect-ratio:4/5;border-radius:18px;background:repeating-linear-gradient(45deg,#fff 0 14px,#f3efff 14px 28px);display:grid;place-items:center;align-content:center;gap:8px;border:2px dashed var(--ink)}
+.mc span{font-family:var(--disp);font-weight:800;font-size:64px;line-height:1}
+.mc em{font-style:normal;font-weight:800;font-size:13px;background:var(--pink);color:#fff;border-radius:999px;padding:4px 10px}
 .mq{background:var(--ink);color:#fff;overflow:hidden;white-space:nowrap;font-size:13px;font-weight:600}
 .mq .track{display:inline-flex;animation:mq 30s linear infinite;padding:9px 0}
 .mq span{padding:0 22px;display:inline-flex;align-items:center;gap:22px}
@@ -355,6 +379,7 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 <body>
 
 <div class="mq"><div class="track" id="mq"></div></div>
+<div id="fbar" class="fbar" style="display:none"></div>
 
 <header>
   <div class="wrap hb">
@@ -408,7 +433,11 @@ const WHATSAPP_NUMBER = '';           // your number, digits only, e.g. '9198765
 const LIFE_DAYS = 7;                  // each product stays live this long
 const DROP_HOUR_IST = 11;             // daily drop time (11:00 AM IST)
 const IMG = p => '/img/' + p.img;     // product photos live in /img
-let PRODUCTS = [], SETTINGS = { seeBeforePay: false };                     // loaded from /products.json
+let PRODUCTS = [], SETTINGS = { seeBeforePay: false }, FLASH = { on:false }, CLOCK_SKEW = 0;
+const deal = p => FLASH.live && FLASH.deals && FLASH.deals[p.id];
+const ep = p => { const d = deal(p); return d ? d.price : p.price; };   // effective price right now
+const fmtT = ms => { ms = Math.max(0, ms); const h=Math.floor(ms/H), m=Math.floor(ms%H/6e4), s=Math.floor(ms%6e4/1e3); return (h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); };
+const nowS = () => Date.now() + CLOCK_SKEW;                     // loaded from /products.json
 
 /* ================= STATE ================= */
 const H = 3600e3, LIFE = LIFE_DAYS*24*H, NOW = Date.now();
@@ -437,13 +466,14 @@ function addToBag(id,size,colour){ const p=byId(id); size = size || p.sizes?.[0]
 
 function card(p){
   const used = Math.min(1,(Date.now()-p.addedAt)/LIFE);
-  const tag = isNew(p) ? '<span class="tag new">Just dropped</span>' : ending(p) ? `<span class="tag end">${left(p)}</span>` : '';
+  const d = deal(p);
+  const tag = d ? `<span class="tag flash">⚡ ${d.pct}% OFF · <b class="ft" data-to="${FLASH.endsAt}">--:--</b></span>` : isNew(p) ? '<span class="tag new">Just dropped</span>' : ending(p) ? `<span class="tag end">${left(p)}</span>` : '';
   return `<article class="card">
     <div class="im" data-open="${p.id}"><img src="${IMG(p)}" alt="${p.name}">${tag}
       <div class="life" title="Time left in the shop"><i style="width:${(1-used)*100}%"></i></div></div>
     <button class="heart ${saved.includes(p.id)?'on':''}" data-id="${p.id}" aria-label="Save">${heartSvg}</button>
     <div class="mt"><div class="cat">${p.cat}</div><div class="nm" data-open="${p.id}">${p.name}</div>
-      <div class="prow"><div><div class="pr">${rupee(p.price)}</div><div class="left">${isNew(p)?'New today':left(p)}</div></div>
+      <div class="prow"><div><div class="pr">${rupee(ep(p))}${deal(p)?`<s>${rupee(p.price)}</s>`:''}</div><div class="left">${isNew(p)?'New today':left(p)}</div></div>
       <button class="add" data-add="${p.id}" aria-label="Add to bag">+</button></div></div>
   </article>`;
 }
@@ -482,7 +512,7 @@ home(){
       <h1>Fresh drops.<br><span class="hl">Every.</span> <span class="st">Single.</span><br>Day.</h1>
       <p class="lead">Handpicked sarees, sets, bags and festive finds land here every morning. Each piece stays for 7 days, then it's gone for good. Blink and you'll miss it.</p>
       <div class="ctas"><a class="btn dark" href="#shop">Shop today's drop →</a><a class="btn ghost" href="#about">How it works</a></div>
-      <div class="dropclock"><span class="lbl">Next drop in</span>
+      <div class="dropclock"><span class="lbl">${FLASH.on?(FLASH.live?'⚡ 30-min deals end in':'⚡ Next 30-min deals in'):'Next drop in'}</span>
         <div class="tbox"><b id="dH">00</b><small>hrs</small></div><div class="tbox"><b id="dM">00</b><small>min</small></div><div class="tbox"><b id="dS">00</b><small>sec</small></div></div>
     </div>
     ${hi.length>=3?`<div class="collage">
@@ -495,13 +525,14 @@ home(){
     </div>`:''}
   </section>
 
+  ${flashSection()}
   <section class="wrap sec">
     <div class="sh"><h2>Not your usual<br>online store<em>.</em></h2><p>Here's what makes shopping at Snazzify different.</p></div>
     <div class="bento">
       <div class="bx k big"><div><div class="ico">⏳</div></div>
         <div><h3>Every piece has<br>a 7-day life.</h3><p style="margin-top:10px">The bar on each photo is its clock. When it runs out, the piece leaves the shop and something new takes its place. No endless scrolling through old stock.</p>
         <div class="daydots">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i)=>`<span class="${i<5?'on':''}">${d}</span>`).join('')}</div></div></div>
-      <div class="bx l"><div class="ico">⚡</div><div><h3>Daily drops</h3><p>New pieces every day at ${DROP_HOUR_IST} AM.</p></div></div>
+      <div class="bx l"><div class="ico">⚡</div><div><h3>Pick it up in 30 mins</h3><p>Random pieces drop up to 25% off, every 2 hours, for 30 minutes.</p></div></div>
       <div class="bx v"><div class="ico">🔒</div><div><h3>Prepaid & secure</h3><p>UPI, cards & netbanking via Razorpay.</p></div></div>
       <div class="bx w"><div class="ico">🚚</div><div><h3>Free shipping</h3><p>On every order, anywhere in India.</p></div></div>
       <div class="bx p"><div class="ico">💬</div><div><h3>Drop alerts</h3><p>Get new pieces on WhatsApp first.</p></div></div>
@@ -542,6 +573,7 @@ home(){
   <section class="wrap sec" id="faq">
     <div class="sh"><h2>Questions<em>?</em></h2></div>
     <div class="faq">
+      <details><summary>What is "Pick it up in 30 mins"?</summary><p>Every 2 hours, a few random pieces in the shop drop by 5–25% for just 30 minutes. Nobody knows which pieces or how much until the drop starts, and the countdown at the top of the page shows when the next one begins. Only the price of the piece drops; delivery charges stay the same. If it's in your bag when the timer ends, you have a few extra minutes to check out.</p></details>
       <details><summary>Why do products disappear after 7 days?</summary><p>We work with makers who release new designs every day. Keeping each piece for one week keeps the shop fresh and the prices sharp. If you love something, don't wait.</p></details>
       <details><summary>Do you offer Cash on Delivery?</summary><p>No, all orders are prepaid. You can pay by UPI (GPay, PhonePe, Paytm), debit or credit card, or netbanking, all secured by Razorpay. That's what lets us keep prices low and shipping free.</p></details>
       <details><summary>How long does delivery take?</summary><p>Orders ship in 3–5 days after payment, and we send tracking on WhatsApp. Delivery usually takes 3–7 days depending on your pincode.</p></details>
@@ -554,7 +586,7 @@ home(){
 shop(){
   let list = live.filter(p => shopCat==='All' || (shopCat==='New today' ? isNew(p) : shopCat==='Saved' ? saved.includes(p.id) : p.cat===shopCat));
   if(query) list = list.filter(p => (p.name+' '+p.cat+' '+p.details.join(' ')).toLowerCase().includes(query));
-  list.sort(shopSort==='new' ? (a,b)=>b.addedAt-a.addedAt : shopSort==='end' ? (a,b)=>a.expiresAt-b.expiresAt : shopSort==='lo' ? (a,b)=>a.price-b.price : (a,b)=>b.price-a.price);
+  list.sort(shopSort==='new' ? (a,b)=>b.addedAt-a.addedAt : shopSort==='end' ? (a,b)=>a.expiresAt-b.expiresAt : shopSort==='lo' ? (a,b)=>ep(a)-ep(b) : (a,b)=>ep(b)-ep(a));
   const n = c => c==='All'?live.length : c==='New today'?live.filter(isNew).length : live.filter(p=>p.cat===c).length;
   return `<section class="wrap sec" style="padding-top:36px">
     <div class="sh"><h2>${query?`Results for “${query}”`:shopCat==='All'?'Everything live<em>.</em>':shopCat+'<em>.</em>'}</h2><p>${list.length} piece${list.length===1?'':'s'} · each one gone in 7 days</p></div>
@@ -657,7 +689,7 @@ function route(){
     $('#sort').onchange=e=>{shopSort=e.target.value;route();};
   }
   if(name==='home'){
-    clearInterval(tick); const run=()=>{ const ms=nextDrop()-Date.now(); if(!$('#dH')) return clearInterval(tick);
+    clearInterval(tick); const run=()=>{ const ms=(FLASH.on?(FLASH.live?FLASH.endsAt:FLASH.nextAt):nextDrop())-nowS(); if(!$('#dH')) return clearInterval(tick);
       $('#dH').textContent=String(Math.floor(ms/H)).padStart(2,'0'); $('#dM').textContent=String(Math.floor(ms%H/6e4)).padStart(2,'0'); $('#dS').textContent=String(Math.floor(ms%6e4/1e3)).padStart(2,'0'); };
     run(); tick=setInterval(run,1000);
     $('#alertF').onsubmit=e=>{ e.preventDefault(); const n=$('#alertN').value.trim();
@@ -689,12 +721,13 @@ function openProduct(id){
         <button class="x" id="x" aria-label="Close">×</button>
         <div class="code">${p.cat.toUpperCase()} · ${p.code}</div>
         <h3>${p.name}</h3>
-        <div class="bigpr">${rupee(p.price)}<span class="free">Free shipping</span></div>
+        <div class="bigpr">${rupee(ep(p))}${deal(p)?`<s>${rupee(p.price)}</s><span class="free" style="background:var(--pink);color:#fff">⚡ ${deal(p).pct}% OFF</span>`:''}<span class="free">Free shipping</span></div>
+        ${deal(p)?`<div class="count" style="background:var(--pink)">⚡ Pick it up in 30 mins: this price ends in <b class="ft" data-to="${FLASH.endsAt}">--:--</b></div>`:''}
         <div class="count">⏳ Leaves the shop in <b id="cd"></b></div>
         ${p.sizes?`<div><div class="lbl">Size</div><div class="opts">${p.sizes.map(s=>`<button class="opt ${s===size?'on':''}" data-s="${s}">${s}</button>`).join('')}</div></div>`:''}
         ${p.colours?`<div><div class="lbl">Colour · ${colour}</div><div class="opts">${p.colours.map(s=>`<button class="opt ${s===colour?'on':''}" data-k="${s}">${s}</button>`).join('')}</div></div>`:''}
         <ul class="desc">${p.details.map(d=>`<li>${d}</li>`).join('')}</ul>
-        <div class="brow"><button class="buy" id="bNow">Buy now · ${rupee(p.price)}</button><button class="sq ${saved.includes(p.id)?'on':''}" data-id="${p.id}" id="sv" aria-label="Save">${heartSvg}</button></div>
+        <div class="brow"><button class="buy" id="bNow">Buy now · ${rupee(ep(p))}</button><button class="sq ${saved.includes(p.id)?'on':''}" data-id="${p.id}" id="sv" aria-label="Save">${heartSvg}</button></div>
         <button class="buy alt" id="bAdd">Add to bag</button>
         <div class="trust"><span>🔒 Razorpay secure</span><span>UPI</span><span>Cards</span><span>Netbanking</span><span>No COD</span></div>
         ${SETTINGS.seeBeforePay?'<div class="note" style="color:var(--ink);font-weight:600">✨ Not sure? Choose <b>See it before you pay</b> at checkout: we send you a video first.</div>':''}
@@ -718,13 +751,13 @@ function openProduct(id){
 /* ================= BAG / SAVED DRAWER ================= */
 function openBag(tab='bag', toCheckout=false){
   const d = $('#drawer');
-  const total = () => bag.reduce((a,i)=>a+byId(i.id).price*i.qty,0);
+  const total = () => bag.reduce((a,i)=>a+ep(byId(i.id))*i.qty,0);
   const draw = () => {
     const items = tab==='bag'
       ? (bag.length ? bag.map(i=>{const p=byId(i.id);return `<div class="li"><img src="${IMG(p)}" alt=""><div><b>${p.name}</b><small>${[i.size,i.colour].filter(Boolean).join(' · ')||p.code} · ${left(p)}</small>
-          <div class="qty"><button data-q="${i.k}" data-d="-1">−</button>${i.qty}<button data-q="${i.k}" data-d="1">+</button> <button class="rm" data-rm="${i.k}">Remove</button></div></div><div class="pr">${rupee(p.price*i.qty)}</div></div>`}).join('')
+          <div class="qty"><button data-q="${i.k}" data-d="-1">−</button>${i.qty}<button data-q="${i.k}" data-d="1">+</button> <button class="rm" data-rm="${i.k}">Remove</button></div></div><div class="pr">${rupee(ep(p)*i.qty)}</div></div>`}).join('')
         : '<div class="empty">Your bag is empty.<br><br><a class="btn dark" href="#home" id="goShop">Catch today\'s drop →</a></div>')
-      : (saved.length ? saved.map(id=>{const p=byId(id);return `<div class="li"><img src="${IMG(p)}" alt=""><div><b>${p.name}</b><small>${left(p)}</small><div class="qty"><button class="rm" data-mv="${id}">Move to bag</button> <button class="rm" data-un="${id}">Remove</button></div></div><div class="pr">${rupee(p.price)}</div></div>`}).join('')
+      : (saved.length ? saved.map(id=>{const p=byId(id);return `<div class="li"><img src="${IMG(p)}" alt=""><div><b>${p.name}</b><small>${left(p)}</small><div class="qty"><button class="rm" data-mv="${id}">Move to bag</button> <button class="rm" data-un="${id}">Remove</button></div></div><div class="pr">${rupee(ep(p))}</div></div>`}).join('')
         : '<div class="empty">Tap ♥ on anything you love. It stays here until it leaves the shop.</div>');
     d.innerHTML = `<div class="dh"><div class="tabs"><button class="tab ${tab==='bag'?'on':''}" data-t="bag">Bag (${bag.reduce((a,i)=>a+i.qty,0)})</button><button class="tab ${tab==='saved'?'on':''}" data-t="saved">Saved (${saved.length})</button></div><button class="dx" id="dx" aria-label="Close">×</button></div>
       <div class="db">${items}</div>
@@ -748,7 +781,7 @@ function openBag(tab='bag', toCheckout=false){
         <label>Address<textarea name="addr" required rows="2" autocomplete="street-address" placeholder="House no., street, area, landmark"></textarea></label>
         <div class="f3"><label>Pincode<input name="pin" required inputmode="numeric" maxlength="6" pattern="[1-9][0-9]{5}" autocomplete="postal-code"></label>
           <label>City<input name="city" required autocomplete="address-level2"></label><label>State<input name="state" required autocomplete="address-level1"></label></div>
-        <div class="tot" style="border-top:1px dashed var(--line);padding-top:12px">${bag.map(i=>{const p=byId(i.id);return `<span>${p.name}${i.qty>1?' × '+i.qty:''}</span><span>${rupee(p.price*i.qty)}</span>`}).join('')}<span>Shipping</span><span>Free</span><b>To pay</b><b>${rupee(total())}</b></div>
+        <div class="tot" style="border-top:1px dashed var(--line);padding-top:12px">${bag.map(i=>{const p=byId(i.id);return `<span>${p.name}${i.qty>1?' × '+i.qty:''}</span><span>${rupee(ep(p)*i.qty)}</span>`}).join('')}<span>Shipping</span><span>Free</span><b>To pay</b><b>${rupee(total())}</b></div>
         ${SETTINGS.seeBeforePay?`<div class="pm">
           <label class="pmo on"><input type="radio" name="pm" value="pay" checked><div><b>Pay now</b><span>Fastest dispatch. UPI, cards & netbanking.</span></div></label>
           <label class="pmo"><input type="radio" name="pm" value="see"><div><b>See it before you pay ✨</b><span>Book free. We WhatsApp you a video of your exact piece, and you pay only if you love it.</span></div></label></div>`:''}
@@ -836,15 +869,53 @@ $('#q').oninput = e => { query = e.target.value.trim().toLowerCase(); shopCat='A
 $$('footer [data-cat]').forEach(a=>a.onclick=()=>{shopCat=a.dataset.cat;query='';});
 $$('footer [data-faq]').forEach(a=>a.onclick=e=>{ if(location.hash==='#home'||!location.hash){ e.preventDefault(); $('#faq').scrollIntoView({behavior:'smooth'}); } else { setTimeout(()=>$('#faq')?.scrollIntoView(),50); } });
 $$('.waL').forEach(a=>a.href=wa('Hi Snazzify!'));
+/* ================= PICK IT UP IN 30 MINS ================= */
+let flashTimer;
+async function loadFlash(){
+  try { FLASH = await fetch('/api/flash', {cache:'no-store'}).then(r => r.json()); CLOCK_SKEW = (FLASH.now || Date.now()) - Date.now(); } catch(e) { FLASH = { on:false }; }
+  clearTimeout(flashTimer);
+  const at = FLASH.live ? FLASH.endsAt : FLASH.nextAt;
+  if (FLASH.on && at) flashTimer = setTimeout(async () => { await loadFlash(); routing.keep = true; route(); counts(); if (FLASH.live) toast('<i>⚡</i> Pick it up in 30 mins is LIVE!'); }, Math.max(1000, at - nowS() + 1500));
+  drawFlashBar();
+}
+function drawFlashBar(){
+  const el = $('#fbar'); if (!el) return;
+  if (!FLASH.on) { el.style.display='none'; return; }
+  el.style.display='';
+  el.className = 'fbar' + (FLASH.live ? ' live' : '');
+  const n = FLASH.live ? Object.keys(FLASH.deals||{}).length : 0;
+  el.innerHTML = FLASH.live
+    ? `<a href="#home" data-flash>⚡ <b>PICK IT UP IN 30 MINS</b> <span class="hs">· ${n} piece${n===1?'':'s'} up to ${Math.max(...Object.values(FLASH.deals).map(d=>d.pct))}% off</span> · ends in <b class="ft" data-to="${FLASH.endsAt}">--:--</b> →</a>`
+    : `<span>⚡ Next <b>Pick it up in 30 mins</b> drop in <b class="ft" data-to="${FLASH.nextAt}">--:--</b><span class="hs"> · up to ${FLASH.maxPct}% off for 30 mins only</span></span>`;
+  const a = el.querySelector('[data-flash]'); if (a) a.onclick = e => { if (location.hash==='#home'||!location.hash){ e.preventDefault(); $('#flash')?.scrollIntoView({behavior:'smooth'}); } else setTimeout(()=>$('#flash')?.scrollIntoView({behavior:'smooth'}),80); };
+}
+setInterval(() => { $$('.ft').forEach(e => e.textContent = fmtT(+e.dataset.to - nowS())); }, 1000);
+function flashSection(){
+  if (!FLASH.on) return '';
+  const deals = FLASH.live ? live.filter(p => deal(p)) : [];
+  if (FLASH.live && deals.length) return `<section class="wrap sec" id="flash"><div class="flash live">
+    <div class="fh"><div><div class="fk">⚡ LIVE NOW</div><h2>Pick it up<br>in 30 mins.</h2><p>Grab these prices before the clock hits zero. Delivery charges stay the same, only the price drops.</p></div>
+    <div class="fclock"><small>ENDS IN</small><b class="ft" data-to="${FLASH.endsAt}">--:--</b></div></div>
+    <div class="grid">${deals.map(card).join('')}</div></div></section>`;
+  return `<section class="wrap sec" id="flash"><div class="flash">
+    <div class="fh"><div><div class="fk">⚡ NEW: A WAY TO SHOP NOBODY ELSE HAS</div><h2>Pick it up<br>in 30 mins.</h2>
+      <p>Every ${FLASH.every/60} hours, random pieces drop by <b>${FLASH.minPct}–${FLASH.maxPct}%</b>, for just 30 minutes. Nobody knows which ones until the clock starts. Be here, be quick.</p></div>
+    <div class="fclock"><small>NEXT DROP IN</small><b class="ft" data-to="${FLASH.nextAt}">--:--</b></div></div>
+    <div class="mys">${[1,2,3].map(i=>`<div class="mc"><span>?</span><em>up to ${FLASH.maxPct}% off</em></div>`).join('')}</div>
+    <div class="ctas" style="margin-top:18px"><a class="btn lime" href="${wa('Hi Snazzify! ⚡ Add me to Pick it up in 30 mins alerts')}" target="_blank" rel="noopener">🔔 Alert me on WhatsApp</a></div>
+  </div></section>`;
+}
+
 (async function init(){
   try { PRODUCTS = await fetch('/api/products', {cache:'no-store'}).then(r => r.json()); } catch(e) { PRODUCTS = []; }
   try { SETTINGS = await fetch('/api/settings', {cache:'no-store'}).then(r => r.json()); } catch(e) {}
+  await loadFlash();
   PRODUCTS.forEach(p => { p.addedAt = Date.parse(p.addedAt); p.expiresAt = p.addedAt + LIFE; });
   const showHidden = /[?&]test\b/.test(location.search);
   live = PRODUCTS.filter(p => p.expiresAt > NOW && p.addedAt <= NOW && (!p.hidden || showHidden));
   saved = store.get('saved', []).filter(byId);
   bag = store.get('bag', []).filter(i => byId(i.id));
-  $('#mq').innerHTML = (`<span>${live.length?live.filter(isNew).length+' new pieces dropped today':'New drops landing soon'}</span><span>Every piece live for 7 days only</span><span>Free shipping across India</span><span>Prepaid via UPI, cards & netbanking</span><span>New drop daily at ${DROP_HOUR_IST} AM</span>`).repeat(4);
+  $('#mq').innerHTML = (`<span>${live.length?live.filter(isNew).length+' new pieces dropped today':'New drops landing soon'}</span><span>Every piece live for 7 days only</span><span>⚡ Pick it up in 30 mins: up to 25% off every 2 hours</span><span>Free shipping across India</span><span>Prepaid via UPI, cards & netbanking</span><span>New drop daily at ${DROP_HOUR_IST} AM</span>`).repeat(4);
   counts(); route();
 })();
 </script>
