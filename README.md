@@ -39,7 +39,7 @@ Each entry in `public/products.json`:
 
 `cat` is one of: Sarees, Suits & Sets, Bags, Home & Festive. A product shows from `addedAt`
 until 7 days later, then disappears automatically and can no longer be paid for.
-Pricing rule: price = (cost + ship) × 1.3, rounded up to end in 9. `seller`, `cost` and `ship` are for your records and the upcoming order-to-seller automation.
+Pricing rule: price = (cost + ship) × 2, rounded up to end in 9. `seller`, `cost` and `ship` are for your records and the upcoming order-to-seller automation.
 
 ## Orders
 

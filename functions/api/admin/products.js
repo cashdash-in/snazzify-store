@@ -1,5 +1,5 @@
 // GET    /api/admin/products          → full catalogue incl. costs, sellers, expired items
-// POST   /api/admin/products {product} → create or update (price auto = (cost+ship)×1.3 → ends in 9, unless given)
+// POST   /api/admin/products {product} → create or update (price auto = (cost+ship)×MARKUP → ends in 9, unless priceManual)
 // DELETE /api/admin/products?id=…      → remove
 import { json, clean, getCatalogue, saveCatalogue, sellPrice } from '../../../lib/util.js';
 
@@ -20,6 +20,8 @@ export async function onRequestPost({ request, env }) {
   const cost = p.cost === '' || p.cost == null ? null : Math.max(0, Number(p.cost));
   const ship = Math.max(0, Number(p.ship || 0));
   let price = Number(p.price);
+  const priceManual = !!p.priceManual && price > 0;
+  if (!priceManual && cost != null) price = sellPrice(cost, ship);
   if (!(price > 0)) price = cost != null ? sellPrice(cost, ship) : 0;
   const name = clean(p.name, 90);
   if (!name) return json({ error: 'Please add a product name.' }, 400);
@@ -33,7 +35,7 @@ export async function onRequestPost({ request, env }) {
     id, name,
     code: clean(p.code, 20) || existing?.code || `${prefix}-${String(cat.length + 1).padStart(3, '0')}${Math.floor(Math.random() * 9)}`,
     cat: CATS.includes(p.cat) ? p.cat : 'Home & Festive',
-    price: Math.round(price), cost, ship,
+    price: Math.round(price), priceManual: priceManual || undefined, cost, ship,
     img: clean(p.img, 120),
     addedAt: p.addedAt && !isNaN(Date.parse(p.addedAt)) ? new Date(p.addedAt).toISOString() : (existing?.addedAt || new Date().toISOString()),
     sizes: list(p.sizes), colours: list(p.colours),
