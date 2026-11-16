@@ -18,7 +18,7 @@
 <meta name="theme-color" content="#111014">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#F6F4EF; --card:#FFFFFF; --ink:#111014; --ink2:#26242B; --muted:#6E6A75; --line:#E5E1D8;
@@ -39,7 +39,7 @@ img{display:block;max-width:100%}
 .fbar a{text-decoration:none;color:inherit}
 .fbar.live{background:var(--pink);color:#fff;animation:fpulse 1.6s ease-in-out infinite}
 @keyframes fpulse{50%{filter:brightness(1.12)}}
-.fbar .ft{font-variant-numeric:tabular-nums}
+.fbar .cdn{font-variant-numeric:tabular-nums}
 @media(max-width:640px){.fbar .hs{display:none}.fbar{font-size:13px}}
 .tag.flash{background:var(--pink);color:#fff;font-variant-numeric:tabular-nums}
 .pr s,.bigpr s{font-size:.6em;color:var(--muted);margin-left:6px;font-weight:600}
@@ -431,6 +431,120 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 .mnav{position:fixed;inset:68px 0 auto 0;background:var(--bg);z-index:29;padding:12px 20px 20px;border-bottom:1px solid var(--line);gap:4px}
 .mnav a{text-decoration:none;font-family:var(--disp);font-weight:800;font-size:30px;letter-spacing:-.03em;padding:6px 0}
 @media (max-width:980px){.mnav.on{display:grid}}
+
+/* ================= v2: editorial "drop board" theme ================= */
+:root{--bg:#F3F0E8;--card:#FFFDF8;--ink:#0E0E10;--ink2:#2B2A2E;--muted:#77726A;--line:#DCD6C9;
+  --lime:#D4F24A;--pink:#E5482D;--lilac:#E7E1D3;--mint:#DDEBD6;--r:6px;
+  --serif:'Instrument Serif',Georgia,serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+body{background:var(--bg)}
+h1,h2,.sh h2,.page h1,.flash h2,.alert h2,.hero h1{font-family:var(--serif)!important;font-weight:400!important;letter-spacing:-.02em!important}
+.hero h1{font-size:clamp(46px,7.4vw,108px);line-height:.95}
+.hero h1 em,.sh h2 em,.flash h2 em{font-style:italic;color:var(--ink)}
+.sh h2 em{color:var(--pink)}
+.cat,.code,.lbl,.left,.tag,.pill,.fbar,.board,.tbox small,.dropclock .lbl,.fclock small,.cdn,.badge,.trust span{font-family:var(--mono)!important;letter-spacing:.04em}
+.pr,.bigpr,.amt{font-family:var(--body)!important;font-weight:800;letter-spacing:-.01em}
+.btn,.buy,.chip,.opt{border-radius:var(--r)!important}
+.btn.dark{box-shadow:none}
+.btn.dark:hover{background:#000}
+.card,.ct,.bx,.step,.flash,.endband,.alert,details,.li,.trackbox,.hub a,.cgrid>div{border-radius:var(--r)!important}
+.card{border:1px solid var(--line);box-shadow:none}
+.card:hover{transform:none;box-shadow:0 18px 36px -24px rgba(14,14,16,.45)}
+/* ticket perforation between photo and details */
+.card .mt{position:relative;border-top:1.5px dashed var(--line)}
+.card .mt::before,.card .mt::after{content:'';position:absolute;top:-9px;width:16px;height:16px;border-radius:50%;background:var(--bg);border:1px solid var(--line)}
+.card .mt::before{left:-9px}.card .mt::after{right:-9px}
+.tag{border-radius:3px;font-size:10.5px;padding:5px 8px}
+.tag.new{background:var(--ink);color:var(--lime)}
+.tag.flash{background:var(--pink)}
+.heart{border-radius:4px}
+.life{height:3px;left:0;right:0;bottom:0;border-radius:0}
+.add{border-radius:4px}
+.pill{border-radius:3px;font-size:11.5px;text-transform:uppercase}
+.tbox{border-radius:4px}.tbox b{font-family:var(--mono)!important;font-weight:500}
+.collage .ph{border-radius:4px;border-width:6px}
+.sticker{display:none}
+/* single-line departure board banner */
+.fbar{background:var(--ink)!important;color:#EDE9DF!important;padding:0!important;animation:none!important;font-size:12px!important;text-align:left}
+.fb-in{display:flex;align-items:center;gap:14px;height:36px;padding:0 16px;white-space:nowrap;overflow:hidden;text-decoration:none;color:inherit;max-width:1240px;margin:0 auto}
+.fb-l{flex:none;font-weight:700;color:var(--lime);display:flex;align-items:center;gap:6px}
+.fbar.live .fb-l{color:#FF6A4D}
+.dot{width:7px;height:7px;border-radius:50%;background:#FF6A4D;box-shadow:0 0 0 0 rgba(255,106,77,.6);animation:blink 1.2s infinite}
+@keyframes blink{50%{box-shadow:0 0 0 6px rgba(255,106,77,0)}}
+.fb-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.fb-c{flex:none;color:var(--lime);font-weight:700}
+.fb-c b{font-variant-numeric:tabular-nums}
+.mq{display:none}
+/* flash section, editorial */
+.flash{background:var(--card)!important;color:var(--ink)!important;border:1px solid var(--line)}
+.flash.live{background:var(--ink)!important;color:#EDE9DF!important;border-color:var(--ink)}
+.flash .fk{font-family:var(--mono);color:var(--pink)}
+.fclock{border-radius:4px}
+.fclock b{font-family:var(--mono)!important;font-weight:500;font-size:40px}
+.flash.live .fclock{background:var(--pink)}
+.mys .mc{border-radius:4px;background:repeating-linear-gradient(-45deg,var(--card) 0 10px,#EEE9DD 10px 20px);border:1px dashed var(--ink)}
+.mc span{font-family:var(--serif);font-weight:400;font-style:italic}
+.mc em{border-radius:3px;font-family:var(--mono);font-size:11px}
+/* the drop board: timetable of today's drops */
+.board{margin:20px 0 6px;border-top:1px solid currentColor;font-size:13px}
+.bh,.br{display:grid;grid-template-columns:70px 1fr auto;gap:14px;padding:11px 2px;border-bottom:1px solid rgba(128,128,128,.25);align-items:center}
+.bh{font-size:10.5px;opacity:.55;padding:8px 2px}
+.br span:first-child{font-weight:700;font-size:15px}
+.br.g{opacity:.38;text-decoration:line-through}
+.br.l span:last-child{color:var(--pink);font-weight:700}
+.flash.live .br.l span:last-child{color:var(--lime)}
+.br.n span:last-child{font-weight:700}
+.br b{font-variant-numeric:tabular-nums}
+/* bento & misc to calmer, premium tones */
+.bx.k,.bx.l,.bx.v,.bx.w,.bx.p,.bx.m{background:var(--card)!important;color:var(--ink)!important;border:1px solid var(--line)}
+.bx.k{background:var(--ink)!important;color:#EDE9DF!important}
+.bx h3{font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.01em}
+.bx.big h3{font-size:52px}
+.bx .ico{display:none}
+.daydots span.on{background:var(--lime)}
+.endband{background:var(--ink)}
+.alert{background:var(--card)!important;border:1px solid var(--line)}
+footer{border-radius:0!important;background:var(--ink)}
+.huge{font-family:var(--serif)!important;font-weight:400!important;font-style:italic;-webkit-text-stroke:1px rgba(255,255,255,.22)!important}
+.step::before{font-family:var(--mono);font-weight:500;font-size:13px;color:var(--muted)!important;margin-bottom:28px}
+.step h4{font-family:var(--serif);font-weight:400;font-size:26px}
+.ct b{font-family:var(--serif);font-weight:400;font-size:30px}
+.ct span{border-radius:3px;font-family:var(--mono)}
+.modal{border-radius:var(--r)}
+.info h3{font-family:var(--serif)!important;font-weight:400!important;font-size:40px!important;letter-spacing:-.01em!important;line-height:1}
+.count{border-radius:4px;font-family:var(--mono);font-size:12.5px}
+.free{border-radius:3px;font-family:var(--mono);font-size:10.5px}
+/* one-line rules */
+.hero h1{font-size:clamp(44px,5.6vw,84px)}
+.hero h1 em,.tag,.pill,.fb-in,.pr,.dropclock,.left{white-space:nowrap}
+.tag{max-width:calc(100% - 56px);overflow:hidden;text-overflow:ellipsis}
+.pr s{display:block;margin:0;font-size:11.5px;line-height:1.2}
+.prow{gap:8px}
+.dropclock{flex-wrap:nowrap;gap:8px}
+@media (max-width:640px){
+  .hero h1{font-size:48px}
+  .dropclock{flex-wrap:wrap}
+  .dropclock .lbl{flex-basis:100%;margin-bottom:2px}
+  .tbox{min-width:0;flex:1;max-width:84px;padding:8px 6px}
+  .tbox b{font-size:24px!important}
+  .pill{font-size:10px;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+  .card .pr{font-size:16px}
+  .tag{font-size:9.5px;padding:4px 6px}
+  /* floating dock instead of a full-width tab bar */
+  .tabm{left:12px!important;right:12px!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;border-radius:18px;background:rgba(14,14,16,.94)!important;border:0!important;padding:6px!important;box-shadow:0 16px 34px -12px rgba(0,0,0,.55)}
+  .tabm a,.tabm button{color:#8E8A82!important;font-family:var(--mono);font-size:9.5px!important;letter-spacing:.04em;text-transform:uppercase}
+  .tabm .on{color:#F3F0E8!important}
+  .dealbtn b{width:44px!important;height:44px!important;margin-top:-2px!important;border:0!important;border-radius:12px!important;background:var(--lime)!important;color:var(--ink)!important;box-shadow:none!important;font-size:20px!important}
+  .dealbtn span{display:none}
+  .dealbtn.live b{background:var(--pink)!important;color:#fff!important}
+  body{padding-bottom:calc(92px + env(safe-area-inset-bottom))!important}
+  .inst{bottom:calc(86px + env(safe-area-inset-bottom))!important;border-radius:14px}
+  .toast{bottom:calc(96px + env(safe-area-inset-bottom))!important}
+  .story i{background:var(--ink)!important;padding:2px!important}
+  .story.deal i{background:var(--lime)!important;color:var(--ink)}
+  .story{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.03em}
+  .info h3{font-size:32px!important}
+  .fb-in{height:34px;gap:10px;padding:0 12px}
+}
 </style>
 </head>
 <body>
@@ -534,7 +648,7 @@ function addToBag(id,size,colour){ try{navigator.vibrate&&navigator.vibrate(18)}
 function card(p){
   const used = Math.min(1,(Date.now()-p.addedAt)/LIFE);
   const d = deal(p);
-  const tag = d ? `<span class="tag flash">⚡ ${d.pct}% OFF · <b class="ft" data-to="${FLASH.endsAt}">--:--</b></span>` : isNew(p) ? '<span class="tag new">Just dropped</span>' : ending(p) ? `<span class="tag end">${left(p)}</span>` : '';
+  const tag = d ? `<span class="tag flash">⚡ −${d.pct}%</span>` : isNew(p) ? '<span class="tag new">Just dropped</span>' : ending(p) ? `<span class="tag end">${left(p)}</span>` : '';
   return `<article class="card">
     <div class="im" data-open="${p.id}"><img src="${IMG(p)}" alt="${p.name}">${tag}
       <div class="life" title="Time left in the shop"><i style="width:${(1-used)*100}%"></i></div></div>
@@ -587,8 +701,8 @@ home(){
   <section class="wrap hero">
     <div>
       <span class="pill"><i></i>${live.length?`${fresh.length} piece${fresh.length===1?'':'s'} dropped today · ${live.length} live now`:'New drops landing soon'}</span>
-      <h1>Fresh drops.<br><span class="hl">Every.</span> <span class="st">Single.</span><br>Day.</h1>
-      <p class="lead">Handpicked sarees, sets, bags and festive finds land here every morning. Each piece stays for 7 days, then it's gone for good. Blink and you'll miss it.</p>
+      <h1>Fresh drops,<br><em>every single day.</em></h1>
+      <p class="lead">Handpicked Rajputi poshaks, bridal jewellery and bags. Every piece stays seven days, and every two hours a few of them drop in price for thirty minutes.</p>
       <div class="ctas"><a class="btn dark" href="#shop">Shop today's drop →</a><a class="btn ghost" href="#about">How it works</a></div>
       <div class="dropclock"><span class="lbl">${FLASH.on?(FLASH.live?'⚡ 30-min deals end in':'⚡ Next 30-min deals in'):'Next drop in'}</span>
         <div class="tbox"><b id="dH">00</b><small>hrs</small></div><div class="tbox"><b id="dM">00</b><small>min</small></div><div class="tbox"><b id="dS">00</b><small>sec</small></div></div>
@@ -802,7 +916,7 @@ function openProduct(id){
         <div class="code">${p.cat.toUpperCase()} · ${p.code}</div>
         <h3>${p.name}</h3>
         <div class="bigpr">${rupee(ep(p))}${deal(p)?`<s>${rupee(p.price)}</s><span class="free" style="background:var(--pink);color:#fff">⚡ ${deal(p).pct}% OFF</span>`:''}<span class="free">Free shipping</span></div>
-        ${deal(p)?`<div class="count" style="background:var(--pink)">⚡ Pick it up in 30 mins: this price ends in <b class="ft" data-to="${FLASH.endsAt}">--:--</b></div>`:''}
+        ${deal(p)?`<div class="count" style="background:var(--pink)">⚡ Pick it up in 30 mins: this price ends in <b class="cdn" data-to="${FLASH.endsAt}">--:--</b></div>`:''}
         <div class="count">⏳ Leaves the shop in <b id="cd"></b></div>
         ${p.sizes?`<div><div class="lbl">Size</div><div class="opts">${p.sizes.map(s=>`<button class="opt ${s===size?'on':''}" data-s="${s}">${s}</button>`).join('')}</div></div>`:''}
         ${p.colours?`<div><div class="lbl">Colour · ${colour}</div><div class="opts">${p.colours.map(s=>`<button class="opt ${s===colour?'on':''}" data-k="${s}">${s}</button>`).join('')}</div></div>`:''}
@@ -988,22 +1102,33 @@ function drawFlashBar(){
   el.className = 'fbar' + (FLASH.live ? ' live' : '');
   const n = FLASH.live ? Object.keys(FLASH.deals||{}).length : 0;
   el.innerHTML = FLASH.live
-    ? `<a href="#home" data-flash>⚡ <b>PICK IT UP IN 30 MINS</b> <span class="hs">· ${n} piece${n===1?'':'s'} up to ${Math.max(...Object.values(FLASH.deals).map(d=>d.pct))}% off</span> · ends in <b class="ft" data-to="${FLASH.endsAt}">--:--</b> →</a>`
-    : `<span>⚡ Next <b>Pick it up in 30 mins</b> drop in <b class="ft" data-to="${FLASH.nextAt}">--:--</b><span class="hs"> · up to ${FLASH.maxPct}% off for 30 mins only</span></span>`;
+    ? `<a href="#deals" class="fb-in"><span class="fb-l"><i class="dot"></i>LIVE</span><span class="fb-t">PICK IT UP IN 30 MINS<span class="hs"> · ${n} PIECES · UP TO ${Math.max(...Object.values(FLASH.deals).map(d=>d.pct))}% OFF</span></span><span class="fb-c">ENDS <b class="cdn" data-to="${FLASH.endsAt}">--:--</b></span></a>`
+    : `<a href="#deals" class="fb-in"><span class="fb-l">NEXT</span><span class="fb-t">PICK IT UP IN 30 MINS<span class="hs"> · UP TO ${FLASH.maxPct}% OFF</span></span><span class="fb-c">T− <b class="cdn" data-to="${FLASH.nextAt}">--:--</b></span></a>`;
   const a = el.querySelector('[data-flash]'); if (a) a.onclick = e => { if (location.hash==='#home'||!location.hash){ e.preventDefault(); $('#flash')?.scrollIntoView({behavior:'smooth'}); } else setTimeout(()=>$('#flash')?.scrollIntoView({behavior:'smooth'}),80); };
 }
-setInterval(() => { $$('.ft').forEach(e => e.textContent = fmtT(+e.dataset.to - nowS())); }, 1000);
+setInterval(() => { $$('[data-to]').forEach(e => { const to=+e.dataset.to; e.textContent = to ? fmtT(to - nowS()) : '--:--'; }); }, 1000);
+function dropBoard(){
+  if (!FLASH.on || FLASH.startHour==null) return '';
+  const ist = new Date(nowS() + 5.5*H); const day0 = Date.UTC(ist.getUTCFullYear(), ist.getUTCMonth(), ist.getUTCDate()) - 5.5*H;
+  const rows = []; for (let m = FLASH.startHour*60; m < FLASH.endHour*60; m += FLASH.every) rows.push(day0 + m*6e4);
+  const dur = FLASH.minutes*6e4, t = nowS();
+  const lbl = s => new Date(s + 5.5*H).toISOString().slice(11,16);
+  return `<div class="board"><div class="bh"><span>TIME</span><span>DROP</span><span>STATUS</span></div>${rows.map(s => {
+    const st = t >= s + dur ? ['GONE','g'] : t >= s ? ['LIVE NOW','l'] : (s === FLASH.nextAt ? ['NEXT','n'] : ['LATER','']);
+    return `<div class="br ${st[1]}"><span>${lbl(s)}</span><span>Pick it up · up to ${FLASH.maxPct}%</span><span>${st[0]}${st[1]==='n'?` · <b class="cdn" data-to="${s}">--:--</b>`:''}${st[1]==='l'?` · <b class="cdn" data-to="${s+dur}">--:--</b>`:''}</span></div>`; }).join('')}</div>`;
+}
 function flashSection(){
   if (!FLASH.on) return '';
   const deals = FLASH.live ? live.filter(p => deal(p)) : [];
   if (FLASH.live && deals.length) return `<section class="wrap sec" id="flash"><div class="flash live">
     <div class="fh"><div><div class="fk">⚡ LIVE NOW</div><h2>Pick it up<br>in 30 mins.</h2><p>Grab these prices before the clock hits zero. Delivery charges stay the same, only the price drops.</p></div>
-    <div class="fclock"><small>ENDS IN</small><b class="ft" data-to="${FLASH.endsAt}">--:--</b></div></div>
-    <div class="grid">${deals.map(card).join('')}</div></div></section>`;
+    <div class="fclock"><small>ENDS IN</small><b class="cdn" data-to="${FLASH.endsAt}">--:--</b></div></div>
+    <div class="grid">${deals.map(card).join('')}</div>${dropBoard()}</div></section>`;
   return `<section class="wrap sec" id="flash"><div class="flash">
     <div class="fh"><div><div class="fk">⚡ NEW: A WAY TO SHOP NOBODY ELSE HAS</div><h2>Pick it up<br>in 30 mins.</h2>
       <p>Every ${FLASH.every/60} hours, random pieces drop by <b>${FLASH.minPct}–${FLASH.maxPct}%</b>, for just 30 minutes. Nobody knows which ones until the clock starts. Be here, be quick.</p></div>
-    <div class="fclock"><small>NEXT DROP IN</small><b class="ft" data-to="${FLASH.nextAt}">--:--</b></div></div>
+    <div class="fclock"><small>NEXT DROP IN</small><b class="cdn" data-to="${FLASH.nextAt}">--:--</b></div></div>
+    ${dropBoard()}
     <div class="mys">${[1,2,3].map(i=>`<div class="mc"><span>?</span><em>up to ${FLASH.maxPct}% off</em></div>`).join('')}</div>
     <div class="ctas" style="margin-top:18px"><a class="btn lime" href="${wa('Hi Snazzify! ⚡ Add me to Pick it up in 30 mins alerts')}" target="_blank" rel="noopener">🔔 Alert me on WhatsApp</a></div>
   </div></section>`;
