@@ -1,3 +1,6 @@
-// GET /api/settings — public shop switches (e.g. whether "See it before you pay" is on).
+// GET /api/settings — public shop switches.
 import { json, getSettings } from '../../lib/util.js';
-export const onRequestGet = async ({ env }) => json(await getSettings(env));
+export const onRequestGet = async ({ env }) => {
+  const s = await getSettings(env);
+  return json({ seeBeforePay: s.seeBeforePay, look: s.look, tryon: { on: !!(s.tryon.on && env.FAL_KEY), perDevice: s.tryon.perDevice } });
+};

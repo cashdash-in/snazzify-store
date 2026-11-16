@@ -5,6 +5,16 @@ export async function onRequestPost({ request, env }) {
   let b; try { b = await request.json(); } catch { return json({ error: 'Invalid request' }, 400); }
   const s = await getSettings(env);
   if (typeof b.seeBeforePay === 'boolean') s.seeBeforePay = b.seeBeforePay;
+  if (b.tryon && typeof b.tryon === 'object') {
+    const n = (v, lo, hi, d) => { v = Math.round(Number(v)); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d; };
+    s.tryon = { ...s.tryon, ...(typeof b.tryon.on === 'boolean' ? { on: b.tryon.on } : {}),
+      ...('perDevice' in b.tryon ? { perDevice: n(b.tryon.perDevice, 1, 20, s.tryon.perDevice) } : {}),
+      ...('dailyCap' in b.tryon ? { dailyCap: n(b.tryon.dailyCap, 1, 2000, s.tryon.dailyCap) } : {}) };
+  }
+  if (b.look && typeof b.look === 'object') {
+    s.look = { ...s.look, ...(typeof b.look.on === 'boolean' ? { on: b.look.on } : {}),
+      ...('pct' in b.look ? { pct: Math.min(30, Math.max(1, Math.round(Number(b.look.pct)) || s.look.pct)) } : {}) };
+  }
   if (b.flash && typeof b.flash === 'object') {
     const f = { ...s.flash }, n = (v, lo, hi, d) => { v = Math.round(Number(v)); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d; };
     if (typeof b.flash.on === 'boolean') f.on = b.flash.on;

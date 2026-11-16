@@ -62,3 +62,10 @@ Product catalogue lives in KV once you save a product in the admin page
 The shop installs as an app ("Add to Home Screen" / Install prompt): `public/manifest.webmanifest`, `public/sw.js`,
 icons in `public/icons`. On phones it shows a bottom tab bar (Home · Shop · ⚡ Deals · Saved · Bag), story-style
 categories, swipeable product photos and a sticky buy bar. `/api` responses are never cached, so prices and deals are always live.
+
+## Wow features
+- **✨ Try Me On** (`/api/tryon`): customer photo + product photo → FASHN try-on via fal.ai (`sync_mode`, nothing stored).
+  Needs Cloudflare secret `FAL_KEY` and the admin switch ON. Limits per device and per day in admin.
+- **🎬 Swipe feed** (`#swipe`): Reels-style full-screen product feed, double-tap to save.
+- **👭 Buy or Bye?** (`/api/poll`, page `/v/#id`): WhatsApp poll for friends, one vote per device, results in Saved → Polls.
+- **💍 Complete the look**: jewellery/bag/accessory bought with a suit or saree gets the look % off (admin), enforced at checkout, never stacked on a flash deal.

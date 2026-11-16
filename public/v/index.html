@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buy or Bye? · Snazzify</title>
+<meta property="og:title" content="Buy or Bye? Help me decide 🤔">
+<meta property="og:description" content="Vote on Snazzify, takes 2 seconds.">
+<meta property="og:image" content="https://www.snazzify.co.in/snazzify-og.png">
+<link rel="icon" href="/snazzify-icon.svg">
+<meta name="theme-color" content="#111014">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F4EF;--ink:#111014;--muted:#6E6A75;--line:#E5E1D8;--lime:#D7FF3B;--pink:#FF4D8D;--green:#1f9d55}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.w{max-width:460px;margin:0 auto;padding:18px 16px 40px;display:grid;gap:14px}
+.logo{height:28px;margin:4px auto 0}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.04em;line-height:.95;text-align:center}
+.ph{border-radius:22px;overflow:hidden;background:#eee;aspect-ratio:4/5;position:relative}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph .nm{position:absolute;left:0;right:0;bottom:0;padding:40px 16px 14px;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff}
+.nm b{display:block;font-size:17px}.nm span{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px}
+.vote{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vote button{font:inherit;font-weight:800;font-size:20px;border:0;border-radius:18px;padding:20px 10px;cursor:pointer}
+.b1{background:var(--green);color:#fff}.b2{background:#fff;color:var(--ink);border:2px solid var(--ink)!important}
+.res{display:grid;gap:8px}
+.bar{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-weight:800}
+.bar i{position:absolute;left:0;top:0;bottom:0;transition:width .6s}
+.bar span{position:relative}
+.cta{display:block;text-align:center;background:var(--ink);color:#fff;text-decoration:none;font-weight:800;border-radius:16px;padding:16px}
+.note{font-size:13px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="w" id="w"><img class="logo" src="/snazzify-logo.svg" alt="Snazzify"><p class="note">Loading…</p></div>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rupee = n => '₹' + Math.round(n).toLocaleString('en-IN');
+const id = location.hash.slice(1);
+const key = 'snz_voted_' + id;
+let voted = null; try { voted = localStorage.getItem(key); } catch(e) {}
+function bars(o){ const t = Math.max(1, o.buy + o.bye), pb = Math.round(o.buy*100/t), py = 100 - pb;
+  return `<div class="res"><div class="bar"><i style="width:${pb}%;background:#c9f2d9"></i><span>💚 BUY</span><span>${pb}% · ${o.buy}</span></div>
+    <div class="bar"><i style="width:${py}%;background:#ffd6e3"></i><span>✋ BYE</span><span>${py}% · ${o.bye}</span></div></div>`; }
+(async () => {
+  const r = await fetch('/api/poll?id=' + encodeURIComponent(id)); const o = await r.json().catch(() => ({}));
+  if (!r.ok || !o.product) { $('#w').innerHTML = '<img class="logo" src="/snazzify-logo.svg" alt=""><h1>This poll has ended</h1><a class="cta" href="/">Shop Snazzify →</a>'; return; }
+  const p = o.product, img = (o.colour && p.colourImg && p.colourImg[o.colour]) || p.img;
+  const render = (data) => { $('#w').innerHTML = `<img class="logo" src="/snazzify-logo.svg" alt="Snazzify">
+    <h1>Buy or Bye? 🤔</h1><p class="note">Your friend is deciding. Help them out!</p>
+    <div class="ph"><img src="/img/${esc(img)}" alt=""><div class="nm"><b>${esc(p.name)}${o.colour?' · '+esc(o.colour):''}</b><span>${rupee(p.price)}</span></div></div>
+    ${voted ? bars(data) + '<p class="note">Thanks for voting! 🙌</p>' : '<div class="vote"><button class="b1" data-v="buy">💚 BUY</button><button class="b2" data-v="bye">✋ BYE</button></div>'}
+    <a class="cta" href="/">Shop Snazzify: new drops daily →</a>
+    <p class="note">⚡ Every 2 hours random pieces drop up to 25% off for 30 mins</p>`;
+    document.querySelectorAll('[data-v]').forEach(b => b.onclick = async () => {
+      const res = await fetch('/api/poll', {method:'PUT', headers:{'content-type':'application/json'}, body: JSON.stringify({id, vote: b.dataset.v})}).then(x => x.json()).catch(() => null);
+      voted = b.dataset.v; try { localStorage.setItem(key, voted); } catch(e) {}
+      render(res && !res.error ? res : data); }); };
+  render(o);
+})();
+</script>
+</body>
+</html>

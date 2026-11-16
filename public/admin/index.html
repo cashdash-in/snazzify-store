@@ -231,6 +231,18 @@ function today(){
           <label>Max % off<input name="maxPct" type="number" min="1" max="60" value="${SETTINGS.flash?.maxPct??25}"></label></div>
         <label>Products per drop<input name="count" type="number" min="1" max="20" value="${SETTINGS.flash?.count??3}"></label>
         <button class="btn ghost sm">Save drop settings</button></form></div>
+    <h2>Shopping features</h2>
+    <div class="card"><div class="sw"><div><b style="font-size:16px">✨ Try Me On (AI)</b>
+      <div class="hint" style="margin-top:4px">Customers see themselves wearing suits and sarees. Photos are never saved. Each try costs a few rupees at the AI service. Needs the FAL_KEY secret in Cloudflare.</div></div>
+      <button class="tg ${SETTINGS.tryon?.on?'on':''}" id="tyo" aria-label="Turn Try Me On on or off"></button></div>
+      <form id="tyf" class="two"><label>Tries per customer / day<input name="perDevice" type="number" min="1" max="20" value="${SETTINGS.tryon?.perDevice??3}"></label>
+        <label>Max tries per day (all)<input name="dailyCap" type="number" min="1" max="2000" value="${SETTINGS.tryon?.dailyCap??40}"></label>
+        <button class="btn ghost sm" style="grid-column:1/-1">Save try-on limits</button></form></div>
+    <div class="card" style="margin-top:10px"><div class="sw"><div><b style="font-size:16px">💍 Complete the look</b>
+      <div class="hint" style="margin-top:4px">Suits and sarees show matching jewellery and a bag. When bought together, those get a discount (never on top of a flash deal).</div></div>
+      <button class="tg ${SETTINGS.look?.on?'on':''}" id="lko" aria-label="Turn Complete the look on or off"></button></div>
+      <form id="lkf" class="two"><label>Look discount %<input name="pct" type="number" min="1" max="30" value="${SETTINGS.look?.pct??5}"></label>
+        <button class="btn ghost sm" style="align-self:end">Save</button></form></div>
     <h2>Latest orders</h2>
     <div class="list">${ORDERS.filter(o=>o.status!=='created').slice(0,5).map(orderRow).join('') || '<div class="empty">No paid orders yet. They\'ll appear here the moment a customer pays.</div>'}</div>`;
   $$('[data-f]').forEach(b => b.onclick = () => { oFilter = b.dataset.f; tab='orders'; shell(); });
@@ -244,6 +256,11 @@ function today(){
     try { SETTINGS = (await api('settings', {method:'POST', body: JSON.stringify({flash:{on}})})).settings; today(); toast(on ? 'Flash drops ON ⚡' : 'Flash drops OFF'); } catch(e) { toast(e.message); } };
   $('#flf').onsubmit = async e => { e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
     try { SETTINGS = (await api('settings', {method:'POST', body: JSON.stringify({flash:d})})).settings; toast('Saved'); fstat(); } catch(err) { toast(err.message); } };
+  const sv = async (body, msg) => { try { SETTINGS = (await api('settings', {method:'POST', body: JSON.stringify(body)})).settings; today(); toast(msg); } catch(e) { toast(e.message); } };
+  $('#tyo').onclick = () => sv({tryon:{on:!SETTINGS.tryon?.on}}, !SETTINGS.tryon?.on ? 'Try Me On ON ✨' : 'Try Me On OFF');
+  $('#tyf').onsubmit = e => { e.preventDefault(); sv({tryon:Object.fromEntries(new FormData(e.target))}, 'Saved'); };
+  $('#lko').onclick = () => sv({look:{on:!SETTINGS.look?.on}}, !SETTINGS.look?.on ? 'Complete the look ON 💍' : 'Complete the look OFF');
+  $('#lkf').onsubmit = e => { e.preventDefault(); sv({look:Object.fromEntries(new FormData(e.target))}, 'Saved'); };
   $('#sbp').onclick = async () => { const on = !SETTINGS.seeBeforePay;
     if (!confirm(on ? 'Turn ON "See it before you pay"? Customers will be able to book without paying.' : 'Turn OFF "See it before you pay"? Customers will have to pay at checkout.')) return;
     try { SETTINGS = (await api('settings', {method:'POST', body: JSON.stringify({seeBeforePay: on})})).settings; today(); toast(on ? 'Turned ON' : 'Turned OFF'); } catch(e) { toast(e.message); } };
@@ -308,7 +325,7 @@ function openOrder(ref){
     const upi = s.sellerUpi && !isNaN(owed) ? `upi://pay?pa=${encodeURIComponent(s.sellerUpi)}&pn=${encodeURIComponent(name)}&am=${owed}&cu=INR&tn=${encodeURIComponent('Snazzify ' + o.ref)}` : '';
     return `<div class="card"><h4>Seller · ${esc(name)}</h4>
       ${items.map(i=>`<div class="item"><img src="${img(i.img)}" alt=""><div><b>${esc(i.name)}</b><small>${i.code}${i.size?' · '+esc(i.size):''}${i.colour?' · '+esc(i.colour):''} · qty ${i.qty}</small>
-        <br><small>Seller price ${i.cost!=null?rupee((i.cost+(i.ship||0))):'not set'}${i.flashPct?' · ⚡ '+i.flashPct+'% flash price':''}</small></div><div class="amt" style="font-size:15px">${rupee(i.price*i.qty)}</div></div>`).join('')}
+        <br><small>Seller price ${i.cost!=null?rupee((i.cost+(i.ship||0))):'not set'}${i.flashPct?' · ⚡ '+i.flashPct+'% flash price':''}${i.lookPct?' · 💍 '+i.lookPct+'% look price':''}</small></div><div class="amt" style="font-size:15px">${rupee(i.price*i.qty)}</div></div>`).join('')}
       ${s.sellerPhone ? `<a class="btn wa" href="https://wa.me/${s.sellerPhone.length===10?'91'+s.sellerPhone:s.sellerPhone}?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener" data-sent>📦 Send order to seller on WhatsApp</a>`
         : `<button class="btn ghost" data-copy="${esc(msg)}">📋 Copy order message for seller</button><div class="hint">Add the seller's WhatsApp number to this product to send in one tap.</div>`}
       ${upi ? `<a class="btn ghost" href="${upi}">💸 Pay ${esc(name)} ${rupee(owed)} by UPI</a><div class="hint">Opens your UPI app with the amount filled in. You enter your PIN.</div>`

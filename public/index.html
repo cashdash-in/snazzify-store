@@ -332,7 +332,7 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 .pmo b{display:block;font-size:15px}.pmo span{font-size:13px;color:var(--muted);font-weight:500;line-height:1.4}
 .demo{background:#fff4c2;border-radius:14px;padding:14px;font-size:14px;line-height:1.55}
 
-.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;font-weight:700;padding:13px 20px;border-radius:999px;z-index:90;transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;gap:10px;align-items:center;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
+.toast{white-space:nowrap;max-width:92vw;position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;font-weight:700;padding:13px 20px;border-radius:999px;z-index:90;transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;gap:10px;align-items:center;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
 .toast.on{transform:translate(-50%,0)}
 .toast i{font-style:normal;color:var(--lime)}
 
@@ -451,6 +451,62 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
     width:44px!important;height:44px!important;border-radius:50%!important;background:rgba(17,16,20,.82)!important;color:#fff!important;font-size:26px!important;line-height:1!important;
     border:2px solid rgba(255,255,255,.9)!important;box-shadow:0 6px 16px rgba(0,0,0,.35)!important;display:grid!important;place-items:center!important}
 }
+
+/* ===== tools, look, try-on, swipe ===== */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tool{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:11px 12px}
+.tool b{font-size:14.5px}.tool span{font-size:11.5px;color:var(--muted)}
+.tool.try{background:linear-gradient(135deg,#fff 0%,#f6ffd6 100%);border-color:var(--ink)}
+.tools:has(.tool:only-child){grid-template-columns:1fr}
+.look{border:1.5px dashed var(--ink);border-radius:16px;padding:12px;display:grid;gap:10px;background:#fff}
+.lh b{display:block;font-size:15px}.lh span{font-size:12px;color:var(--muted)}
+.lrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lit{display:grid;gap:4px;text-align:left;font-size:12px}
+.lit img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#eee}
+.lit span{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;font-weight:600}
+.lit b{font-size:13px}.lit s,.look s{color:var(--muted);font-weight:600;font-size:11px}
+.tryon{position:fixed;inset:0;z-index:96;background:rgba(17,16,20,.6);display:flex;align-items:flex-end;justify-content:center}
+.tryon[hidden]{display:none}
+.tbox2{background:var(--bg);width:min(560px,100vw);max-height:96vh;overflow:auto;border-radius:24px 24px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom));display:grid;gap:14px}
+@media(min-width:700px){.tryon{align-items:center}.tbox2{border-radius:24px}}
+.tth{display:flex;justify-content:space-between;align-items:center}.tth b{font-family:var(--disp);font-size:24px;letter-spacing:-.02em}
+.x2{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;font-size:22px}
+.tpair{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.tslot{aspect-ratio:3/4;border-radius:16px;background:#fff;border:1.5px dashed var(--line);overflow:hidden;display:grid;place-items:center;text-align:center;color:var(--muted);font-weight:700;font-size:13px}
+.tslot span{font-size:28px;line-height:1.3}.tslot img{width:100%;height:100%;object-fit:cover}
+.tplus{font-family:var(--disp);font-size:28px;font-weight:800}
+.tnote{font-size:12.5px;color:var(--muted);line-height:1.5;text-align:center}
+.two2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.two2 .btn{padding:13px 10px;font-size:14px;cursor:pointer}
+.tbusy{display:grid;place-items:center;gap:8px;padding:50px 0;text-align:center}.tbusy span{color:var(--muted);font-size:13px}
+.spin{width:54px;height:54px;border-radius:50%;border:5px solid var(--line);border-top-color:var(--pink);animation:sp 0.9s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.tres{position:relative;border-radius:18px;overflow:hidden;background:#eee}.tres img{width:100%;display:block;max-height:62vh;object-fit:contain;background:#111}
+.tba{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:rgba(17,16,20,.75);color:#fff;font-weight:700;font-size:12.5px;border-radius:999px;padding:8px 14px;user-select:none;-webkit-user-select:none;touch-action:none}
+.swipe{position:fixed;inset:0;z-index:35;background:#000;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none}
+.swipe::-webkit-scrollbar{display:none}
+body.swiping{overflow:hidden}
+body.swiping header,body.swiping .mq,body.swiping .fbar,body.swiping footer,body.swiping .inst{display:none!important}
+.sl{position:relative;height:100vh;height:100dvh;scroll-snap-align:start;scroll-snap-stop:always;overflow:hidden;color:#fff}
+.sl>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sgrad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35) 0%,transparent 22%,transparent 50%,rgba(0,0,0,.85) 100%);pointer-events:none}
+.sback{position:fixed;top:calc(14px + env(safe-area-inset-top));left:14px;z-index:37;width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;display:grid;place-items:center;font-size:22px;text-decoration:none;backdrop-filter:blur(6px)}
+.stop{position:absolute;top:calc(18px + env(safe-area-inset-top));left:66px;right:14px}
+.stop .tag{position:static;display:inline-block}
+.sact{position:absolute;right:10px;bottom:calc(150px + env(safe-area-inset-bottom));display:grid;gap:16px;z-index:2}
+.sact button{display:grid;justify-items:center;gap:3px;color:#fff;font-size:11px;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.sact i{font-style:normal;width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);display:grid;place-items:center;font-size:22px}
+.sact button.on i{background:var(--pink)}
+.sinfo{position:absolute;left:16px;right:78px;bottom:calc(96px + env(safe-area-inset-bottom));display:grid;gap:6px;z-index:2}
+.scat{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.sinfo h3{font-family:var(--disp);font-size:24px;line-height:1.05;letter-spacing:-.02em}
+.spr{font-family:var(--disp);font-weight:800;font-size:24px}.spr s{font-size:14px;opacity:.6;font-weight:600}
+.sinfo .buy{background:#fff;color:var(--ink);padding:12px;font-size:15px;width:auto;justify-self:start;padding:12px 22px}
+.heartpop{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%) scale(0);font-size:110px;color:#fff;text-shadow:0 6px 30px rgba(255,77,141,.8);pointer-events:none;opacity:0}
+.heartpop.go{animation:hp .8s ease-out}
+@keyframes hp{0%{transform:translate(-50%,-50%) scale(0);opacity:1}40%{transform:translate(-50%,-50%) scale(1.2);opacity:1}100%{transform:translate(-50%,-60%) scale(1);opacity:0}}
+@media(min-width:641px){.swipe{left:50%;width:min(460px,100vw);transform:translateX(-50%);border-radius:0}.sinfo{bottom:30px}.sact{bottom:90px}}
+.story.swp i{background:var(--pink);display:grid;place-items:center;font-style:normal;font-size:24px;color:#fff}
 </style>
 </head>
 <body>
@@ -464,6 +520,7 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
     <nav class="main">
       <a href="#home" data-v="home">Today's drop</a>
       <a href="#shop" data-v="shop">Shop all</a>
+      <a href="#swipe" data-v="swipe">▶ Swipe</a>
       <a href="#about" data-v="about">How it works</a>
       <a href="#track" data-v="track">Track order</a>
     </nav>
@@ -503,6 +560,7 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
 <aside class="drawer" id="drawer" aria-label="Bag"></aside>
 <div class="toast" id="toast"></div>
+<div class="tryon" id="tryon" hidden></div>
 <nav class="tabm" id="tabm">
   <a href="#home" data-tv="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
   <a href="#shop" data-tv="shop"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Shop</span></a>
@@ -522,6 +580,10 @@ const DROP_HOUR_IST = 11;             // daily drop time (11:00 AM IST)
 const IMG = p => '/img/' + p.img;     // product photos live in /img
 let PRODUCTS = [], SETTINGS = { seeBeforePay: false }, FLASH = { on:false }, CLOCK_SKEW = 0;
 const deal = p => FLASH.live && FLASH.deals && FLASH.deals[p.id];
+const OUTFIT = ['Suits & Sets','Sarees'], LOOKC = ['Jewellery','Bags','Accessories'];
+const lookOn = () => SETTINGS.look?.on && bag.some(x => OUTFIT.includes(byId(x.id)?.cat));
+const lookPrice = p => Math.round(p.price * (100 - (SETTINGS.look?.pct||5)) / 100);
+const bp = i => { const p = byId(i.id); const d = deal(p); if (d) return d.price; if (lookOn() && LOOKC.includes(p.cat)) return lookPrice(p); return p.price; };
 const ep = p => { const d = deal(p); return d ? d.price : p.price; };   // effective price right now
 const fmtT = ms => { ms = Math.max(0, ms); const h=Math.floor(ms/H), m=Math.floor(ms%H/6e4), s=Math.floor(ms%6e4/1e3); return (h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); };
 const nowS = () => Date.now() + CLOCK_SKEW;                     // loaded from /products.json
@@ -589,6 +651,7 @@ function legalHub(){ return `<section class="wrap page"><h1>Policies.</h1><div c
 function nextDrop(){ const d=new Date(); const t=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),DROP_HOUR_IST-5,-30+60*0+30-30); let n=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),DROP_HOUR_IST,0)-5.5*H; while(n<=Date.now()) n+=24*H; return n; }
 
 const views = {
+swipe(){ return swipeView(); },
 deals(){
   if (!FLASH.on) return `<section class="wrap page"><h1>⚡ Deals</h1><p>"Pick it up in 30 mins" drops are coming soon. Turn on WhatsApp alerts so you're first to know.</p>
     <div class="ctas"><a class="btn dark" href="${wa('Hi Snazzify! ⚡ Add me to Pick it up in 30 mins alerts')}" target="_blank" rel="noopener">🔔 Alert me</a></div></section>`;
@@ -601,6 +664,7 @@ home(){
   return `
   <div class="wrap only-m"><div class="stories">
     ${FLASH.on?`<a class="story deal" href="#deals"><i>⚡</i>${FLASH.live?'LIVE deals':'Deals'}</a>`:''}
+    <a class="story swp" href="#swipe"><i>▶</i>Swipe</a>
     <a class="story" href="#shop" data-cat="New today"><i><img src="${IMG(live[0]||{img:''})}" alt=""></i>New</a>
     ${CATS.map(c=>{const ps=live.filter(p=>p.cat===c);return ps.length?`<a class="story" href="#shop" data-cat="${c}"><i><img src="${IMG(ps[0])}" alt=""></i>${c.replace(' & Sets','').replace(' & Festive','')}</a>`:''}).join('')}
   </div></div>
@@ -609,7 +673,7 @@ home(){
       <span class="pill"><i></i>${live.length?`${fresh.length} piece${fresh.length===1?'':'s'} dropped today · ${live.length} live now`:'New drops landing soon'}</span>
       <h1>Fresh drops.<br><span class="hl">Every.</span> <span class="st">Single.</span><br>Day.</h1>
       <p class="lead">Handpicked sarees, sets, bags and festive finds land here every morning. Each piece stays for 7 days, then it's gone for good. Blink and you'll miss it.</p>
-      <div class="ctas"><a class="btn dark" href="#shop">Shop today's drop →</a><a class="btn ghost" href="#about">How it works</a></div>
+      <div class="ctas"><a class="btn dark" href="#shop">Shop today's drop →</a><a class="btn ghost" href="#swipe">▶ Swipe the drop</a></div>
       <div class="dropclock"><span class="lbl">${FLASH.on?(FLASH.live?'⚡ 30-min deals end in':'⚡ Next 30-min deals in'):'Next drop in'}</span>
         <div class="tbox"><b id="dH">00</b><small>hrs</small></div><div class="tbox"><b id="dM">00</b><small>min</small></div><div class="tbox"><b id="dS">00</b><small>sec</small></div></div>
     </div>
@@ -781,6 +845,7 @@ function route(){
   $$('nav.main a').forEach(a=>a.classList.toggle('on',a.dataset.v===name));
   $$('.tabm [data-tv]').forEach(a=>a.classList.toggle('on',a.dataset.tv===name));
   if(name==='deals') wireCards($('#view'));
+  document.body.classList.remove('swiping'); if(name==='swipe') wireSwipe();
   $('#mnav').classList.remove('on');
   wireCards($('#view'));
   $$('#view [data-cat]').forEach(a=>a.onclick=()=>{shopCat=a.dataset.cat;query='';});
@@ -828,6 +893,11 @@ function openProduct(id){
         ${p.sizes?`<div><div class="lbl">Size</div><div class="opts">${p.sizes.map(s=>`<button class="opt ${s===size?'on':''}" data-s="${s}">${s}</button>`).join('')}</div></div>`:''}
         ${p.colours?`<div><div class="lbl">Colour · ${colour}</div><div class="opts">${p.colours.map(s=>`<button class="opt ${s===colour?'on':''}" data-k="${s}">${s}</button>`).join('')}</div></div>`:''}
         <ul class="desc">${p.details.map(d=>`<li>${d}</li>`).join('')}</ul>
+        <div class="tools">
+          ${SETTINGS.tryon?.on && OUTFIT.includes(p.cat) ? `<button class="tool try" id="tTry"><b>✨ Try me on</b><span>See it on you · photo not saved</span></button>` : ''}
+          <button class="tool" id="tPoll"><b>👭 Buy or Bye?</b><span>Ask friends on WhatsApp</span></button>
+        </div>
+        ${lookBlock(p)}
         <div class="brow"><button class="buy" id="bNow">Buy now · ${rupee(ep(p))}</button><button class="sq ${saved.includes(p.id)?'on':''}" data-id="${p.id}" id="sv" aria-label="Save">${heartSvg}</button></div>
         <button class="buy alt" id="bAdd">Add to bag</button>
         <div class="trust"><span>🔒 Razorpay secure</span><span>UPI</span><span>Cards</span><span>Netbanking</span><span>No COD</span></div>
@@ -844,6 +914,10 @@ function openProduct(id){
         const c=Object.entries(p.colourImg||{}).find(([k,v])=>v===shown); if(c) colour=c[0]; draw(); },{passive:true}); }
     $$('#modal [data-g]').forEach(b=>b.onclick=()=>{shown=b.dataset.g; const c=Object.entries(p.colourImg||{}).find(([k,v])=>v===shown); if(c) colour=c[0]; draw();});
     $('#sv').onclick = () => toggleSave(p.id);
+    const tt = $('#tTry'); if (tt) tt.onclick = () => tryOn(p, colour);
+    $('#tPoll').onclick = () => askFriends(p, colour);
+    const la = $('#lookAdd'); if (la) la.onclick = () => { addToBag(p.id,size,colour); la.dataset.ids.split(',').forEach(id => addToBag(id)); toast('<i>💍</i> Look added · −' + SETTINGS.look.pct + '%'); clearInterval(cdT); $('#modal').classList.remove('on'); openBag('bag'); };
+    $$('#modal [data-lp]').forEach(x => x.onclick = () => openProduct(x.dataset.lp));
     $('#bAdd').onclick = () => { addToBag(p.id,size,colour); closeAll(); };
     $('#bNow').onclick = () => { addToBag(p.id,size,colour); clearInterval(cdT); $('#modal').classList.remove('on'); openBag('bag',true); };
     run();
@@ -857,17 +931,20 @@ function openProduct(id){
 /* ================= BAG / SAVED DRAWER ================= */
 function openBag(tab='bag', toCheckout=false){
   const d = $('#drawer');
-  const total = () => bag.reduce((a,i)=>a+ep(byId(i.id))*i.qty,0);
+  const total = () => bag.reduce((a,i)=>a+bp(i)*i.qty,0);
   const draw = () => {
     const items = tab==='bag'
-      ? (bag.length ? bag.map(i=>{const p=byId(i.id);return `<div class="li"><img src="${IMG(p)}" alt=""><div><b>${p.name}</b><small>${[i.size,i.colour].filter(Boolean).join(' · ')||p.code} · ${left(p)}</small>
-          <div class="qty"><button data-q="${i.k}" data-d="-1">−</button>${i.qty}<button data-q="${i.k}" data-d="1">+</button> <button class="rm" data-rm="${i.k}">Remove</button></div></div><div class="pr">${rupee(ep(p)*i.qty)}</div></div>`}).join('')
+      ? (bag.length ? bag.map(i=>{const p=byId(i.id);return `<div class="li"><img src="${IMG(p)}" alt=""><div><b>${p.name}</b><small>${[i.size,i.colour].filter(Boolean).join(' · ')||p.code} · ${left(p)}${bp(i)<p.price&&!deal(p)?` · <b style="color:#1f7a4d">💍 −${SETTINGS.look.pct}% look</b>`:''}</small>
+          <div class="qty"><button data-q="${i.k}" data-d="-1">−</button>${i.qty}<button data-q="${i.k}" data-d="1">+</button> <button class="rm" data-rm="${i.k}">Remove</button></div></div><div class="pr">${rupee(bp(i)*i.qty)}</div></div>`}).join('')
         : '<div class="empty">Your bag is empty.<br><br><a class="btn dark" href="#home" id="goShop">Catch today\'s drop →</a></div>')
       : (saved.length ? saved.map(id=>{const p=byId(id);return `<div class="li"><img src="${IMG(p)}" alt=""><div><b>${p.name}</b><small>${left(p)}</small><div class="qty"><button class="rm" data-mv="${id}">Move to bag</button> <button class="rm" data-un="${id}">Remove</button></div></div><div class="pr">${rupee(ep(p))}</div></div>`}).join('')
         : '<div class="empty">Tap ♥ on anything you love. It stays here until it leaves the shop.</div>');
-    d.innerHTML = `<div class="dh"><div class="tabs"><button class="tab ${tab==='bag'?'on':''}" data-t="bag">Bag (${bag.reduce((a,i)=>a+i.qty,0)})</button><button class="tab ${tab==='saved'?'on':''}" data-t="saved">Saved (${saved.length})</button></div><button class="dx" id="dx" aria-label="Close">×</button></div>
+    d.innerHTML = `<div class="dh"><div class="tabs"><button class="tab ${tab==='bag'?'on':''}" data-t="bag">Bag (${bag.reduce((a,i)=>a+i.qty,0)})</button><button class="tab ${tab==='saved'?'on':''}" data-t="saved">Saved (${saved.length})</button><button class="tab ${tab==='polls'?'on':''}" data-t="polls">Polls</button></div><button class="dx" id="dx" aria-label="Close">×</button></div>
       <div class="db">${items}</div>
       ${tab==='bag'&&bag.length?`<div class="df"><div class="prog">🚚 You've unlocked free shipping</div><div class="tot"><span>Subtotal</span><span>${rupee(total())}</span><span>Shipping</span><span>Free</span><b>Total</b><b>${rupee(total())}</b></div><button class="buy" id="toCo">Checkout · Pay ${rupee(total())}</button><div class="trust"><span>🔒 Razorpay secure</span><span>UPI</span><span>Cards</span><span>No COD</span></div></div>`:''}`;
+    if (tab==='polls') { const db=$('#drawer .db'); const ps=store.get('polls',[]).filter(x=>byId(x.pid));
+      db.innerHTML = ps.length ? ps.map(x=>{const p=byId(x.pid);return `<div class="li"><img src="${IMG(p)}" alt=""><div><b>${p.name}</b><small id="pv-${x.id}">Loading votes…</small><div class="qty"><a class="rm" href="${location.origin}/v/#${x.id}" target="_blank" rel="noopener">Open poll</a></div></div><div></div></div>`}).join('') : '<div class="empty">Tap 👭 Buy or Bye? on any product to ask your friends.</div>';
+      ps.forEach(x => fetch('/api/poll?id='+x.id).then(r=>r.json()).then(o=>{ const el=$('#pv-'+x.id); if(el) el.innerHTML = o.error ? 'Poll ended' : `💚 Buy <b>${o.buy}</b> · ✋ Bye <b>${o.bye}</b>`; }).catch(()=>{})); }
     $('#dx').onclick = closeAll;
     $$('#drawer [data-t]').forEach(b=>b.onclick=()=>{tab=b.dataset.t;draw();});
     $$('#drawer [data-q]').forEach(b=>b.onclick=()=>{const i=bag.find(x=>x.k===b.dataset.q);i.qty+=+b.dataset.d;if(i.qty<1)bag=bag.filter(x=>x!==i);counts();draw();});
@@ -887,7 +964,7 @@ function openBag(tab='bag', toCheckout=false){
         <label>Address<textarea name="addr" required rows="2" autocomplete="street-address" placeholder="House no., street, area, landmark"></textarea></label>
         <div class="f3"><label>Pincode<input name="pin" required inputmode="numeric" maxlength="6" pattern="[1-9][0-9]{5}" autocomplete="postal-code"></label>
           <label>City<input name="city" required autocomplete="address-level2"></label><label>State<input name="state" required autocomplete="address-level1"></label></div>
-        <div class="tot" style="border-top:1px dashed var(--line);padding-top:12px">${bag.map(i=>{const p=byId(i.id);return `<span>${p.name}${i.qty>1?' × '+i.qty:''}</span><span>${rupee(ep(p)*i.qty)}</span>`}).join('')}<span>Shipping</span><span>Free</span><b>To pay</b><b>${rupee(total())}</b></div>
+        <div class="tot" style="border-top:1px dashed var(--line);padding-top:12px">${bag.map(i=>{const p=byId(i.id);return `<span>${p.name}${i.qty>1?' × '+i.qty:''}</span><span>${rupee(bp(i)*i.qty)}</span>`}).join('')}<span>Shipping</span><span>Free</span><b>To pay</b><b>${rupee(total())}</b></div>
         ${SETTINGS.seeBeforePay?`<div class="pm">
           <label class="pmo on"><input type="radio" name="pm" value="pay" checked><div><b>Pay now</b><span>Fastest dispatch. UPI, cards & netbanking.</span></div></label>
           <label class="pmo"><input type="radio" name="pm" value="see"><div><b>See it before you pay ✨</b><span>Book free. We WhatsApp you a video of your exact piece, and you pay only if you love it.</span></div></label></div>`:''}
@@ -964,6 +1041,97 @@ function success(form, ref, cust){
     <p class="note" style="font-size:15px">Thank you, ${cust.name.split(' ')[0]}! We've received your payment. Your order ships in 3–5 days and we'll send tracking to +91 ${cust.phone} on WhatsApp.</p>
     <button type="button" class="buy" id="dn">Keep shopping</button>`;
   $('#dn').onclick = closeAll;
+}
+
+/* ================= COMPLETE THE LOOK ================= */
+function lookPicks(p){
+  const h = [...p.id].reduce((a,c)=>a*31+c.charCodeAt(0)>>>0, 7);
+  const pick = cat => { const c = live.filter(x => x.cat === cat && !x.hidden); return c.length ? c[h % c.length] : null; };
+  return [pick('Jewellery'), pick('Bags') || pick('Accessories')].filter(Boolean);
+}
+function lookBlock(p){
+  if (!SETTINGS.look?.on || !OUTFIT.includes(p.cat)) return '';
+  const picks = lookPicks(p); if (!picks.length) return '';
+  const full = ep(p) + picks.reduce((a,x)=>a+x.price,0), withLook = ep(p) + picks.reduce((a,x)=>a+lookPrice(x),0);
+  return `<div class="look"><div class="lh"><b>💍 Complete the look</b><span>−${SETTINGS.look.pct}% on these when bought with this outfit</span></div>
+    <div class="lrow">${picks.map(x=>`<button class="lit" data-lp="${x.id}"><img src="${IMG(x)}" alt=""><span>${x.name}</span><b>${rupee(lookPrice(x))} <s>${rupee(x.price)}</s></b></button>`).join('')}</div>
+    <button class="buy alt" id="lookAdd" data-ids="${picks.map(x=>x.id).join(',')}">Add the whole look · ${rupee(withLook)} <s style="opacity:.5;font-weight:600">${rupee(full)}</s></button></div>`;
+}
+
+/* ================= BUY OR BYE? ================= */
+async function askFriends(p, colour){
+  try {
+    const r = await fetch('/api/poll', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({productId:p.id, colour})});
+    const o = await r.json(); if (!r.ok) throw new Error(o.error);
+    const polls = store.get('polls', []); polls.unshift({id:o.id, pid:p.id, at:Date.now()}); store.set('polls', polls.slice(0,20));
+    const link = location.origin + '/v/#' + o.id;
+    const msg = `Should I buy this? 🤔\n${p.name}${colour?' ('+colour+')':''}\n\nVote BUY 💚 or BYE ✋ 👉 ${link}`;
+    location.href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+    toast('<i>👭</i> Poll shared');
+  } catch(e) { toast('Could not create poll'); }
+}
+
+/* ================= TRY ME ON ================= */
+function resizeImg(file, max=1024){ return new Promise((ok,no)=>{ const im=new Image(); im.onload=()=>{ const s=Math.min(1,max/Math.max(im.width,im.height)); const c=document.createElement('canvas'); c.width=Math.round(im.width*s); c.height=Math.round(im.height*s); c.getContext('2d').drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(im.src); ok(c.toDataURL('image/jpeg',.86)); }; im.onerror=no; im.src=URL.createObjectURL(file); }); }
+function tryOn(p, colour){
+  const garment = (colour && p.colourImg?.[colour]) || p.img;
+  const sh = $('#tryon'); let photo = null, result = null;
+  const draw = (state, err='') => {
+    sh.innerHTML = `<div class="tbox2">
+      <div class="tth"><b>✨ Try me on</b><button class="x2" id="tX" aria-label="Close">×</button></div>
+      ${state==='pick'?`
+        <div class="tpair"><div class="tslot">${photo?`<img src="${photo}" alt="">`:'<span>📷<br>Your photo</span>'}</div><div class="tplus">+</div><div class="tslot"><img src="/img/${garment}" alt=""></div></div>
+        <p class="tnote">Use a <b>clear, full-length, front-facing photo</b> in good light. Your photo is used once to create the preview and is <b>never saved</b> by Snazzify.</p>
+        <div class="two2"><label class="btn ghost">📸 Take photo<input type="file" accept="image/*" capture="user" hidden id="tCam"></label><label class="btn ghost">🖼️ Choose photo<input type="file" accept="image/*" hidden id="tGal"></label></div>
+        ${photo?`<button class="buy" id="tGo">✨ Show me in it</button>`:''}
+        <div class="err">${err}</div>`:''}
+      ${state==='busy'?`<div class="tbusy"><div class="spin"></div><b>Styling you…</b><span>This takes about 10–20 seconds</span></div>`:''}
+      ${state==='done'?`<div class="tres"><img src="${result}" alt="You wearing ${p.name}" id="tImg"><button class="tba" id="tBA">Hold to see before</button></div>
+        <div class="two2"><button class="buy" id="tBuy">Add to bag · ${rupee(ep(p))}</button><button class="btn ghost" id="tAgain">Try another photo</button></div>
+        <p class="tnote">Not saved anywhere. Take a screenshot if you want to keep it. ${result?'':''}</p>`:''}
+    </div>`;
+    $('#tX').onclick = () => { sh.hidden = true; result = photo = null; sh.innerHTML=''; };
+    ['tCam','tGal'].forEach(id => { const el=$('#'+id); if(el) el.onchange = async e => { const f=e.target.files[0]; if(!f) return; try { photo = await resizeImg(f); draw('pick'); } catch { draw('pick','Could not read that photo.'); } }; });
+    const go=$('#tGo'); if(go) go.onclick = async () => { draw('busy');
+      try { const r = await fetch('/api/tryon',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({productId:p.id,colour,image:photo})}); const o = await r.json();
+        if (!r.ok) throw new Error(o.error||'Something went wrong'); result = o.image; draw('done'); }
+      catch(e) { draw('pick', e.message); } };
+    const ba=$('#tBA'); if(ba){ const im=$('#tImg'); const show=v=>{ im.src = v ? photo : result; }; ['pointerdown','touchstart'].forEach(ev=>ba.addEventListener(ev,()=>show(true),{passive:true})); ['pointerup','pointerleave','touchend'].forEach(ev=>ba.addEventListener(ev,()=>show(false),{passive:true})); }
+    const tb=$('#tBuy'); if(tb) tb.onclick = () => { addToBag(p.id,'',colour); sh.hidden=true; sh.innerHTML=''; };
+    const ta=$('#tAgain'); if(ta) ta.onclick = () => { photo=null; result=null; draw('pick'); };
+  };
+  sh.hidden = false; draw('pick');
+}
+
+/* ================= SWIPE FEED ================= */
+function swipeView(){
+  const list = [...live].sort((a,b) => (deal(b)?1:0)-(deal(a)?1:0) || b.addedAt-a.addedAt);
+  return `<div class="swipe" id="swipe"><a class="sback" href="#home" aria-label="Back">←</a>
+    ${list.map(p => { const d = deal(p); return `<section class="sl" data-sp="${p.id}">
+      <img src="${IMG(p)}" alt="${p.name}" loading="lazy">
+      <div class="sgrad"></div>
+      <div class="stop">${d?`<span class="tag flash">⚡ ${d.pct}% OFF · <b class="cdn" data-to="${FLASH.endsAt}">--:--</b></span>`:isNew(p)?'<span class="tag new">Just dropped</span>':`<span class="tag">${left(p)}</span>`}</div>
+      <div class="sact">
+        <button data-ss="${p.id}" class="${saved.includes(p.id)?'on':''}"><i>${saved.includes(p.id)?'♥':'♡'}</i><span>Save</span></button>
+        ${SETTINGS.tryon?.on && OUTFIT.includes(p.cat)?`<button data-st="${p.id}"><i>✨</i><span>Try on</span></button>`:''}
+        <button data-spoll="${p.id}"><i>👭</i><span>Ask</span></button>
+        <button data-sopen="${p.id}"><i>🛍️</i><span>Buy</span></button>
+      </div>
+      <div class="sinfo"><div class="scat">${p.cat}</div><h3>${p.name}</h3>
+        <div class="spr">${rupee(ep(p))}${d?` <s>${rupee(p.price)}</s>`:''}</div>
+        <button class="buy" data-sopen="${p.id}">View & buy</button></div>
+      <div class="heartpop">♥</div>
+    </section>`; }).join('') || '<div class="empty">Nothing live right now.</div>'}</div>`;
+}
+function wireSwipe(){
+  const sw = $('#swipe'); if (!sw) return;
+  document.body.classList.add('swiping');
+  $$('#swipe [data-sopen]').forEach(b => b.onclick = () => openProduct(b.dataset.sopen));
+  $$('#swipe [data-spoll]').forEach(b => b.onclick = () => askFriends(byId(b.dataset.spoll)));
+  $$('#swipe [data-st]').forEach(b => b.onclick = () => tryOn(byId(b.dataset.st)));
+  const save = (id, el) => { toggleSave(id); const on = saved.includes(id); $$(`#swipe [data-ss="${id}"]`).forEach(x => { x.classList.toggle('on', on); x.querySelector('i').textContent = on ? '♥' : '♡'; }); };
+  $$('#swipe [data-ss]').forEach(b => b.onclick = () => save(b.dataset.ss));
+  $$('#swipe .sl').forEach(sl => { let last = 0; sl.querySelector('img').addEventListener('click', () => { const n = Date.now(); if (n - last < 320) { if (!saved.includes(sl.dataset.sp)) save(sl.dataset.sp); const h = sl.querySelector('.heartpop'); h.classList.remove('go'); void h.offsetWidth; h.classList.add('go'); } last = n; }); });
 }
 
 /* ================= APP (mobile) ================= */
