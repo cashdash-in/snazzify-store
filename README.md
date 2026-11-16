@@ -57,3 +57,8 @@ Needs these in Cloudflare Pages → Settings:
 
 Product catalogue lives in KV once you save a product in the admin page
 (first load falls back to `lib/seed-products.json`). Costs and seller details are never sent to the public shop.
+
+## Mobile app (PWA)
+The shop installs as an app ("Add to Home Screen" / Install prompt): `public/manifest.webmanifest`, `public/sw.js`,
+icons in `public/icons`. On phones it shows a bottom tab bar (Home · Shop · ⚡ Deals · Saved · Bag), story-style
+categories, swipeable product photos and a sticky buy bar. `/api` responses are never cached, so prices and deals are always live.

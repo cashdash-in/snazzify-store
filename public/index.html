@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Snazzify — Fresh drops. Every single day.</title>
 <link rel="icon" href="/snazzify-icon.svg">
-<link rel="apple-touch-icon" href="/snazzify-icon.png">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Snazzify">
 <meta name="description" content="Fresh fashion and festive finds, dropped every day. Each piece is live for 7 days only. Prepaid, free shipping across India.">
 <meta property="og:title" content="Snazzify — Fresh drops. Every single day.">
 <meta property="og:description" content="Sarees, sets, bags and festive finds. New drops daily, each live for 7 days.">
@@ -332,6 +337,58 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 .toast i{font-style:normal;color:var(--lime)}
 
 .mnav{display:none}
+.tabm,.inst,.only-m{display:none}
+@media (max-width:640px){
+  body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+  header{padding-top:env(safe-area-inset-top)}
+  #wBtn,#cBtn,#mBtn{display:none!important}
+  .only-m{display:block}
+  .tabm{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  .tabm a,.tabm button{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;font-size:10.5px;font-weight:700;color:var(--muted);padding:5px 0;-webkit-tap-highlight-color:transparent}
+  .tabm svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linejoin:round}
+  .tabm .on{color:var(--ink)}
+  .tabm .on svg{stroke-width:2.4}
+  .tabm em{position:absolute;top:0;left:55%;min-width:17px;height:17px;border-radius:9px;background:var(--pink);color:#fff;font-style:normal;font-size:10px;display:grid;place-items:center;padding:0 4px}
+  .tabm em:empty{display:none}
+  .dealbtn b{width:50px;height:50px;margin-top:-24px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-size:24px;box-shadow:0 8px 18px -6px rgba(17,16,20,.6);border:4px solid #fff}
+  .dealbtn.live b{background:var(--pink);color:#fff;animation:dealp 1.2s ease-in-out infinite}
+  .dealbtn.live span{color:var(--pink)}
+  @keyframes dealp{50%{transform:scale(1.08);box-shadow:0 0 0 8px rgba(255,77,141,.18)}}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom))}
+  .inst{display:flex;position:fixed;left:10px;right:10px;bottom:calc(80px + env(safe-area-inset-bottom));z-index:39;background:var(--ink);color:#fff;border-radius:18px;padding:10px 10px 10px 12px;gap:10px;align-items:center;box-shadow:0 14px 30px -10px rgba(0,0,0,.5)}
+  .inst[hidden]{display:none}
+  .inst img{width:40px;height:40px;border-radius:10px}
+  .inst div{flex:1;min-width:0}.inst b{display:block;font-size:14px}.inst span{font-size:11.5px;opacity:.7}
+  .ib1{background:var(--lime);color:var(--ink);font-weight:800;border-radius:999px;padding:9px 14px;font-size:13px}
+  .ib2{color:#fff;opacity:.6;font-size:22px;padding:0 4px}
+  /* app-like sections */
+  .stories{display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;padding:16px 20px 4px;margin:0 -20px}
+  .story{flex:none;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;font-size:11.5px;font-weight:700;width:68px;text-align:center}
+  .story i{width:66px;height:66px;border-radius:50%;padding:3px;background:conic-gradient(var(--pink),var(--lime),var(--lilac),var(--pink))}
+  .story i img{width:100%;height:100%;border-radius:50%;object-fit:cover;border:3px solid var(--bg);display:block}
+  .story.deal i{background:var(--ink);display:grid;place-items:center;font-style:normal;font-size:28px}
+  .hero{padding-top:8px}
+  .hero h1{font-size:48px;margin:14px 0 12px}
+  .collage{display:none}
+  .sec{padding-top:34px}
+  /* product sheet: full-screen, swipeable, sticky buy bar */
+  .modal{inset:0;top:0;bottom:0;max-height:none;height:auto;width:100vw;border-radius:0}
+  .modal .big{position:relative;touch-action:pan-y}
+  .modal .big>img{max-height:62vh;height:62vh}
+  .dots{position:absolute;left:0;right:0;bottom:84px;display:flex;justify-content:center;gap:5px;pointer-events:none}
+  .dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.6);transition:.2s}
+  .dots i.on{width:18px;background:#fff}
+  .info{padding-bottom:110px}
+  .brow{position:fixed;left:0;right:0;bottom:0;z-index:80;background:#fff;padding:10px 14px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);box-shadow:0 -8px 24px -12px rgba(0,0,0,.25)}
+  .x{top:calc(12px + env(safe-area-inset-top));position:fixed}
+  .drawer{width:100vw}
+}
+@media (min-width:641px){.dots{display:none}}
+.iossheet{position:fixed;inset:0;z-index:95;background:rgba(17,16,20,.55);display:flex;align-items:flex-end}
+.iossheet[hidden]{display:none}
+.iossheet>div{background:#fff;border-radius:24px 24px 0 0;padding:24px 22px calc(24px + env(safe-area-inset-bottom));width:100%;display:grid;gap:14px}
+.iossheet b{font-family:var(--disp);font-size:24px}
+.iossheet ol{padding-left:20px;display:grid;gap:8px;font-size:15px;line-height:1.4}
 
 @media (max-width:980px){
   .hero{grid-template-columns:1fr;padding-top:26px}
@@ -426,6 +483,16 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
 <aside class="drawer" id="drawer" aria-label="Bag"></aside>
 <div class="toast" id="toast"></div>
+<nav class="tabm" id="tabm">
+  <a href="#home" data-tv="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+  <a href="#shop" data-tv="shop"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Shop</span></a>
+  <a href="#deals" data-tv="deals" class="dealbtn"><b>⚡</b><span id="tDeal">Deals</span></a>
+  <button data-tsaved><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-8.6C1.4 8.6 3.1 5 6.6 5c2.1 0 3.4 1.2 5.4 3.2C14 6.2 15.3 5 17.4 5c3.5 0 5.2 3.6 3.8 6.4C19 15.6 12 20 12 20z"/></svg><span>Saved</span><em id="tS"></em></button>
+  <button data-tbag><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>Bag</span><em id="tB"></em></button>
+</nav>
+<div class="inst" id="inst" hidden><img src="/icons/icon-192.png" alt=""><div><b>Get the Snazzify app</b><span>Faster shopping & never miss a 30-min drop</span></div><button class="ib1" id="instGo">Install</button><button class="ib2" id="instX" aria-label="Dismiss">×</button></div>
+<div class="iossheet" id="ios" hidden><div><b>Install Snazzify on your iPhone</b><ol><li>Tap the <b>Share</b> button <span style="font-size:20px">⎋</span> at the bottom of Safari</li><li>Scroll and tap <b>Add to Home Screen</b></li><li>Tap <b>Add</b>. Snazzify is now on your home screen ✨</li></ol><button class="btn dark" id="iosX" style="width:100%">Got it</button></div></div>
+
 
 <script>
 /* ================= CONFIG ================= */
@@ -460,9 +527,9 @@ const waSvg = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColo
 
 /* ================= SHARED UI ================= */
 function toast(msg){ const t=$('#toast'); t.innerHTML=msg; t.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('on'),2200); }
-function counts(){ $('#wN').textContent = saved.length || ''; $('#cN').textContent = bag.reduce((a,i)=>a+i.qty,0) || ''; store.set('saved',saved); store.set('bag',bag); }
+function counts(){ const _b=bag.reduce((a,i)=>a+i.qty,0); const tb=$('#tB'), ts=$('#tS'); if(tb) tb.textContent=_b||''; if(ts) ts.textContent=saved.length||''; $('#wN').textContent = saved.length || ''; $('#cN').textContent = bag.reduce((a,i)=>a+i.qty,0) || ''; store.set('saved',saved); store.set('bag',bag); }
 function toggleSave(id){ saved = saved.includes(id) ? saved.filter(x=>x!==id) : [...saved,id]; counts(); $$(`.heart[data-id="${id}"],.sq[data-id="${id}"]`).forEach(h=>h.classList.toggle('on',saved.includes(id))); toast(saved.includes(id)?'<i>♥</i> Saved for later':'Removed from saved'); }
-function addToBag(id,size,colour){ const p=byId(id); size = size || p.sizes?.[0] || ''; colour = colour || p.colours?.[0] || ''; const k=id+'|'+size+'|'+colour; const ex=bag.find(i=>i.k===k); ex?ex.qty++:bag.push({k,id,size,colour,qty:1}); counts(); toast('<i>✦</i> Added to bag'); }
+function addToBag(id,size,colour){ try{navigator.vibrate&&navigator.vibrate(18)}catch(e){} const p=byId(id); size = size || p.sizes?.[0] || ''; colour = colour || p.colours?.[0] || ''; const k=id+'|'+size+'|'+colour; const ex=bag.find(i=>i.k===k); ex?ex.qty++:bag.push({k,id,size,colour,qty:1}); counts(); toast('<i>✦</i> Added to bag'); }
 
 function card(p){
   const used = Math.min(1,(Date.now()-p.addedAt)/LIFE);
@@ -502,10 +569,21 @@ function legalHub(){ return `<section class="wrap page"><h1>Policies.</h1><div c
 function nextDrop(){ const d=new Date(); const t=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),DROP_HOUR_IST-5,-30+60*0+30-30); let n=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),DROP_HOUR_IST,0)-5.5*H; while(n<=Date.now()) n+=24*H; return n; }
 
 const views = {
+deals(){
+  if (!FLASH.on) return `<section class="wrap page"><h1>⚡ Deals</h1><p>"Pick it up in 30 mins" drops are coming soon. Turn on WhatsApp alerts so you're first to know.</p>
+    <div class="ctas"><a class="btn dark" href="${wa('Hi Snazzify! ⚡ Add me to Pick it up in 30 mins alerts')}" target="_blank" rel="noopener">🔔 Alert me</a></div></section>`;
+  return flashSection().replace('class="wrap sec"','class="wrap sec" style="padding-top:20px"') + `<section class="wrap sec"><div class="sh"><h2>Leaving soon<em>.</em></h2></div>
+    <div class="grid">${live.filter(p=>!deal(p)).sort((a,b)=>a.expiresAt-b.expiresAt).slice(0,6).map(card).join('')}</div></section>`;
+},
 home(){
   const fresh = live.filter(isNew), end = live.filter(p=>ending(p)).sort((a,b)=>a.expiresAt-b.expiresAt), week = [...live].sort((a,b)=>b.addedAt-a.addedAt);
   const hi = [...fresh, ...week].filter((p,i,a)=>a.indexOf(p)===i);
   return `
+  <div class="wrap only-m"><div class="stories">
+    ${FLASH.on?`<a class="story deal" href="#deals"><i>⚡</i>${FLASH.live?'LIVE deals':'Deals'}</a>`:''}
+    <a class="story" href="#shop" data-cat="New today"><i><img src="${IMG(live[0]||{img:''})}" alt=""></i>New</a>
+    ${CATS.map(c=>{const ps=live.filter(p=>p.cat===c);return ps.length?`<a class="story" href="#shop" data-cat="${c}"><i><img src="${IMG(ps[0])}" alt=""></i>${c.replace(' & Sets','').replace(' & Festive','')}</a>`:''}).join('')}
+  </div></div>
   <section class="wrap hero">
     <div>
       <span class="pill"><i></i>${live.length?`${fresh.length} piece${fresh.length===1?'':'s'} dropped today · ${live.length} live now`:'New drops landing soon'}</span>
@@ -681,6 +759,8 @@ function route(){
   const name = views[v] ? v : 'home';
   $('#view').innerHTML = views[name]();
   $$('nav.main a').forEach(a=>a.classList.toggle('on',a.dataset.v===name));
+  $$('.tabm [data-tv]').forEach(a=>a.classList.toggle('on',a.dataset.tv===name));
+  if(name==='deals') wireCards($('#view'));
   $('#mnav').classList.remove('on');
   wireCards($('#view'));
   $$('#view [data-cat]').forEach(a=>a.onclick=()=>{shopCat=a.dataset.cat;query='';});
@@ -716,7 +796,7 @@ function openProduct(id){
   const draw = () => {
     $('#modal').innerHTML = `
       <div class="big"><img src="/img/${shown}" alt="${p.name}">
-        ${gallery.length>1?`<div class="thumbs">${gallery.map(g=>`<button class="th ${g===shown?'on':''}" data-g="${g}"><img src="/img/${g}" alt=""></button>`).join('')}</div>`:''}</div>
+        ${gallery.length>1?`<div class="dots">${gallery.map(g=>`<i class="${g===shown?'on':''}"></i>`).join('')}</div>`:''}${gallery.length>1?`<div class="thumbs">${gallery.map(g=>`<button class="th ${g===shown?'on':''}" data-g="${g}"><img src="/img/${g}" alt=""></button>`).join('')}</div>`:''}</div>
       <div class="info">
         <button class="x" id="x" aria-label="Close">×</button>
         <div class="code">${p.cat.toUpperCase()} · ${p.code}</div>
@@ -736,6 +816,11 @@ function openProduct(id){
     $('#x').onclick = closeAll;
     $$('#modal [data-s]').forEach(b=>b.onclick=()=>{size=b.dataset.s;draw();});
     $$('#modal [data-k]').forEach(b=>b.onclick=()=>{colour=b.dataset.k; if(p.colourImg?.[colour]) shown=p.colourImg[colour]; draw();});
+    { const big=$('#modal .big'); let sx=null;
+      big.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+      big.addEventListener('touchend',e=>{ if(sx==null||gallery.length<2) return; const dx=e.changedTouches[0].clientX-sx; sx=null; if(Math.abs(dx)<40) return;
+        const i=gallery.indexOf(shown); shown=gallery[(i+(dx<0?1:-1)+gallery.length)%gallery.length];
+        const c=Object.entries(p.colourImg||{}).find(([k,v])=>v===shown); if(c) colour=c[0]; draw(); },{passive:true}); }
     $$('#modal [data-g]').forEach(b=>b.onclick=()=>{shown=b.dataset.g; const c=Object.entries(p.colourImg||{}).find(([k,v])=>v===shown); if(c) colour=c[0]; draw();});
     $('#sv').onclick = () => toggleSave(p.id);
     $('#bAdd').onclick = () => { addToBag(p.id,size,colour); closeAll(); };
@@ -860,6 +945,23 @@ function success(form, ref, cust){
   $('#dn').onclick = closeAll;
 }
 
+/* ================= APP (mobile) ================= */
+$$('[data-tsaved]').forEach(b=>b.onclick=()=>openBag('saved'));
+$$('[data-tbag]').forEach(b=>b.onclick=()=>openBag('bag'));
+const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+let deferredInstall = null;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const showInst = () => { if (standalone || store.get('instNo', 0) > Date.now()) return; $('#inst').hidden = false; };
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall = e; showInst(); });
+if (isIOS && !standalone) setTimeout(showInst, 6000);
+$('#instGo').onclick = async () => {
+  if (deferredInstall) { deferredInstall.prompt(); const r = await deferredInstall.userChoice; deferredInstall = null; if (r.outcome === 'accepted') $('#inst').hidden = true; }
+  else if (isIOS) $('#ios').hidden = false;
+};
+$('#instX').onclick = () => { $('#inst').hidden = true; store.set('instNo', Date.now() + 3*864e5); };
+$('#iosX').onclick = () => { $('#ios').hidden = true; $('#inst').hidden = true; store.set('instNo', Date.now() + 14*864e5); };
+if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+
 /* ================= HEADER ================= */
 $('#cBtn').onclick = () => openBag('bag');
 $('#wBtn').onclick = () => openBag('saved');
@@ -879,6 +981,7 @@ async function loadFlash(){
   drawFlashBar();
 }
 function drawFlashBar(){
+  const db=$('.dealbtn'); if(db){ db.classList.toggle('live', !!FLASH.live); db.style.visibility = FLASH.on ? '' : 'hidden'; }
   const el = $('#fbar'); if (!el) return;
   if (!FLASH.on) { el.style.display='none'; return; }
   el.style.display='';
