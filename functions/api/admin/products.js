@@ -3,7 +3,7 @@
 // DELETE /api/admin/products?id=…      → remove
 import { json, clean, getCatalogue, saveCatalogue, sellPrice } from '../../../lib/util.js';
 
-const CATS = ['Sarees', 'Suits & Sets', 'Bags', 'Home & Festive'];
+const CATS = ['Sarees', 'Suits & Sets', 'Jewellery', 'Bags', 'Accessories', 'Home & Festive'];
 const list = (v, n = 12) => (Array.isArray(v) ? v : String(v || '').split(','))
   .map(s => clean(s, 40)).filter(Boolean).slice(0, n);
 
@@ -27,7 +27,7 @@ export async function onRequestPost({ request, env }) {
   if (!p.img) return json({ error: 'Please add a photo.' }, 400);
 
   const id = existing?.id || 'p' + Date.now().toString(36);
-  const prefix = { Sarees: 'SZ', 'Suits & Sets': 'ST', Bags: 'BG', 'Home & Festive': 'HF' }[p.cat] || 'SN';
+  const prefix = { Sarees: 'SZ', 'Suits & Sets': 'ST', Jewellery: 'JW', Bags: 'BG', Accessories: 'AC', 'Home & Festive': 'HF' }[p.cat] || 'SN';
   const item = {
     ...(existing || {}),
     id, name,
@@ -53,5 +53,7 @@ export async function onRequestDelete({ request, env }) {
   const id = new URL(request.url).searchParams.get('id');
   const cat = await getCatalogue(env);
   await saveCatalogue(env, cat.filter(x => x.id !== id));
+  const del = (await env.STORE.get('products:deleted', 'json')) || [];
+  if (id && !del.includes(id)) { del.push(id); await env.STORE.put('products:deleted', JSON.stringify(del.slice(-2000))); }
   return json({ ok: true });
 }

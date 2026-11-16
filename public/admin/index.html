@@ -382,7 +382,7 @@ function productForm(p = null){
         <div class="hint">Use the seller's best photo. It's resized automatically.</div><div class="hint" id="pst"></div></div></div></div>
       <div class="card">
         <label>Product name<input name="name" value="${esc(e.name||'')}" required placeholder="e.g. Pista Green Tissue Saree"></label>
-        <label>Category<select name="cat">${['Sarees','Suits & Sets','Bags','Home & Festive'].map(c=>`<option ${c===e.cat?'selected':''}>${c}</option>`).join('')}</select></label>
+        <label>Category<select name="cat">${['Sarees','Suits & Sets','Jewellery','Bags','Accessories','Home & Festive'].map(c=>`<option ${c===e.cat?'selected':''}>${c}</option>`).join('')}</select></label>
       </div>
       <div class="card"><h4>Seller</h4>
         <label>Seller name<input name="sellerName" list="sl" value="${esc(e.sellerName||'')}" placeholder="e.g. Fashionable Saree"><datalist id="sl">${Object.keys(sellers).map(s=>`<option value="${esc(s)}">`).join('')}</datalist></label>

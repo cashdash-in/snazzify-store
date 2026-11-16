@@ -142,7 +142,7 @@ nav.main a:hover,nav.main a.on{background:var(--ink);color:#fff}
 .add:hover{background:var(--pink)}
 
 /* categories */
-.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .ct{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:3/4;text-decoration:none;color:#fff;display:block}
 .ct img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .ct:hover img{transform:scale(1.06)}
@@ -234,7 +234,11 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 .modal{position:fixed;z-index:70;left:50%;top:50%;transform:translate(-50%,-46%) scale(.98);opacity:0;pointer-events:none;transition:.22s;width:min(980px,94vw);max-height:92vh;overflow:auto;background:var(--bg);border-radius:26px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
 .modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
 .modal .big{background:#eee;position:relative}
-.modal .big img{width:100%;height:100%;object-fit:cover;max-height:92vh;min-height:420px}
+.modal .big>img{width:100%;height:100%;object-fit:cover;max-height:92vh;min-height:420px}
+.thumbs{position:absolute;left:10px;right:10px;bottom:10px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.th{flex:none;width:52px;height:64px;border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.7);box-shadow:0 2px 8px rgba(0,0,0,.25);background:#eee}
+.th.on{border-color:var(--lime);box-shadow:0 0 0 2px var(--ink)}
+.th img{width:100%;height:100%;object-fit:cover}
 .x{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;background:#fff;font-size:22px;z-index:3;box-shadow:0 4px 12px rgba(0,0,0,.12)}
 .info{padding:30px 28px;display:flex;flex-direction:column;gap:16px}
 .info h3{font-family:var(--disp);font-weight:800;font-size:34px;letter-spacing:-.035em;line-height:1}
@@ -329,7 +333,7 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
   .bx.big h3{font-size:34px}
   .modal{grid-template-columns:1fr;top:auto;bottom:0;left:0;width:100vw;max-height:94vh;border-radius:26px 26px 0 0;transform:translateY(100%)}
   .modal.on{transform:none}
-  .modal .big img{max-height:52vh;min-height:0}
+  .modal .big>img{max-height:52vh;min-height:0;width:100%;object-fit:cover}
   .info{padding:22px 18px 26px}
   .info h3{font-size:28px}
   .f2{grid-template-columns:1fr}
@@ -419,7 +423,7 @@ const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAl
 const store = { get(k,d){ try{ return JSON.parse(localStorage.getItem('snz_'+k)) ?? d }catch(e){ return d } }, set(k,v){ try{ localStorage.setItem('snz_'+k, JSON.stringify(v)) }catch(e){} } };
 let saved = [], bag = [];
 let shopCat = 'All', shopSort = 'new', query = '';
-const CATS = ['Sarees','Suits & Sets','Bags','Home & Festive'];
+const CATS = ['Suits & Sets','Jewellery','Sarees','Bags','Accessories','Home & Festive'];
 
 /* ================= ICONS ================= */
 const heartSvg = '<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-8.6C1.4 8.6 3.1 5 6.6 5c2.1 0 3.4 1.2 5.4 3.2C14 6.2 15.3 5 17.4 5c3.5 0 5.2 3.6 3.8 6.4C19 15.6 12 20 12 20z"/></svg>';
@@ -675,9 +679,12 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') closeAll(); });
 
 function openProduct(id){
   const p = byId(id); let size = p.sizes?.[0]||'', colour = p.colours?.[0]||'';
+  const gallery = [p.img, ...(p.imgs||[]).filter(x => x !== p.img)];
+  let shown = (colour && p.colourImg?.[colour]) || p.img;
   const draw = () => {
     $('#modal').innerHTML = `
-      <div class="big"><img src="${IMG(p)}" alt="${p.name}"></div>
+      <div class="big"><img src="/img/${shown}" alt="${p.name}">
+        ${gallery.length>1?`<div class="thumbs">${gallery.map(g=>`<button class="th ${g===shown?'on':''}" data-g="${g}"><img src="/img/${g}" alt=""></button>`).join('')}</div>`:''}</div>
       <div class="info">
         <button class="x" id="x" aria-label="Close">×</button>
         <div class="code">${p.cat.toUpperCase()} · ${p.code}</div>
@@ -695,7 +702,8 @@ function openProduct(id){
       </div>`;
     $('#x').onclick = closeAll;
     $$('#modal [data-s]').forEach(b=>b.onclick=()=>{size=b.dataset.s;draw();});
-    $$('#modal [data-k]').forEach(b=>b.onclick=()=>{colour=b.dataset.k;draw();});
+    $$('#modal [data-k]').forEach(b=>b.onclick=()=>{colour=b.dataset.k; if(p.colourImg?.[colour]) shown=p.colourImg[colour]; draw();});
+    $$('#modal [data-g]').forEach(b=>b.onclick=()=>{shown=b.dataset.g; const c=Object.entries(p.colourImg||{}).find(([k,v])=>v===shown); if(c) colour=c[0]; draw();});
     $('#sv').onclick = () => toggleSave(p.id);
     $('#bAdd').onclick = () => { addToBag(p.id,size,colour); closeAll(); };
     $('#bNow').onclick = () => { addToBag(p.id,size,colour); closeAll(); setTimeout(()=>openBag('bag',true),220); };

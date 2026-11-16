@@ -196,5 +196,575 @@
   "sellerName": "",
   "sellerPhone": "",
   "sellerUpi": ""
+ },
+ {
+  "id": "lk01",
+  "code": "AC-100",
+  "name": "Kids Bow & Bunny Hair Accessory Gift Box",
+  "cat": "Accessories",
+  "price": 459,
+  "cost": 250,
+  "ship": 100,
+  "img": "lk/lk01-1.jpg",
+  "imgs": [
+   "lk/lk01-1.jpg",
+   "lk/lk01-2.jpg",
+   "lk/lk01-3.jpg",
+   "lk/lk01-4.jpg",
+   "lk/lk01-5.jpg"
+  ],
+  "details": [
+   "Imported hair accessories in a cute gift box",
+   "Bows, bunny clips, crown clips, pom-pom ties & headband",
+   "Soft pink theme, perfect birthday gift"
+  ],
+  "sellerName": "Love Kush Creation (accessories)",
+  "sellerPhone": "8005752959",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T19:28:13Z"
+ },
+ {
+  "id": "lk02",
+  "code": "ST-101",
+  "name": "Heavy Rajputi Satin Double-Colour Poshak with Half-Pure Odhna",
+  "cat": "Suits & Sets",
+  "price": 1499,
+  "cost": 1150,
+  "ship": 0,
+  "img": "lk/lk02-1.jpg",
+  "imgs": [
+   "lk/lk02-1.jpg",
+   "lk/lk02-2.jpg",
+   "lk/lk02-3.jpg",
+   "lk/lk02-4.jpg",
+   "lk/lk02-5.jpg",
+   "lk/lk02-6.jpg"
+  ],
+  "details": [
+   "Heavy satin Rajputi poshak in two-tone colours",
+   "Comes with half-pure odhna",
+   "Gota & sequin work on kurti and ghagra",
+   "Unstitched / semi-stitched as per seller"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "colours": [
+   "Pink & Purple",
+   "Mint & Rani",
+   "Yellow & Green",
+   "Sky & Rani",
+   "Sky & Teal",
+   "Yellow & Red"
+  ],
+  "colourImg": {
+   "Pink & Purple": "lk/lk02-1.jpg",
+   "Mint & Rani": "lk/lk02-2.jpg",
+   "Yellow & Green": "lk/lk02-3.jpg",
+   "Sky & Rani": "lk/lk02-4.jpg",
+   "Sky & Teal": "lk/lk02-5.jpg",
+   "Yellow & Red": "lk/lk02-6.jpg"
+  },
+  "addedAt": "2026-11-16T19:21:13Z"
+ },
+ {
+  "id": "lk03",
+  "code": "ST-102",
+  "name": "Upada Handwork Rajputi Suit with Magji",
+  "cat": "Suits & Sets",
+  "price": 1959,
+  "cost": 1400,
+  "ship": 100,
+  "img": "lk/lk03-1.jpg",
+  "imgs": [
+   "lk/lk03-1.jpg",
+   "lk/lk03-2.jpg",
+   "lk/lk03-3.jpg",
+   "lk/lk03-4.jpg",
+   "lk/lk03-5.jpg",
+   "lk/lk03-6.jpg",
+   "lk/lk03-7.jpg"
+  ],
+  "details": [
+   "Upada silk Rajputi suit with handwork",
+   "Magji (piping) finish on borders",
+   "Shaded two-tone dyeing",
+   "Odhna with gota border"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "colours": [
+   "Orange & Rani",
+   "Royal Blue",
+   "Rani Pink",
+   "Teal",
+   "Lemon",
+   "Sky Blue"
+  ],
+  "colourImg": {
+   "Orange & Rani": "lk/lk03-1.jpg",
+   "Royal Blue": "lk/lk03-2.jpg",
+   "Rani Pink": "lk/lk03-3.jpg",
+   "Teal": "lk/lk03-4.jpg",
+   "Lemon": "lk/lk03-5.jpg",
+   "Sky Blue": "lk/lk03-6.jpg"
+  },
+  "addedAt": "2026-11-16T19:14:13Z"
+ },
+ {
+  "id": "lk04",
+  "code": "ST-103",
+  "name": "Pure Cotton Rajputi Suit (Leheriya & Prints)",
+  "cat": "Suits & Sets",
+  "price": 849,
+  "cost": 550,
+  "ship": 100,
+  "img": "lk/lk04-1.jpg",
+  "imgs": [
+   "lk/lk04-1.jpg",
+   "lk/lk04-2.jpg",
+   "lk/lk04-3.jpg",
+   "lk/lk04-4.jpg",
+   "lk/lk04-5.jpg",
+   "lk/lk04-6.jpg"
+  ],
+  "details": [
+   "All-cotton Rajputi poshak, soft & breathable",
+   "Leheriya, chevron and bandhej-style prints",
+   "Everyday & festive wear",
+   "Design as per colour chosen"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "colours": [
+   "Lavender Leheriya",
+   "Maroon",
+   "Multicolour Chevron",
+   "Navy Print",
+   "Rust Leheriya"
+  ],
+  "colourImg": {
+   "Lavender Leheriya": "lk/lk04-1.jpg",
+   "Maroon": "lk/lk04-2.jpg",
+   "Multicolour Chevron": "lk/lk04-3.jpg",
+   "Navy Print": "lk/lk04-5.jpg",
+   "Rust Leheriya": "lk/lk04-6.jpg"
+  },
+  "addedAt": "2026-11-16T19:07:13Z"
+ },
+ {
+  "id": "lk05",
+  "code": "ST-104",
+  "name": "Red Special Jodhpur Handwork Velvet-Satin Suit",
+  "cat": "Suits & Sets",
+  "price": 2999,
+  "cost": 2200,
+  "ship": 100,
+  "img": "lk/lk05-1.jpg",
+  "imgs": [
+   "lk/lk05-1.jpg",
+   "lk/lk05-2.jpg",
+   "lk/lk05-3.jpg"
+  ],
+  "details": [
+   "Heavy Romas glass velvet-satin fabric",
+   "Jodhpur handwork with moti work",
+   "Odhni with four-side gota kiran work",
+   "Best quality, single suit"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "colours": [
+   "Red"
+  ],
+  "colourImg": {
+   "Red": "lk/lk05-1.jpg"
+  },
+  "addedAt": "2026-11-16T19:00:13Z"
+ },
+ {
+  "id": "lk06",
+  "code": "ST-105",
+  "name": "Upada Gota-Work Boutique Poshak",
+  "cat": "Suits & Sets",
+  "price": 3129,
+  "cost": 2400,
+  "ship": 0,
+  "img": "lk/lk06-1.jpg",
+  "imgs": [
+   "lk/lk06-1.jpg",
+   "lk/lk06-2.jpg",
+   "lk/lk06-3.jpg",
+   "lk/lk06-4.jpg",
+   "lk/lk06-5.jpg",
+   "lk/lk06-6.jpg",
+   "lk/lk06-7.jpg",
+   "lk/lk06-8.jpg"
+  ],
+  "details": [
+   "Heavy boutique Upada poshak",
+   "4-side odni border with complete gota-turi work",
+   "Pure odna available on request"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "colours": [
+   "Rani Pink",
+   "Lavender",
+   "Steel Blue",
+   "Rust",
+   "Yellow",
+   "Olive",
+   "Red",
+   "Orange"
+  ],
+  "colourImg": {
+   "Rani Pink": "lk/lk06-1.jpg",
+   "Lavender": "lk/lk06-2.jpg",
+   "Steel Blue": "lk/lk06-3.jpg",
+   "Rust": "lk/lk06-4.jpg",
+   "Yellow": "lk/lk06-5.jpg",
+   "Olive": "lk/lk06-6.jpg",
+   "Red": "lk/lk06-7.jpg",
+   "Orange": "lk/lk06-8.jpg"
+  },
+  "lead": "Made to order: ships in about 10 days.",
+  "addedAt": "2026-11-16T18:53:13Z"
+ },
+ {
+  "id": "lk07",
+  "code": "JW-106",
+  "name": "Rajputi Bridal Kundan Set with Bajuband",
+  "cat": "Jewellery",
+  "price": 2999,
+  "cost": 2200,
+  "ship": 100,
+  "img": "lk/lk07-1.jpg",
+  "imgs": [
+   "lk/lk07-1.jpg"
+  ],
+  "details": [
+   "Complete Rajputi bridal set",
+   "Kundan aad, earrings, bajuband & more",
+   "Gold-tone finish with pearl details"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T18:46:13Z"
+ },
+ {
+  "id": "lk08",
+  "code": "JW-107",
+  "name": "Rajputi Kundan Jewellery Set with Chooda",
+  "cat": "Jewellery",
+  "price": 2219,
+  "cost": 1600,
+  "ship": 100,
+  "img": "lk/lk08-1.jpg",
+  "imgs": [
+   "lk/lk08-1.jpg"
+  ],
+  "details": [
+   "Rajputi kundan set with matching chooda",
+   "Aad, earrings, rakhdi & haathphool style pieces",
+   "Red & gold bridal look"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T18:39:13Z"
+ },
+ {
+  "id": "lk09",
+  "code": "JW-108",
+  "name": "Heavy Rajputi Aad & Bajuband Bridal Set",
+  "cat": "Jewellery",
+  "price": 2929,
+  "cost": 2150,
+  "ship": 100,
+  "img": "lk/lk09-1.jpg",
+  "imgs": [
+   "lk/lk09-1.jpg"
+  ],
+  "details": [
+   "Heavy kundan aad with bajuband",
+   "Pearl-string detailing",
+   "Wedding-ready complete set"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T18:32:13Z"
+ },
+ {
+  "id": "lk10",
+  "code": "JW-109",
+  "name": "Rajputi Kundan Aad Set with Pearl Strings",
+  "cat": "Jewellery",
+  "price": 2739,
+  "cost": 2000,
+  "ship": 100,
+  "img": "lk/lk10-1.jpg",
+  "imgs": [
+   "lk/lk10-1.jpg"
+  ],
+  "details": [
+   "Kundan aad with layered pearl strings",
+   "Matching earrings & accessories",
+   "Gold-tone bridal finish"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T18:25:13Z"
+ },
+ {
+  "id": "lk11",
+  "code": "JW-110",
+  "name": "Royal Rajputi Bridal Jewellery Set",
+  "cat": "Jewellery",
+  "price": 2999,
+  "cost": 2200,
+  "ship": 100,
+  "img": "lk/lk11-1.jpg",
+  "imgs": [
+   "lk/lk11-1.jpg"
+  ],
+  "details": [
+   "Full Rajputi bridal jewellery set",
+   "Aad, earrings, bajuband & more",
+   "Kundan & pearl work"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T18:18:13Z"
+ },
+ {
+  "id": "lk12",
+  "code": "BG-111",
+  "name": "Fluffy Faux-Fur Tote Bag",
+  "cat": "Bags",
+  "price": 819,
+  "cost": 530,
+  "ship": 100,
+  "img": "lk/lk12-1.jpg",
+  "imgs": [
+   "lk/lk12-1.jpg",
+   "lk/lk12-2.jpg",
+   "lk/lk12-3.jpg",
+   "lk/lk12-4.jpg",
+   "lk/lk12-5.jpg"
+  ],
+  "details": [
+   "Soft plush faux-fur tote, winter must-have",
+   "Pom-pom handles, roomy enough for a tablet",
+   "Y2K style shoulder bag",
+   "Size as shown in photo"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "colours": [
+   "Black",
+   "Beige",
+   "Pink",
+   "Grey"
+  ],
+  "colourImg": {
+   "Black": "lk/lk12-1.jpg",
+   "Beige": "lk/lk12-3.jpg",
+   "Pink": "lk/lk12-4.jpg",
+   "Grey": "lk/lk12-5.jpg"
+  },
+  "addedAt": "2026-11-16T18:11:13Z"
+ },
+ {
+  "id": "lk13",
+  "code": "BG-112",
+  "name": "Premium Quilted Ladies Sling Bag",
+  "cat": "Bags",
+  "price": 949,
+  "cost": 630,
+  "ship": 100,
+  "img": "lk/lk13-1.jpg",
+  "imgs": [
+   "lk/lk13-1.jpg",
+   "lk/lk13-2.jpg"
+  ],
+  "details": [
+   "Premium quilted finish",
+   "Size approx. 8 × 6 inches",
+   "Top handle + detachable gold chain strap"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "colours": [
+   "White"
+  ],
+  "colourImg": {
+   "White": "lk/lk13-1.jpg"
+  },
+  "addedAt": "2026-11-16T18:04:13Z"
+ },
+ {
+  "id": "lk14",
+  "code": "JW-113",
+  "name": "Micro-Polished Double Peacock Aad with Earrings",
+  "cat": "Jewellery",
+  "price": 4489,
+  "cost": 3350,
+  "ship": 100,
+  "img": "lk/lk14-1.jpg",
+  "imgs": [
+   "lk/lk14-1.jpg"
+  ],
+  "details": [
+   "Micro-polished Rajputi aad with matching earrings",
+   "Double peacock design",
+   "Premium heavy piece"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T17:57:13Z"
+ },
+ {
+  "id": "lk15",
+  "code": "JW-114",
+  "name": "Very Heavy Jadau Balore Aad",
+  "cat": "Jewellery",
+  "price": 4039,
+  "cost": 3000,
+  "ship": 100,
+  "img": "lk/lk15-1.jpg",
+  "imgs": [
+   "lk/lk15-1.jpg"
+  ],
+  "details": [
+   "Very heavy jadau balore-style aad",
+   "Matching earrings",
+   "Statement bridal piece"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T17:50:13Z"
+ },
+ {
+  "id": "lk16",
+  "code": "JW-115",
+  "name": "Rajputi Kundan Bridal Set (Pearl & Gold)",
+  "cat": "Jewellery",
+  "price": 1559,
+  "cost": 1199,
+  "ship": 0,
+  "img": "lk/lk16-1.jpg",
+  "imgs": [
+   "lk/lk16-1.jpg"
+  ],
+  "details": [
+   "Complete Rajputi kundan bridal set",
+   "Aad, earrings, bajuband, haathphool & more",
+   "Gold-tone finish with stone work"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T17:43:13Z"
+ },
+ {
+  "id": "lk17",
+  "code": "JW-116",
+  "name": "Rajputi Kundan Bridal Set (Green Stone)",
+  "cat": "Jewellery",
+  "price": 2079,
+  "cost": 1499,
+  "ship": 100,
+  "img": "lk/lk17-1.jpg",
+  "imgs": [
+   "lk/lk17-1.jpg"
+  ],
+  "details": [
+   "Complete Rajputi kundan bridal set",
+   "Aad, earrings, bajuband, haathphool & more",
+   "Gold-tone finish with stone work"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T17:36:13Z"
+ },
+ {
+  "id": "lk18",
+  "code": "JW-117",
+  "name": "Rajputi Kundan Bridal Set (Maroon Stone)",
+  "cat": "Jewellery",
+  "price": 1889,
+  "cost": 1350,
+  "ship": 100,
+  "img": "lk/lk18-1.jpg",
+  "imgs": [
+   "lk/lk18-1.jpg"
+  ],
+  "details": [
+   "Complete Rajputi kundan bridal set",
+   "Aad, earrings, bajuband, haathphool & more",
+   "Gold-tone finish with stone work"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T17:29:13Z"
+ },
+ {
+  "id": "lk19",
+  "code": "JW-118",
+  "name": "Rajputi Kundan Bridal Set (Classic)",
+  "cat": "Jewellery",
+  "price": 1759,
+  "cost": 1250,
+  "ship": 100,
+  "img": "lk/lk19-1.jpg",
+  "imgs": [
+   "lk/lk19-1.jpg"
+  ],
+  "details": [
+   "Complete Rajputi kundan bridal set",
+   "Aad, earrings, bajuband, haathphool & more",
+   "Gold-tone finish with stone work"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T17:22:13Z"
+ },
+ {
+  "id": "lk20",
+  "code": "JW-119",
+  "name": "Gold-Tone Kundan Pendant Set with Earrings",
+  "cat": "Jewellery",
+  "price": 1759,
+  "cost": 1250,
+  "ship": 100,
+  "img": "lk/lk20-1.jpg",
+  "imgs": [
+   "lk/lk20-1.jpg"
+  ],
+  "details": [
+   "Gold-tone kundan pendant on chain",
+   "Matching stud earrings",
+   "Elegant daily & festive wear"
+  ],
+  "sellerName": "Love Kush Creation",
+  "sellerPhone": "9414373499",
+  "sellerUpi": "",
+  "addedAt": "2026-11-16T17:15:13Z"
  }
 ]
