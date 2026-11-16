@@ -292,6 +292,11 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 .f3{display:grid;grid-template-columns:.8fr 1fr 1fr;gap:10px}
 .err{color:var(--red);font-size:13px;font-weight:600}
 .sum{font-size:15px}
+.pm{display:grid;gap:8px}
+.pmo{display:flex!important;flex-direction:row!important;gap:10px!important;align-items:flex-start;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:12px;cursor:pointer;text-transform:none!important;letter-spacing:0!important;color:var(--ink)!important}
+.pmo.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.pmo input{width:auto!important;margin-top:3px;accent-color:var(--ink)}
+.pmo b{display:block;font-size:15px}.pmo span{font-size:13px;color:var(--muted);font-weight:500;line-height:1.4}
 .demo{background:#fff4c2;border-radius:14px;padding:14px;font-size:14px;line-height:1.55}
 
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;font-weight:700;padding:13px 20px;border-radius:999px;z-index:90;transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;gap:10px;align-items:center;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
@@ -399,7 +404,7 @@ const WHATSAPP_NUMBER = '';           // your number, digits only, e.g. '9198765
 const LIFE_DAYS = 7;                  // each product stays live this long
 const DROP_HOUR_IST = 11;             // daily drop time (11:00 AM IST)
 const IMG = p => '/img/' + p.img;     // product photos live in /img
-let PRODUCTS = [];                     // loaded from /products.json
+let PRODUCTS = [], SETTINGS = { seeBeforePay: false };                     // loaded from /products.json
 
 /* ================= STATE ================= */
 const H = 3600e3, LIFE = LIFE_DAYS*24*H, NOW = Date.now();
@@ -685,6 +690,7 @@ function openProduct(id){
         <div class="brow"><button class="buy" id="bNow">Buy now · ${rupee(p.price)}</button><button class="sq ${saved.includes(p.id)?'on':''}" data-id="${p.id}" id="sv" aria-label="Save">${heartSvg}</button></div>
         <button class="buy alt" id="bAdd">Add to bag</button>
         <div class="trust"><span>🔒 Razorpay secure</span><span>UPI</span><span>Cards</span><span>Netbanking</span><span>No COD</span></div>
+        ${SETTINGS.seeBeforePay?'<div class="note" style="color:var(--ink);font-weight:600">✨ Not sure? Choose <b>See it before you pay</b> at checkout: we send you a video first.</div>':''}
         <div class="note">${p.lead||'Ships in 3–5 days after payment. Tracking on WhatsApp.'} <a href="${wa(`Hi! I have a question about ${p.name} (${p.code})`)}" target="_blank" rel="noopener">Questions? Ask us</a></div>
       </div>`;
     $('#x').onclick = closeAll;
@@ -735,16 +741,26 @@ function openBag(tab='bag', toCheckout=false){
         <div class="f3"><label>Pincode<input name="pin" required inputmode="numeric" maxlength="6" pattern="[1-9][0-9]{5}" autocomplete="postal-code"></label>
           <label>City<input name="city" required autocomplete="address-level2"></label><label>State<input name="state" required autocomplete="address-level1"></label></div>
         <div class="tot" style="border-top:1px dashed var(--line);padding-top:12px">${bag.map(i=>{const p=byId(i.id);return `<span>${p.name}${i.qty>1?' × '+i.qty:''}</span><span>${rupee(p.price*i.qty)}</span>`}).join('')}<span>Shipping</span><span>Free</span><b>To pay</b><b>${rupee(total())}</b></div>
+        ${SETTINGS.seeBeforePay?`<div class="pm">
+          <label class="pmo on"><input type="radio" name="pm" value="pay" checked><div><b>Pay now</b><span>Fastest dispatch. UPI, cards & netbanking.</span></div></label>
+          <label class="pmo"><input type="radio" name="pm" value="see"><div><b>See it before you pay ✨</b><span>Book free. We WhatsApp you a video of your exact piece, and you pay only if you love it.</span></div></label></div>`:''}
         <div class="err" id="err"></div>
-        <button class="buy" type="submit">🔒 Pay ${rupee(total())} securely</button>
-        <div class="trust"><span>UPI</span><span>GPay</span><span>PhonePe</span><span>Paytm</span><span>Cards</span><span>Netbanking</span></div>
-        <div class="note">100% prepaid, no Cash on Delivery. Your order is confirmed only after payment succeeds.</div>
+        <button class="buy" type="submit" id="coBtn">🔒 Pay ${rupee(total())} securely</button>
+        <div class="trust" id="coTrust"><span>UPI</span><span>GPay</span><span>PhonePe</span><span>Paytm</span><span>Cards</span><span>Netbanking</span></div>
+        <div class="note" id="coNote">100% prepaid, no Cash on Delivery. Your order is confirmed only after payment succeeds.</div>
       </form>`;
     $('#dx').onclick = closeAll; $('#bk').onclick = draw;
     $('#co').onsubmit = e => { e.preventDefault(); const f=e.target; const bad=[...f.elements].filter(el=>el.willValidate&&!el.checkValidity());
       f.querySelectorAll('.bad').forEach(el=>el.classList.remove('bad')); bad.forEach(el=>el.classList.add('bad'));
       if(bad.length){ $('#err').textContent='Please check the highlighted fields.'; return; }
-      const cust = Object.fromEntries(new FormData(f)); pay(f, cust); };
+      const cust = Object.fromEntries(new FormData(f)); (cust.pm === 'see' ? book : pay)(f, cust); };
+    $$('#co [name=pm]').forEach(r => r.onchange = () => {
+      const see = $('#co [name=pm]:checked').value === 'see';
+      $$('#co .pmo').forEach(l => l.classList.toggle('on', l.querySelector('input').checked));
+      $('#coBtn').textContent = see ? '✨ Book now, pay later' : '🔒 Pay ' + rupee(total()) + ' securely';
+      $('#coTrust').style.display = see ? 'none' : '';
+      $('#coNote').textContent = see ? "No payment now. We'll WhatsApp you a short video of your piece within a few hours, with a secure link to pay if you love it." : '100% prepaid, no Cash on Delivery. Your order is confirmed only after payment succeeds.';
+    });
   };
   toCheckout && bag.length ? checkout() : draw();
   openOverlay(d);
@@ -780,6 +796,21 @@ async function pay(form, cust){
     btn.disabled = false; btn.textContent = 'Try again'; err.textContent = e.message || 'Something went wrong. Please try again.';
   }
 }
+async function book(form, cust){
+  const btn = form.querySelector('button[type=submit]'); const err = $('#err');
+  btn.disabled = true; btn.textContent = 'Booking…'; err.textContent = '';
+  try {
+    const r = await fetch('/api/book', { method:'POST', headers:{'content-type':'application/json'},
+      body: JSON.stringify({ items: bag.map(i=>({id:i.id,size:i.size,colour:i.colour,qty:i.qty})), customer: cust }) });
+    const o = await r.json(); if (!r.ok) throw new Error(o.error || 'Could not book. Please try again.');
+    bag = []; counts();
+    form.innerHTML = `<div style="font-size:54px">📹</div><h3 class="disp" style="font-size:34px;font-weight:800;line-height:1">Booked!</h3>
+      <div class="sum" style="display:block;background:var(--lime);border-radius:14px;padding:14px">Booking ID <b>${o.ref}</b></div>
+      <p class="note" style="font-size:15px">Thanks, ${cust.name.split(' ')[0]}! We'll WhatsApp a short video of your exact piece to +91 ${cust.phone}, usually within a few hours, with a secure link to pay. No payment needed until you've seen it.</p>
+      <button type="button" class="buy" id="dn">Keep shopping</button>`;
+    $('#dn').onclick = closeAll;
+  } catch(e) { btn.disabled = false; btn.textContent = '✨ Book now, pay later'; err.textContent = e.message; }
+}
 function success(form, ref, cust){
   form.innerHTML = `<div style="font-size:54px">🎉</div><h3 class="disp" style="font-size:34px;font-weight:800;line-height:1">Order confirmed!</h3>
     <div class="sum" style="display:block;background:var(--lime);border-radius:14px;padding:14px">Your order ID is <b>${ref}</b></div>
@@ -799,6 +830,7 @@ $$('footer [data-faq]').forEach(a=>a.onclick=e=>{ if(location.hash==='#home'||!l
 $$('.waL').forEach(a=>a.href=wa('Hi Snazzify!'));
 (async function init(){
   try { PRODUCTS = await fetch('/api/products', {cache:'no-store'}).then(r => r.json()); } catch(e) { PRODUCTS = []; }
+  try { SETTINGS = await fetch('/api/settings', {cache:'no-store'}).then(r => r.json()); } catch(e) {}
   PRODUCTS.forEach(p => { p.addedAt = Date.parse(p.addedAt); p.expiresAt = p.addedAt + LIFE; });
   const showHidden = /[?&]test\b/.test(location.search);
   live = PRODUCTS.filter(p => p.expiresAt > NOW && p.addedAt <= NOW && (!p.hidden || showHidden));
