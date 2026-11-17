@@ -74,3 +74,25 @@ categories, swipeable product photos and a sticky buy bar. `/api` responses are 
 - **🎬 Swipe feed** (`#swipe`): Reels-style full-screen product feed, double-tap to save.
 - **👭 Buy or Bye?** (`/api/poll`, page `/v/#id`): WhatsApp poll for friends, one vote per device, results in Saved → Polls.
 - **💍 Complete the look**: jewellery/bag/accessory bought with a suit or saree gets the look % off (admin), enforced at checkout, never stacked on a flash deal.
+
+
+## Growth features (November 2026)
+
+All of these are switched on and managed from **Admin → Grow** and **Admin → Reviews**. Busy data (votes, guesses, reviews, squads, Price Drop holds) lives in the free Cloudflare D1 database `snazzify-db`, bound to the Pages project as `DB`. Tables are created automatically on first use.
+
+| Feature | Where | Notes |
+|---|---|---|
+| Google-ready product pages | `/p/<name>-<id>` (`functions/p/[slug].js`) | Real title, description, link preview and Product schema; opens the product in the app |
+| Festival pages | `/festival/teej`, `gangaur`, `karva-chauth`, `wedding-season` | SEO landing pages (`lib/festivals.js`) |
+| Sitemap / robots | `/sitemap.xml`, `/robots.txt` | Submit the sitemap in Google Search Console |
+| Google Shopping feed | `/feed.xml` | Add as a scheduled feed in Google Merchant Center (free listings) |
+| Order tracking | `#track` + `/api/track` | Customer enters order ID + phone; recent orders remembered on the device |
+| Order confirmation | Admin → order → "Send order confirmation" | WhatsApp message with the tracking link |
+| Unpaid-checkout reminders | Admin → Today / Orders → Unpaid | WhatsApp message with a 1-tap pay link (`/pay/#REF.token`, valid 3 days) |
+| Reviews with photos | Admin → order (shipped/delivered) → "Ask for a review" → `/review/` page | Approve in Admin → Reviews; shown on home + product |
+| Size guide | Product → "📏 Size guide" (Suits & Sets) | Edit the table in `sizeGuide()` |
+| 🔥 Price Drop Live | Admin → Grow | One piece; price drops every minute; 10-min price lock while paying; floor ≥ seller price + shipping |
+| 🎁 Mystery Box | Products → category "Mystery Box" | Shown with a 🎁 tag |
+| 🎯 Guess the Price | Admin → Grow | Product hidden from the shop until the reveal hour; closest guess wins |
+| 👯 Drop Squad | Admin → Grow | After paying, customers share a squad code; when the squad fills, refund the cashback in Razorpay and tap "Mark cashback paid" |
+| 🏷️ Coupons | Admin → Grow | % or ₹ off, minimum bag, expiry; never on flash/look prices, never below seller cost |

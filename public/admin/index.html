@@ -66,7 +66,10 @@ h2{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:-.02em;
 .btn.wa{background:#1f7a4d}
 .btn.sm{width:auto;padding:9px 13px;font-size:13.5px;border-radius:11px}
 .btn[disabled]{opacity:.5}
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 8px calc(8px + env(safe-area-inset-bottom))}
+.rvw{display:grid;grid-template-columns:72px 1fr;gap:12px}.rvw img{width:72px;height:72px;object-fit:cover;border-radius:12px}.rvw .st{color:#f5a400}
+.cp{display:grid;grid-template-columns:1.3fr .7fr .7fr .8fr 1fr auto;gap:6px;align-items:end}.cp input{min-width:0}@media(max-width:640px){.cp{grid-template-columns:1fr 1fr 1fr}}
+.big{font-family:var(--disp);font-size:40px;font-weight:800;letter-spacing:-.04em}
 .tabbar button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:800;padding:6px;border-radius:12px;color:var(--muted)}
 .tabbar button.on{color:var(--ink);background:var(--bg)}
 .tabbar i{font-style:normal;font-size:20px;line-height:1}
@@ -148,11 +151,13 @@ async function api(path, opts = {}) {
 }
 
 /* ---------------- state ---------------- */
-let ORDERS = [], SUMMARY = null, PRODUCTS = [], SETTINGS = {}, tab = 'today', oFilter = 'action', pFilter = 'live', q = '';
+let ORDERS = [], SUMMARY = null, PRODUCTS = [], SETTINGS = {}, tab = 'today', oFilter = 'action', pFilter = 'live', q = '', PENDING = 0;
+const SITE = 'https://www.snazzify.co.in';
 
 async function load(){
   const [o, p, s] = await Promise.all([api('orders'), api('products'), api('settings')]);
   ORDERS = o.orders; SUMMARY = o.summary; PRODUCTS = p; SETTINGS = s;
+  try { const r = await api('reviews'); PENDING = r.reviews.filter(x => x.status === 'pending').length; } catch {}
 }
 
 /* ---------------- login ---------------- */
@@ -178,10 +183,12 @@ function shell(){
       <button data-t="today" class="${tab==='today'?'on':''}"><i>📊</i>Today</button>
       <button data-t="orders" class="${tab==='orders'?'on':''}"><i class="dot">📦${action?`<em>${action}</em>`:''}</i>Orders</button>
       <button data-t="products" class="${tab==='products'?'on':''}"><i>👗</i>Products</button>
+      <button data-t="grow" class="${tab==='grow'?'on':''}"><i>🚀</i>Grow</button>
+      <button data-t="reviews" class="${tab==='reviews'?'on':''}"><i class="dot">⭐${PENDING?`<em>${PENDING}</em>`:''}</i>Reviews</button>
     </nav>`;
   $('#lo').onclick = async () => { await api('login', {method:'DELETE'}).catch(()=>{}); showLogin(); };
   $$('.tabbar button').forEach(b => b.onclick = () => { tab = b.dataset.t; shell(); window.scrollTo(0,0); });
-  ({today, orders, products})[tab]();
+  ({today, orders, products, grow, reviews})[tab]();
 }
 
 /* ---------------- TODAY ---------------- */
@@ -204,6 +211,8 @@ function today(){
       <button class="act" data-f="seller_paid"><span>Waiting for<br>tracking</span><b>${cnt('seller_paid')}</b></button>
       <button class="act" data-f="shipped"><span>On the way<br>to customer</span><b>${cnt('shipped')}</b></button>
     </div>
+    ${(()=>{ const un = ORDERS.filter(o => o.status==='created' && o.payToken && !o.auctionId && Date.now()-Date.parse(o.createdAt) > 30*6e4 && Date.now()-Date.parse(o.createdAt) < 3*864e5 && !o.reminded).length;
+      return un ? `<div class="acts" style="margin-top:10px"><button class="act hot" data-f="created"><span>Unpaid checkouts<br>send a reminder</span><b>${un}</b></button></div>` : ''; })()}
     ${SETTINGS.seeBeforePay||cnt('booked')||cnt('video_sent')?`<div class="acts" style="margin-top:10px">
       <button class="act ${cnt('booked')?'hot':''}" data-f="see"><span>Bookings<br>send video</span><b>${cnt('booked')}</b></button>
       <button class="act" data-f="see"><span>Video sent<br>awaiting pay</span><b>${cnt('video_sent')}</b></button></div>`:''}
@@ -311,7 +320,7 @@ async function setStatus(o, status, extra = {}){
   const r = await api('orders', {method:'POST', body: JSON.stringify({ref:o.ref, status, ...extra})});
   Object.assign(o, r.order); toast(status ? 'Marked: ' + STATUS[status] : 'Saved'); openOrder(o.ref); refreshBehind();
 }
-function refreshBehind(){ const st = window.scrollY; ({today, orders, products})[tab](); window.scrollTo(0, st); }
+function refreshBehind(){ const st = window.scrollY; ({today, orders, products, grow, reviews})[tab](); window.scrollTo(0, st); }
 
 function openOrder(ref){
   const o = ORDERS.find(x => x.ref === ref); if (!o) return;
@@ -354,12 +363,19 @@ function openOrder(ref){
   openSheet(`<div class="sh"><h3>${o.ref}</h3><span class="pill st-${o.status}" style="margin:0">${STATUS[o.status]}</span><button class="x" id="x">×</button></div>
     <div class="sb">
       ${idx>=0?`<div><div class="steps">${FLOW.map((f,i)=>`<div class="${i<=idx?'on':''}"></div>`).join('')}</div><div class="steplbl" style="margin-top:6px"><span>Paid</span><span>Sent</span><span>Seller paid</span><span>Shipped</span><span>Delivered</span></div></div>`:''}
-      ${o.status==='created'?'<div class="card" style="background:#fff4c2">This customer started checkout but hasn\'t paid. No action needed.</div>':''}
+      ${o.status==='created'?(()=>{ const link = `${SITE}/pay/#${o.ref}.${o.payToken}`, fresh = Date.now()-Date.parse(o.createdAt) < 3*864e5;
+        const m = `Hi ${c.name.split(' ')[0]}! 👋 You left something lovely in your Snazzify bag 🛍️\n\n${o.items.map(i=>'• '+i.name).join('\n')}\n\nIt's still saved at the same price (${rupee(o.amount)}), but pieces are live for 7 days only. Finish here in 1 tap:\n${link}\n\nNeed help with payment? Just reply here 💛`;
+        return `<div class="card" style="background:#fff4c2"><h4>Unpaid checkout</h4><div class="hint" style="color:var(--ink)">This customer started checkout but didn't pay. A friendly reminder brings many of them back.${o.reminded?'<br><b>Reminder sent '+ago(o.reminded)+'.</b>':''}</div>
+          ${o.payToken&&!o.auctionId&&fresh?`<a class="btn wa" href="https://wa.me/91${c.phone}?text=${encodeURIComponent(m)}" target="_blank" rel="noopener" data-remind>💬 Send payment reminder</a>`:`<div class="hint">${o.auctionId?'Price Drop Live holds can\'t be paid later.':'The pay link has expired (3 days).'}</div>`}</div>`; })():''}
+      ${o.coupon||o.squad?`<div class="card"><h4>Codes</h4><div>${o.coupon?`🏷️ Coupon <b>${esc(o.coupon.code)}</b> · −${rupee(o.coupon.off)}`:''}${o.squad?`👯 Joined squad <b>${esc(o.squad)}</b>`:''}</div></div>`:''}
+      ${o.auctionId?'<div class="card"><h4>🔥 Price Drop Live order</h4></div>':''}
+      ${['paid','sent','seller_paid'].includes(o.status)?`<a class="btn ghost" href="https://wa.me/91${c.phone}?text=${encodeURIComponent(`Hi ${c.name.split(' ')[0]}! 🎉 Thank you for shopping at Snazzify. Your order ${o.ref} (${rupee(o.amount)}) is confirmed and will ship in 3–5 days.\n\nTrack it any time: ${SITE}/#track?ref=${o.ref}&phone=${c.phone}\n\nQuestions? Just reply here 💛`)}" target="_blank" rel="noopener">✅ Send order confirmation to customer</a>`:''}
+      ${o.reviewToken?`<a class="btn ghost" href="https://wa.me/91${c.phone}?text=${encodeURIComponent(`Hi ${c.name.split(' ')[0]}! 💛 Hope you love your Snazzify order. Could you share a quick review (and a photo wearing it, if you like)? It takes 30 seconds and really helps us:\n${SITE}/review/#${o.ref}.${o.reviewToken}\n\nThank you! ✨`)}" target="_blank" rel="noopener">⭐ Ask for a review (with photo)</a>`:''}
       ${seeCard}
       <div class="card"><h4>Customer · ${rupee(o.amount)} ${o.paidAt?'paid '+fmt(o.paidAt):'not paid yet'}</h4>
         <div class="addr"><b>${esc(c.name)}</b><br>${esc(c.addr)}<br>${esc(c.city)}, ${esc(c.state)} – ${esc(c.pin)}<br>+91 ${esc(c.phone)}${c.email&&c.email!=='-'?'<br>'+esc(c.email):''}</div>
         <div class="two"><button class="btn ghost sm" data-copy="${esc(fullAddr)}">📋 Copy address</button><a class="btn ghost sm" href="https://wa.me/91${c.phone}" target="_blank" rel="noopener">💬 WhatsApp customer</a></div></div>
-      ${['booked','video_sent'].includes(o.status)?'':sellerBlocks}
+      ${['created','booked','video_sent'].includes(o.status)?'':sellerBlocks}
       ${['seller_paid','shipped','delivered'].includes(o.status)?`<div class="card"><h4>Tracking</h4>
         <div class="two"><input id="cr" placeholder="Courier (e.g. Delhivery)" value="${esc(o.courier||'')}"><input id="tr" placeholder="Tracking number" value="${esc(o.tracking||'')}"></div>
         ${o.tracking?`<a class="btn wa" href="https://wa.me/91${c.phone}?text=${encodeURIComponent(trackMsg)}" target="_blank" rel="noopener">📲 Send tracking to customer</a>`:''}</div>`:''}
@@ -372,6 +388,7 @@ function openOrder(ref){
   $('#x').onclick = closeSheet;
   $$('#sheet [data-copy]').forEach(b => b.onclick = async () => { try { await navigator.clipboard.writeText(b.dataset.copy); toast('Copied'); } catch { toast('Copy failed'); } });
   $$('#sheet [data-paylink]').forEach(x => x.addEventListener('click', () => { if (o.status==='booked') setTimeout(()=>setStatus(o,'video_sent',{note:'Video and pay link sent on WhatsApp'}),400); }));
+  $$('#sheet [data-remind]').forEach(a => a.addEventListener('click', () => setTimeout(()=>setStatus(o, null, {note:'Payment reminder sent on WhatsApp', reminded:true}),400)));
   $$('#sheet [data-sent]').forEach(a => a.addEventListener('click', () => { if (o.status==='paid') setTimeout(()=>setStatus(o,'sent',{note:'Order sent to seller on WhatsApp'}),400); }));
   $$('#sheet [data-st]').forEach(b => b.onclick = () => { if (confirm('Mark this order as ' + STATUS[b.dataset.st] + '?')) setStatus(o, b.dataset.st); });
   const nx = $('#nx'); if (nx) nx.onclick = () => {
@@ -421,7 +438,7 @@ function productForm(p = null){
         <div class="hint">Use the seller's best photo. It's resized automatically.</div><div class="hint" id="pst"></div></div></div></div>
       <div class="card">
         <label>Product name<input name="name" value="${esc(e.name||'')}" required placeholder="e.g. Pista Green Tissue Saree"></label>
-        <label>Category<select name="cat">${['Sarees','Suits & Sets','Jewellery','Bags','Accessories','Home & Festive'].map(c=>`<option ${c===e.cat?'selected':''}>${c}</option>`).join('')}</select></label>
+        <label>Category<select name="cat">${['Sarees','Suits & Sets','Jewellery','Bags','Accessories','Home & Festive','Mystery Box'].map(c=>`<option ${c===e.cat?'selected':''}>${c}</option>`).join('')}</select></label>
       </div>
       <div class="card"><h4>Seller</h4>
         <label>Seller name<input name="sellerName" list="sl" value="${esc(e.sellerName||'')}" placeholder="e.g. Fashionable Saree"><datalist id="sl">${Object.keys(sellers).map(s=>`<option value="${esc(s)}">`).join('')}</datalist></label>
@@ -472,12 +489,104 @@ function productForm(p = null){
   }
 }
 
+
+/* ---------------- GROW ---------------- */
+const dtLocal = t => { const d = new Date(t - new Date().getTimezoneOffset()*6e4); return d.toISOString().slice(0,16); };
+const istToday = () => new Date(Date.now() + 5.5*36e5).toISOString().slice(0,10);
+async function grow(){
+  const liveP = PRODUCTS.filter(p => !p.hidden && Date.parse(p.addedAt) <= Date.now() && Date.parse(p.addedAt) + LIFE > Date.now());
+  const opt = (sel) => liveP.map(p => `<option value="${p.id}" ${p.id===sel?'selected':''}>${esc(p.name)} · ${rupee(p.price)}</option>`).join('');
+  const allOpt = (sel) => PRODUCTS.filter(p=>!p.hidden).map(p => `<option value="${p.id}" ${p.id===sel?'selected':''}>${esc(p.name)} · ${rupee(p.price)}</option>`).join('');
+  const g = SETTINGS.guess || {}, sq = SETTINGS.squad || {};
+  $('#view').innerHTML = `<h1>Grow 🚀</h1><p class="muted" style="margin-top:-6px">Games and offers that bring people back and get them sharing.</p>
+    <h2>🔥 Price Drop Live</h2><div class="card" id="auc"><div class="hint">Loading…</div></div>
+    <h2>🎯 Guess the Price</h2>
+    <div class="card"><div class="sw"><div><b style="font-size:16px">Daily guessing game</b><div class="hint" style="margin-top:4px">Pick a product (ideally one you'll launch tomorrow). Its price is hidden in the shop until the reveal. Closest guess wins the prize: send them a coupon code on WhatsApp.</div></div>
+      <button class="tg ${g.on?'on':''}" id="gOn" aria-label="Turn Guess the Price on or off"></button></div>
+      <form id="gF" style="display:grid;gap:8px"><label>Product<select name="pid"><option value="">Choose…</option>${allOpt(g.pid)}</select></label>
+        <div class="three"><label>Game day<input name="day" type="date" value="${g.day||istToday()}"></label><label>Reveal hour (IST)<input name="revealHour" type="number" min="1" max="23" value="${g.revealHour??21}"></label><label>Prize<input name="prize" value="${esc(g.prize||'')}"></label></div>
+        <button class="btn ghost sm">Save game</button></form><div id="gRes" class="hint"></div></div>
+    <h2>👯 Drop Squad</h2>
+    <div class="card"><div class="sw"><div><b style="font-size:16px">Squad cashback</b><div class="hint" style="margin-top:4px">After paying, customers get a squad code to share. When enough friends order with it in time, everyone gets cashback. You refund the cashback from Razorpay (partial refund), then tap "Cashback paid".</div></div>
+      <button class="tg ${sq.on?'on':''}" id="sqOn" aria-label="Turn Drop Squad on or off"></button></div>
+      <form id="sqF" class="three"><label>People (incl. starter)<input name="size" type="number" min="2" max="10" value="${sq.size??3}"></label><label>Cashback ₹ each<input name="cashback" type="number" min="10" value="${sq.cashback??100}"></label><label>Hours to fill<input name="hours" type="number" min="1" max="168" value="${sq.hours??48}"></label>
+        <button class="btn ghost sm" style="grid-column:1/-1">Save squad settings</button></form>
+      <div id="sqList"></div></div>
+    <h2>🏷️ Coupon codes</h2>
+    <div class="card"><div class="hint">Customers type these at checkout. Coupons never apply to flash or look prices, and never take the price below your seller cost.</div>
+      <form id="cpF" style="display:grid;gap:10px"><div id="cpRows" style="display:grid;gap:8px"></div>
+        <div class="two"><button type="button" class="btn ghost sm" id="cpAdd">+ Add coupon</button><button class="btn sm">Save coupons</button></div></form></div>`;
+  const sv = async (body, msg) => { try { SETTINGS = (await api('settings', {method:'POST', body: JSON.stringify(body)})).settings; toast(msg); grow(); } catch(e) { toast(e.message); } };
+  $('#gOn').onclick = () => sv({guess:{on:!g.on, ...Object.fromEntries(new FormData($('#gF')))}}, !g.on ? 'Guess the Price ON 🎯' : 'Guess the Price OFF');
+  $('#gF').onsubmit = e => { e.preventDefault(); sv({guess:Object.fromEntries(new FormData(e.target))}, 'Saved'); };
+  $('#sqOn').onclick = () => sv({squad:{on:!sq.on}}, !sq.on ? 'Drop Squad ON 👯' : 'Drop Squad OFF');
+  $('#sqF').onsubmit = e => { e.preventDefault(); sv({squad:Object.fromEntries(new FormData(e.target))}, 'Saved'); };
+  // coupons
+  const row = c => `<div class="cp"><label>Code<input name="code" value="${esc(c.code||'')}" placeholder="WELCOME10"></label><label>% off<input name="pct" type="number" min="0" max="50" value="${c.pct||''}"></label><label>or ₹ off<input name="amt" type="number" min="0" value="${c.amt||''}"></label><label>Min bag ₹<input name="min" type="number" min="0" value="${c.min||''}"></label><label>Valid until<input name="until" type="date" value="${(c.until||'').slice(0,10)}"></label><button type="button" class="btn ghost sm" data-rmc>✕</button></div>`;
+  const rows = $('#cpRows'); rows.innerHTML = (SETTINGS.coupons||[]).map(row).join('') || '<div class="hint">No coupons yet.</div>';
+  const wireRm = () => $$('[data-rmc]').forEach(b => b.onclick = () => b.closest('.cp').remove());
+  wireRm(); $('#cpAdd').onclick = () => { if (!rows.querySelector('.cp')) rows.innerHTML = ''; rows.insertAdjacentHTML('beforeend', row({})); wireRm(); };
+  $('#cpF').onsubmit = e => { e.preventDefault(); const list = $$('#cpRows .cp').map(r => Object.fromEntries([...r.querySelectorAll('input')].map(i => [i.name, i.value])));
+    sv({coupons: list}, 'Coupons saved'); };
+  // auction
+  try {
+    const A = await api('auction'), a = A.raw, v = A.view;
+    const live = a && a.status === 'live';
+    $('#auc').innerHTML = (v.on ? `<div><div class="hint">${v.status==='sold'?'SOLD':v.status==='soon'?'Starts '+fmt(v.startAt):'LIVE NOW'} · ${esc(v.product.name)}</div>
+        <div class="big">${rupee(v.status==='sold'?v.soldPrice:v.price)}</div><div class="hint">${v.status==='sold'?'Bought by '+esc(v.soldTo):`Start ${rupee(a.start)} · floor ${rupee(a.floor)} · −${rupee(a.drop)} every ${a.every} min${v.held?' · 🔒 someone is paying now':''}`}</div></div>
+        ${live?'<button class="btn ghost sm" id="aEnd" style="color:var(--red);border-color:var(--red)">End this Price Drop</button>':''}` : '')
+      + `<div class="hint">One piece, live on the home page. The price drops every minute until someone grabs it, and their price is locked for 10 minutes while they pay. The lowest price can't go below seller price + shipping.</div>
+      <form id="aF" style="display:grid;gap:8px"><label>Product<select name="pid" required><option value="">Choose…</option>${opt('')}</select></label>
+        <div class="two"><label>Start price ₹<input name="start" type="number" required></label><label>Lowest price ₹<input name="floor" type="number" required></label></div>
+        <div class="three"><label>Drop ₹<input name="drop" type="number" value="10" required></label><label>Every (min)<input name="every" type="number" value="1" min="1" required></label><label>Starts at<input name="startAt" type="datetime-local" value="${dtLocal(Date.now()+5*6e4)}"></label></div>
+        <div class="hint" id="aHint"></div>
+        <button class="btn lime">${live?'Replace with a new Price Drop':'🔥 Start Price Drop'}</button></form>`;
+    const f = $('#aF'), sel = f.pid;
+    sel.onchange = () => { const p = PRODUCTS.find(x => x.id === sel.value); if (!p) return; const minF = p.cost != null ? p.cost + (p.ship||0) : 1;
+      f.start.value = Math.round(p.price * 1.25 / 10) * 10 - 1; f.floor.value = Math.max(minF, Math.round(p.price * .6 / 10) * 10 - 1);
+      $('#aHint').textContent = `Shop price ${rupee(p.price)}${p.cost!=null?' · your cost '+rupee(minF):' · seller price not set'}. It takes ${Math.ceil((f.start.value - f.floor.value)/(f.drop.value||10))*(f.every.value||1)} min to reach the lowest price.`; };
+    f.onsubmit = async e => { e.preventDefault(); const b = Object.fromEntries(new FormData(f)); b.startAt = b.startAt ? new Date(b.startAt).toISOString() : '';
+      if (live && !confirm('This replaces the current Price Drop. Continue?')) return;
+      try { await api('auction', {method:'POST', body: JSON.stringify(b)}); toast('Price Drop is set 🔥'); grow(); } catch(err) { toast(err.message); } };
+    const en = $('#aEnd'); if (en) en.onclick = async () => { if (!confirm('End the Price Drop now?')) return; await api('auction', {method:'POST', body: JSON.stringify({action:'end'})}); toast('Ended'); grow(); };
+  } catch(e) { $('#auc').innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+  // squads + guess results
+  try {
+    const G = await api('games');
+    if (G.noDb) { $('#sqList').innerHTML = '<div class="err">The D1 database binding (DB) is missing.</div>'; return; }
+    const due = G.squads.filter(x => x.complete);
+    $('#sqList').innerHTML = G.squads.length ? `<h4 style="margin-top:6px">Squads</h4>` + G.squads.slice(0,30).map(x => {
+      const all = [{name:x.name, phone:x.phone, ref:x.ref}, ...x.members];
+      return `<div style="border-top:1px solid var(--line);padding-top:8px"><b>${x.code}</b> · ${all.length}/${SETTINGS.squad.size} ${x.complete?(x.paidAt?'✅ cashback paid':'🎉 <b style="color:#1f7a4d">complete: cashback due</b>'):''}
+        <div class="hint">${all.map(m=>`${esc(m.name)} (${m.ref})`).join(' · ')}</div>
+        ${x.complete&&!x.paidAt?`<button class="btn ghost sm" data-sqp="${x.code}">Mark cashback paid</button>`:''}</div>`; }).join('') : '<div class="hint">No squads yet.</div>';
+    $$('[data-sqp]').forEach(b => b.onclick = async () => { await api('games', {method:'POST', body: JSON.stringify({squadPaid: b.dataset.sqp})}); toast('Marked paid'); grow(); });
+    const gr = G.guess;
+    if (gr) $('#gRes').innerHTML = `${gr.players} guess${gr.players===1?'':'es'} so far${gr.product?' for '+esc(gr.product.name)+' (real price '+rupee(gr.product.price)+')':''}. ${gr.winner?`🏆 Winner: <b>${esc(gr.winner.name)}</b> guessed ${rupee(gr.winner.guess)} · <a href="https://wa.me/91${gr.winner.phone}?text=${encodeURIComponent(`Hi ${gr.winner.name}! 🎉 You won Snazzify's Guess the Price with ${rupee(gr.winner.guess)}! Your prize: ${gr.prize}. `)}" target="_blank" rel="noopener">message winner on WhatsApp</a>`:gr.state?.open?'Winner shown after the reveal.':''}`;
+  } catch(e) {}
+}
+
+/* ---------------- REVIEWS ---------------- */
+async function reviews(){
+  $('#view').innerHTML = '<h1>Reviews ⭐</h1><div class="hint">Loading…</div>';
+  try {
+    const r = await api('reviews');
+    if (r.noDb) { $('#view').innerHTML = '<h1>Reviews ⭐</h1><div class="err">The D1 database binding (DB) is missing.</div>'; return; }
+    PENDING = r.reviews.filter(x => x.status === 'pending').length;
+    $('#view').innerHTML = `<h1>Reviews ⭐</h1><p class="muted" style="margin-top:-6px">Ask for reviews from any shipped or delivered order (open the order → "Ask for a review"). New reviews wait here until you approve them.</p>
+      <div class="list">${r.reviews.map(x => `<div class="card"><div class="rvw">${x.img?`<a href="/img/${x.img}" target="_blank"><img src="/img/${x.img}" alt=""></a>`:`<img src="/img/${x.pimg}" alt="" style="opacity:.6">`}
+        <div><div class="st">${'★'.repeat(x.stars)}${'☆'.repeat(5-x.stars)}</div><div>${esc(x.text)}</div><div class="hint">${esc(x.name)}, ${esc(x.city)} · ${esc(x.pname)} · ${x.ref} · ${ago(new Date(x.at).toISOString())}</div></div></div>
+        <div class="two">${x.status!=='approved'?`<button class="btn lime sm" data-rv="${x.id}" data-s="approved">✓ Approve</button>`:'<span class="pill st-delivered">Live on site</span>'}${x.status!=='rejected'?`<button class="btn ghost sm" data-rv="${x.id}" data-s="rejected">Hide</button>`:'<span class="pill st-cancelled">Hidden</span>'}</div></div>`).join('') || '<div class="empty">No reviews yet.</div>'}</div>`;
+    $$('[data-rv]').forEach(b => b.onclick = async () => { await api('reviews', {method:'POST', body: JSON.stringify({id: b.dataset.rv, status: b.dataset.s})}); toast(b.dataset.s==='approved'?'Approved ⭐':'Hidden'); reviews(); });
+  } catch(e) { $('#view').innerHTML = `<h1>Reviews ⭐</h1><div class="err">${esc(e.message)}</div>`; }
+}
+
 /* ---------------- start ---------------- */
 async function start(){
   try { await load(); shell(); } catch(e) { if (e.message !== 'Please log in') { $('#app').innerHTML = `<div class="login"><img src="/snazzify-logo.svg" alt=""><p class="err">${esc(e.message)}</p></div>`; } }
 }
 start();
-setInterval(async () => { if (document.hidden || $('#sheet').classList.contains('on') || !ORDERS) return; try { await load(); refreshBehind(); } catch {} }, 60000);
+setInterval(async () => { if (document.hidden || $('#sheet').classList.contains('on') || !ORDERS || ['grow','reviews'].includes(tab)) return; try { await load(); refreshBehind(); } catch {} }, 60000);
 </script>
 </body>
 </html>

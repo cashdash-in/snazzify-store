@@ -10,7 +10,7 @@ export async function onRequestPost({ request, env }) {
 
   const c = checkCustomer(body.customer);
   if (!c) return json({ error: 'Please check your delivery details.' }, 400);
-  const bag = await priceBag(env, body.items);
+  const bag = await priceBag(env, body.items, body.code);
   if (bag.error) return json({ error: bag.error }, bag.status);
 
   const ref = newRef();
@@ -19,8 +19,9 @@ export async function onRequestPost({ request, env }) {
 
   if (env.STORE) {
     const createdAt = new Date().toISOString();
-    await putOrder(env, { ref, mode: 'pay', rzpOrderId: order.id, status: 'created', createdAt, amount: bag.amount, customer: c,
-      items: bag.orderItems, history: [{ at: createdAt, status: 'created', note: 'Checkout started' }] });
+    const payToken = [...crypto.getRandomValues(new Uint8Array(9))].map(b => b.toString(36).padStart(2, '0')).join('').slice(0, 14);
+    await putOrder(env, { ref, mode: 'pay', payToken, rzpOrderId: order.id, status: 'created', createdAt, amount: bag.amount, customer: c,
+      items: bag.orderItems, coupon: bag.coupon, squad: bag.squad, history: [{ at: createdAt, status: 'created', note: 'Checkout started' }] });
     await env.STORE.put('rzp:' + order.id, ref);
     await addToIndex(env, ref);
   }

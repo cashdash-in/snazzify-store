@@ -1,6 +1,6 @@
 // GET  /api/admin/orders            → all orders (newest first) + summary numbers
 // POST /api/admin/orders {ref, status?, tracking?, courier?, note?} → update one order
-import { json, clean, STATUSES, PAID_LIKE, listOrders, getOrder, putOrder } from '../../../lib/util.js';
+import { json, clean, STATUSES, PAID_LIKE, listOrders, getOrder, putOrder, linkToken } from '../../../lib/util.js';
 
 const IST = 5.5 * 3600e3;
 const istDay = t => new Date(new Date(t).getTime() + IST).toISOString().slice(0, 10);
@@ -30,6 +30,8 @@ function summarise(orders) {
 
 export async function onRequestGet({ env }) {
   const orders = await listOrders(env);
+  // private links the admin sends on WhatsApp: review page for shipped/delivered orders
+  await Promise.all(orders.filter(o => ['shipped', 'delivered'].includes(o.status)).map(async o => { o.reviewToken = await linkToken(env, 'review', o.ref); }));
   return json({ orders, summary: summarise(orders) });
 }
 
@@ -47,6 +49,7 @@ export async function onRequestPost({ request, env }) {
       o.history = [...(o.history || []), { at, status: b.status, note: clean(b.note, 200) }];
     }
   } else if (b.note) {
+    if (b.reminded) o.reminded = at;
     o.history = [...(o.history || []), { at, status: o.status, note: clean(b.note, 200) }];
   }
   await putOrder(env, o);

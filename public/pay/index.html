@@ -47,13 +47,15 @@ const fail = m => $('#w').innerHTML = head + `<h1>Hmm.</h1><p class="err">${esc(
   if (!r.ok) return fail(o.error || 'This payment link is not valid.');
   const items = o.items.map(i => `<div class="it"><img src="/img/${esc(i.img)}" alt=""><div><b>${esc(i.name)}</b>
     <small>${[i.size, i.colour].filter(Boolean).map(esc).join(' · ')}${i.qty>1?' · qty '+i.qty:''}</small></div><b>${rupee(i.price*i.qty)}</b></div>`).join('');
-  if (!['booked','video_sent'].includes(o.status)) {
+  if (['cancelled','refunded'].includes(o.status)) return fail('This order was cancelled. Message us on WhatsApp if you still want it.');
+  if (!['created','booked','video_sent'].includes(o.status)) {
     $('#w').innerHTML = head + `<h1>Already paid 🎉</h1><div class="card">${items}</div><div class="ok">Order ${esc(o.ref)} is confirmed. We'll WhatsApp your tracking once it ships.</div>`;
     return;
   }
   if (o.expired) return fail("This payment link has expired. Message us on WhatsApp and we'll check if your piece is still available.");
-  $('#w').innerHTML = head + `<h1>Love it, ${esc(o.firstName)}? 💛</h1>
-    <p class="note" style="text-align:left">You've seen the video of your piece. Pay below to confirm. It ships in 3–5 days.</p>
+  $('#w').innerHTML = head + (o.mode === 'see' ? `<h1>Love it, ${esc(o.firstName)}? 💛</h1>
+    <p class="note" style="text-align:left">You've seen the video of your piece. Pay below to confirm. It ships in 3–5 days.</p>` : `<h1>Still yours, ${esc(o.firstName)}! 🛍️</h1>
+    <p class="note" style="text-align:left">We saved your bag at the same price. Finish paying below and it ships in 3–5 days. Each piece is live for 7 days only, so don't wait too long.</p>`) + `
     <div class="card">${items}<div class="tot"><span>To pay</span><span>${rupee(o.amount)}</span></div>
     <div style="text-align:right"><span class="free">Free shipping</span></div></div>
     <button class="btn" id="pay">🔒 Pay ${rupee(o.amount)} securely</button>

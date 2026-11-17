@@ -10,7 +10,7 @@ export async function onRequestPost({ request, env }) {
 
   const c = checkCustomer(body.customer);
   if (!c) return json({ error: 'Please check your delivery details.' }, 400);
-  const bag = await priceBag(env, body.items);
+  const bag = await priceBag(env, body.items, body.code);
   if (bag.error) return json({ error: bag.error }, bag.status);
 
   // simple abuse guard: max 3 open bookings per phone number
@@ -20,7 +20,7 @@ export async function onRequestPost({ request, env }) {
   const ref = newRef();
   const payToken = [...crypto.getRandomValues(new Uint8Array(9))].map(b => b.toString(36).padStart(2, '0')).join('').slice(0, 14);
   const createdAt = new Date().toISOString();
-  await putOrder(env, { ref, mode: 'see', payToken, status: 'booked', createdAt, amount: bag.amount, customer: c, items: bag.orderItems,
+  await putOrder(env, { ref, mode: 'see', payToken, status: 'booked', createdAt, amount: bag.amount, customer: c, items: bag.orderItems, coupon: bag.coupon, squad: bag.squad,
     history: [{ at: createdAt, status: 'booked', note: 'Booked with "See it before you pay"' }] });
   await addToIndex(env, ref);
   await env.STORE.put('bookings:' + c.phone, String(open + 1), { expirationTtl: 3 * 86400 });

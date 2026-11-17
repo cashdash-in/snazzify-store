@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /pay/
+Disallow: /review/
+
+Sitemap: https://www.snazzify.co.in/sitemap.xml

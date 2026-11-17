@@ -302,8 +302,8 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 .tab.on{background:var(--ink);color:#fff}
 .dx{width:38px;height:38px;border-radius:50%;background:#fff;font-size:20px}
 .db{flex:1;overflow:auto;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-content:start}
-#co label{min-width:0}
-#co input,#co textarea{width:100%}
+#co label,#ac label{min-width:0}
+#co input,#co textarea,#ac input,#ac textarea{width:100%}
 .li{display:grid;grid-template-columns:76px 1fr auto;gap:12px;align-items:center;background:#fff;border-radius:16px;padding:10px;border:1px solid var(--line)}
 .li img{width:76px;height:92px;object-fit:cover;border-radius:10px}
 .li b{font-size:14px;font-weight:700;line-height:1.3;display:block}
@@ -317,10 +317,10 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 .tot b{font-size:18px;font-family:var(--disp)}
 .prog{font-size:13px;font-weight:600;background:var(--mint);border-radius:10px;padding:9px 12px}
 
-#co label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-#co input,#co textarea{font:inherit;font-size:15px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink);border:1.5px solid var(--line);border-radius:12px;padding:12px;background:#fff;resize:vertical}
-#co input:focus,#co textarea:focus{outline:none;border-color:var(--ink)}
-#co .bad{border-color:var(--red)}
+#co label,#ac label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+#co input,#co textarea,#ac select,#ac input,#ac textarea{font:inherit;font-size:15px;font-weight:500;text-transform:none;letter-spacing:0;color:var(--ink);border:1.5px solid var(--line);border-radius:12px;padding:12px;background:#fff;resize:vertical}
+#co input:focus,#co textarea:focus,#ac input:focus,#ac textarea:focus{outline:none;border-color:var(--ink)}
+#co .bad,#ac .bad{border-color:var(--red)}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .f3{display:grid;grid-template-columns:.8fr 1fr 1fr;gap:10px}
 .err{color:var(--red);font-size:13px;font-weight:600}
@@ -509,6 +509,59 @@ body.swiping header,body.swiping .mq,body.swiping .fbar,body.swiping footer,body
 @keyframes hp{0%{transform:translate(-50%,-50%) scale(0);opacity:1}40%{transform:translate(-50%,-50%) scale(1.2);opacity:1}100%{transform:translate(-50%,-60%) scale(1);opacity:0}}
 @media(min-width:641px){.swipe{left:50%;width:min(460px,100vw);transform:translateX(-50%);border-radius:0}.sinfo{bottom:30px}.sact{bottom:90px}}
 .story.swp i{background:var(--pink);display:grid;place-items:center;font-style:normal;font-size:24px;color:#fff}
+
+/* ===== traffic & growth features ===== */
+.fests{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.fests::-webkit-scrollbar{display:none}
+.fest{flex:none;display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:9px 14px;font-weight:700;font-size:14px;text-decoration:none;color:var(--ink);white-space:nowrap}
+.fest:hover{border-color:var(--ink)}
+.pdl{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:24px;background:var(--ink);color:#fff;border-radius:28px;padding:22px;overflow:hidden;position:relative}
+.pdl img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:18px;display:block;cursor:pointer}
+.pdl .k{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.1em;color:var(--lime)}
+.pdl .k i{width:9px;height:9px;border-radius:50%;background:#ff3b3b;box-shadow:0 0 0 0 rgba(255,59,59,.7);animation:pulse 1.4s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(255,59,59,0)}100%{box-shadow:0 0 0 0 rgba(255,59,59,0)}}
+.pdl h2{font-family:var(--disp);font-weight:800;font-size:clamp(26px,3.6vw,40px);letter-spacing:-.03em;line-height:1;margin:10px 0}
+.pdl .now{font-family:var(--disp);font-weight:800;font-size:clamp(54px,9vw,96px);letter-spacing:-.05em;line-height:.9;color:var(--lime);font-variant-numeric:tabular-nums}
+.pdl .was{opacity:.6;font-weight:600;margin-top:6px}.pdl .was s{opacity:.8}
+.pdl .rule{font-size:14px;opacity:.85;margin:12px 0 16px;line-height:1.5}
+.pdl .buy{background:var(--lime);color:var(--ink)}
+.pdl .held{background:#2b2930;border-radius:14px;padding:12px 14px;font-weight:700;font-size:14px;margin-bottom:10px}
+.pdl .sold{display:inline-block;background:var(--pink);color:#fff;border-radius:12px;padding:8px 12px;font-weight:800;transform:rotate(-3deg)}
+@media(max-width:700px){.pdl{grid-template-columns:1fr;padding:16px}.pdl img{aspect-ratio:1/1}}
+.gx{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:var(--mint);border-radius:22px;padding:16px 18px;text-decoration:none;color:var(--ink)}
+.gx img{width:64px;height:64px;border-radius:14px;object-fit:cover;filter:saturate(1.1)}
+.gx b{font-family:var(--disp);font-size:22px;letter-spacing:-.02em;display:block}.gx span{font-size:14px;color:var(--ink2)}
+.gx em{font-style:normal;background:var(--ink);color:#fff;border-radius:999px;padding:9px 14px;font-weight:800;font-size:13px;white-space:nowrap}
+.gpage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+.gpage .gim{position:relative}.gpage .gim img{width:100%;border-radius:22px;aspect-ratio:4/5;object-fit:cover}
+.gpage .gq{position:absolute;top:14px;left:14px;background:var(--lime);font-weight:800;border-radius:999px;padding:8px 14px}
+.gform{display:grid;gap:10px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px}
+.gform input{font:inherit;font-size:16px;padding:13px 14px;border-radius:12px;border:1.5px solid var(--line);width:100%}
+.gbig{font-family:var(--disp);font-weight:800;font-size:56px;letter-spacing:-.04em;line-height:1}
+@media(max-width:760px){.gpage{grid-template-columns:1fr}}
+.revs{display:grid;grid-auto-flow:column;grid-auto-columns:min(300px,80vw);gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}.revs::-webkit-scrollbar{display:none}
+.rv{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;display:grid;gap:8px;align-content:start}
+.rv .st{color:#f5a400;letter-spacing:2px;font-size:15px}.rv p{font-size:14.5px;line-height:1.45}.rv small{color:var(--muted);font-size:12.5px}
+.rv .ph{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px}
+.rv .pp{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--muted);cursor:pointer}.rv .pp img{width:30px;height:30px;border-radius:8px;object-fit:cover}
+.rsum{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px}.rsum b{color:#f5a400}
+.lbl2{display:flex;justify-content:space-between;align-items:center}.lnk2{background:none;border:0;font:inherit;font-size:13px;font-weight:700;text-decoration:underline;color:var(--ink);cursor:pointer;padding:0}
+.sg table{width:100%;border-collapse:collapse;font-size:14px}.sg th,.sg td{border-bottom:1px solid var(--line);padding:9px 6px;text-align:left}.sg th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sheet2{position:fixed;inset:auto 0 0 0;z-index:90;background:#fff;border-radius:22px 22px 0 0;max-height:86vh;overflow:auto;padding:18px 18px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.25)}
+.sheet2[hidden]{display:none}.sheet2 .sh2{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sheet2 h3{font-family:var(--disp);font-size:26px;letter-spacing:-.02em}
+@media(min-width:700px){.sheet2{inset:50% auto auto 50%;transform:translate(-50%,-50%);width:520px;border-radius:22px}}
+.codebox{display:grid;grid-template-columns:1fr auto;gap:8px}.codebox input{text-transform:uppercase}
+.cmsg{font-size:13.5px;font-weight:700;min-height:0}.cmsg.ok{color:#1f7a4d}.cmsg.no{color:var(--red)}
+.squad{background:var(--lilac);border-radius:18px;padding:16px;display:grid;gap:8px;text-align:left}
+.squad .code{font-family:var(--disp);font-size:34px;font-weight:800;letter-spacing:.04em;background:#fff;border-radius:12px;padding:6px 12px;text-align:center}
+.mem{display:flex;gap:6px;flex-wrap:wrap}.mem span{background:#fff;border-radius:999px;padding:5px 10px;font-size:13px;font-weight:700}.mem span.e{background:transparent;border:1.5px dashed var(--ink);opacity:.6}
+.tl{display:grid;gap:0;margin:8px 0}.tl div{display:grid;grid-template-columns:22px 1fr;gap:10px;padding-bottom:14px;position:relative}
+.tl div:before{content:'';width:14px;height:14px;border-radius:50%;background:var(--line);margin-top:3px}.tl div.on:before{background:var(--ink)}
+.tl div:not(:last-child):after{content:'';position:absolute;left:6px;top:18px;bottom:0;width:2px;background:var(--line)}
+.tl b{display:block}.tl small{color:var(--muted)}
+.tres2{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;display:grid;gap:12px;max-width:520px;margin-top:16px}
+.myord{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}.myord button{border:1.5px solid var(--ink);background:#fff;border-radius:999px;padding:8px 12px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
+.tag.mys{background:var(--lilac);color:var(--ink)}
+.festhero{background:var(--lime);border-radius:28px;padding:30px;margin-top:20px}.festhero h1{font-family:var(--disp);font-weight:800;font-size:clamp(36px,6vw,64px);letter-spacing:-.04em;line-height:.95}.festhero p{max-width:560px;margin-top:12px;font-size:16px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -581,6 +634,12 @@ const LIFE_DAYS = 7;                  // each product stays live this long
 const DROP_HOUR_IST = 11;             // daily drop time (11:00 AM IST)
 const IMG = p => '/img/' + p.img;     // product photos live in /img
 let PRODUCTS = [], SETTINGS = { seeBeforePay: false }, FLASH = { on:false }, CLOCK_SKEW = 0;
+let REVIEWS = { reviews: [], count: 0, avg: 0 }, AUCTION = { on: false }, CODE = { code: '', amount: null };
+const SITE = 'https://www.snazzify.co.in', BOOT = window.BOOT || {};
+const FESTS = { teej:['🌿','Teej'], gangaur:['🪷','Gangaur'], 'karva-chauth':['🌙','Karva Chauth'], 'wedding-season':['💍','Wedding season'] };
+const pUrl = p => SITE + '/p/' + (p.slug || p.id);
+const stars = n => '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const deal = p => FLASH.live && FLASH.deals && FLASH.deals[p.id];
 const OUTFIT = ['Suits & Sets','Sarees'], LOOKC = ['Jewellery','Bags','Accessories'];
 const lookOn = () => SETTINGS.look?.on && bag.some(x => OUTFIT.includes(byId(x.id)?.cat));
@@ -603,7 +662,7 @@ const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAl
 const store = { get(k,d){ try{ return JSON.parse(localStorage.getItem('snz_'+k)) ?? d }catch(e){ return d } }, set(k,v){ try{ localStorage.setItem('snz_'+k, JSON.stringify(v)) }catch(e){} } };
 let saved = [], bag = [];
 let shopCat = 'All', shopSort = 'new', query = '';
-const CATS = ['Suits & Sets','Jewellery','Sarees','Bags','Accessories','Home & Festive'];
+const CATS = ['Suits & Sets','Jewellery','Sarees','Bags','Accessories','Home & Festive','Mystery Box'];
 
 /* ================= ICONS ================= */
 const heartSvg = '<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-8.6C1.4 8.6 3.1 5 6.6 5c2.1 0 3.4 1.2 5.4 3.2C14 6.2 15.3 5 17.4 5c3.5 0 5.2 3.6 3.8 6.4C19 15.6 12 20 12 20z"/></svg>';
@@ -618,7 +677,7 @@ function addToBag(id,size,colour){ try{navigator.vibrate&&navigator.vibrate(18)}
 function card(p){
   const used = Math.min(1,(Date.now()-p.addedAt)/LIFE);
   const d = deal(p);
-  const tag = d ? `<span class="tag flash">⚡ ${d.pct}% OFF</span>` : isNew(p) ? '<span class="tag new">Just dropped</span>' : ending(p) ? `<span class="tag end">${left(p)}</span>` : '';
+  const tag = d ? `<span class="tag flash">⚡ ${d.pct}% OFF</span>` : p.cat==='Mystery Box' ? '<span class="tag mys">🎁 Mystery</span>' : isNew(p) ? '<span class="tag new">Just dropped</span>' : ending(p) ? `<span class="tag end">${left(p)}</span>` : '';
   return `<article class="card">
     <div class="im" data-open="${p.id}"><img src="${IMG(p)}" alt="${p.name}">${tag}
       <div class="life" title="Time left in the shop"><i style="width:${(1-used)*100}%"></i></div></div>
@@ -690,6 +749,9 @@ home(){
   </section>
 
   ${flashSection()}
+  ${auctionSection()}
+  ${guessTeaser()}
+  <section class="wrap" style="margin-top:6px">${festRow()}</section>
   <section class="wrap sec">
     <div class="sh"><h2>Not your usual<br>online store<em>.</em></h2><p>Here's what makes shopping at Snazzify different.</p></div>
     <div class="bento">
@@ -713,6 +775,7 @@ home(){
     <div class="cats">${CATS.map(c=>{ const ps=live.filter(p=>p.cat===c); const im=ps[0]; return im?`<a class="ct" href="#shop" data-cat="${c}"><img src="${IMG(im)}" alt=""><div><b>${c}</b><span>${ps.length} live</span></div></a>`:''; }).join('')}</div>
   </section>
 
+  ${reviewsSection()}
   ${end.length?`<section class="wrap sec"><div class="endband">
     <div class="sh"><h2>Last call 🔥</h2><p>These pieces leave the shop soon. Once they're gone, they're gone.</p></div>
     <div class="scroller">${end.map(card).join('')}</div></div></section>`:''}
@@ -784,13 +847,22 @@ about(){
 track(){
   return `<section class="wrap page">
     <h1>Track your<br>order.</h1>
-    <p style="margin-bottom:22px">Enter your order ID from your confirmation message, and we'll send the latest status on WhatsApp.</p>
+    <p style="margin-bottom:14px">Enter the order ID from your confirmation and the mobile number you ordered with.</p>
+    ${store.get('orders',[]).length?`<div class="lbl">Your recent orders</div><div class="myord">${store.get('orders',[]).map(o=>`<button data-tr="${o.ref}|${o.phone}">${o.ref}</button>`).join('')}</div>`:''}
     <form class="trackbox" id="trackF">
-      <input id="tId" placeholder="Order ID, e.g. SNZ-10421" required>
+      <input id="tId" placeholder="Order ID, e.g. SNZ-K3F9A12" required autocapitalize="characters">
       <input id="tPh" placeholder="Mobile number used for the order" inputmode="numeric" maxlength="10" required>
-      <button class="btn dark">Get status on WhatsApp</button>
+      <button class="btn dark">Track order</button>
     </form>
+    <div id="tOut"></div>
   </section>`;
+},
+guess(){ return guessView(); },
+festival(){ return festivalView(); },
+squad(){
+  return `<section class="wrap page"><h1>👯 Drop Squad</h1><p>Shop together, save together. After you order, tap <b>Start a Drop Squad</b> and share your code. When ${SETTINGS.squad?.size||3} of you order within ${SETTINGS.squad?.hours||48} hours, everyone gets ${rupee(SETTINGS.squad?.cashback||100)} back.</p>
+    ${store.get('mySquad','')?'<div class="squad" id="sqBox" style="max-width:520px;margin-top:16px">Loading your squad…</div>':''}
+    <div class="ctas"><a class="btn dark" href="#shop">Shop the drop →</a></div></section>`;
 },
 
 policies(){ return legalHub(); },
@@ -813,7 +885,7 @@ privacy(){ return legalPage('Privacy Policy', `
   <h3>What we collect</h3><ul><li>Name, mobile/WhatsApp number, email (optional) and delivery address, when you place an order or join drop alerts.</li><li>Order details: products, sizes, amounts and payment status.</li><li>Basic technical data such as browser type, collected automatically to keep the Website working.</li></ul>
   <p>We do <b>not</b> collect or store card numbers, UPI PINs or bank passwords. Payments are processed by Razorpay under its own privacy policy.</p>
   <h3>Why we use it</h3><ul><li>To process, ship and deliver your order.</li><li>To send order confirmations, shipping and tracking updates on WhatsApp, SMS or email.</li><li>To handle refunds, exchanges and support requests.</li><li>To send new-drop alerts, only if you've opted in. You can opt out any time by replying STOP.</li><li>To prevent fraud and meet legal and tax obligations.</li></ul>
-  <h3>Who we share it with</h3><p>Only with those who need it to fulfil your order: the maker or supplier who dispatches your product, courier partners, our payment partner Razorpay, and WhatsApp (Meta) for messages. We never sell your personal data.</p><h3>Try Me On (AI preview)</h3><p>If you use Try Me On, the photo you choose is sent directly from your browser to Google (Gemini, via Firebase AI Logic) only to create the preview image. Snazzify does not receive, store or share your photo or the preview. The preview is an AI image: colour, size and fit may differ from the real product.</p>
+  <h3>Who we share it with</h3><p>Only with those who need it to fulfil your order: the maker or supplier who dispatches your product, courier partners, our payment partner Razorpay, and WhatsApp (Meta) for messages. We never sell your personal data.</p><h3>Try Me On (AI preview)</h3><p>If you use Try Me On, the photo you choose is sent directly from your browser to Google (Gemini, via Firebase AI Logic) only to create the preview image. Snazzify does not receive, store or share your photo or the preview. The preview is an AI image: colour, size and fit may differ from the real product.</p><h3>Reviews, games and squads</h3><p>If you post a review, we show your first name, city, rating, review and any photo you add on the Website; you can ask us to remove it at any time. If you play Guess the Price or join a Drop Squad, we keep your name, WhatsApp number and guess or order reference only to run the game, contact winners and pay cashback.</p>
   <h3>How long we keep it</h3><p>We keep order records for as long as required under tax and accounting laws, typically up to 8 years, and other data only as long as needed for the purposes above.</p>
   <h3>Your rights</h3><p>You can ask to access, correct or delete your personal data, or withdraw consent for marketing messages, by writing to ${B('email')}. We will respond within 30 days.</p>
   <h3>Cookies and storage</h3><p>The Website saves your bag and saved items in your own browser so they're still there when you come back. We don't use advertising cookies.</p>
@@ -841,8 +913,11 @@ contact(){ return legalPage('Contact Us', `
 /* ================= ROUTER ================= */
 let tick;
 function route(){
-  const v = (location.hash||'#home').slice(1);
-  const name = views[v] ? v : 'home';
+  let v = (location.hash||'').slice(1);
+  if (!v) v = FEST_KEY ? 'festival' : 'home';
+  if (v.startsWith('festival/')) { FEST_KEY = v.split('/')[1]; v = 'festival'; }
+  const key = v.split(/[?/]/)[0];
+  const name = views[key] ? key : 'home';
   $('#view').innerHTML = views[name]();
   $$('nav.main a').forEach(a=>a.classList.toggle('on',a.dataset.v===name));
   $$('.tabm [data-tv]').forEach(a=>a.classList.toggle('on',a.dataset.tv===name));
@@ -863,7 +938,13 @@ function route(){
       if(!/^[6-9]\d{9}$/.test(n)){ $('#alertOk').textContent='Enter a valid 10-digit mobile number.'; return; }
       $('#alertOk').innerHTML=`Almost there! <a href="${wa('Hi Snazzify! Please add me to the drop alerts list ✨')}" target="_blank" rel="noopener">Tap here to confirm on WhatsApp →</a>`; };
   }
-  if(name==='track') $('#trackF').onsubmit=e=>{ e.preventDefault(); window.open(wa(`Hi Snazzify! Please share the status of order ${$('#tId').value.trim()} (phone ${$('#tPh').value.trim()}).`),'_blank'); };
+  if(name==='track'){ const go=(r,ph)=>{ $('#tId').value=r; $('#tPh').value=ph; doTrack(r,ph); };
+    $('#trackF').onsubmit=e=>{ e.preventDefault(); doTrack($('#tId').value.trim().toUpperCase(), $('#tPh').value.trim()); };
+    $$('[data-tr]').forEach(b=>b.onclick=()=>go(...b.dataset.tr.split('|')));
+    const q=new URLSearchParams(v.split('?')[1]||''); if(q.get('ref')&&q.get('phone')) go(q.get('ref'),q.get('phone')); }
+  if(name==='guess') wireGuess();
+  if(name==='home') wireAuction();
+  if(name==='squad'){ const c=store.get('mySquad',''); if(c) fetch('/api/squad?code='+c).then(r=>r.json()).then(o=>{ if(!o.error&&$('#sqBox')) squadBox($('#sqBox'),o); }); }
   if(!routing.keep) window.scrollTo({top:0,behavior:'instant'}); routing.keep=false;
 }
 const routing={keep:false};
@@ -892,13 +973,16 @@ function openProduct(id){
         <div class="bigpr">${rupee(ep(p))}${deal(p)?`<s>${rupee(p.price)}</s><span class="free" style="background:var(--pink);color:#fff">⚡ ${deal(p).pct}% OFF</span>`:''}<span class="free">Free shipping</span></div>
         ${deal(p)?`<div class="count" style="background:var(--pink)">⚡ Pick it up in 30 mins: this price ends in <b class="cdn" data-to="${FLASH.endsAt}">--:--</b></div>`:''}
         <div class="count">⏳ Leaves the shop in <b id="cd"></b></div>
-        ${p.sizes?`<div><div class="lbl">Size</div><div class="opts">${p.sizes.map(s=>`<button class="opt ${s===size?'on':''}" data-s="${s}">${s}</button>`).join('')}</div></div>`:''}
+        ${p.sizes?`<div><div class="lbl lbl2"><span>Size</span>${p.cat==='Suits & Sets'?'<button class="lnk2" id="sGuide">📏 Size guide</button>':''}</div><div class="opts">${p.sizes.map(s=>`<button class="opt ${s===size?'on':''}" data-s="${s}">${s}</button>`).join('')}</div></div>`:''}
         ${p.colours?`<div><div class="lbl">Colour · ${colour}</div><div class="opts">${p.colours.map(s=>`<button class="opt ${s===colour?'on':''}" data-k="${s}">${s}</button>`).join('')}</div></div>`:''}
         <ul class="desc">${p.details.map(d=>`<li>${d}</li>`).join('')}</ul>
         <div class="tools">
           ${SETTINGS.tryon?.on && TRY_READY.v && OUTFIT.includes(p.cat) ? `<button class="tool try" id="tTry"><b>✨ Try me on</b><span>See it on you · photo not saved</span></button>` : ''}
           <button class="tool" id="tPoll"><b>👭 Buy or Bye?</b><span>Ask friends on WhatsApp</span></button>
+          <button class="tool" id="tShare"><b>🔗 Share</b><span>Send this piece to anyone</span></button>
         </div>
+        ${p.cat==='Mystery Box'?'<div class="note" style="color:var(--ink);font-weight:600">🎁 Mystery Box: what\'s inside stays a surprise until you unbox it. Always worth more than you pay.</div>':''}
+        ${prodReviews(p)}
         ${lookBlock(p)}
         <div class="brow"><button class="buy" id="bNow">Buy now · ${rupee(ep(p))}</button><button class="sq ${saved.includes(p.id)?'on':''}" data-id="${p.id}" id="sv" aria-label="Save">${heartSvg}</button></div>
         <button class="buy alt" id="bAdd">Add to bag</button>
@@ -918,6 +1002,9 @@ function openProduct(id){
     $('#sv').onclick = () => toggleSave(p.id);
     const tt = $('#tTry'); if (tt) tt.onclick = () => tryOn(p, colour);
     $('#tPoll').onclick = () => askFriends(p, colour);
+    $('#tShare').onclick = () => shareProduct(p);
+    const sg = $('#sGuide'); if (sg) sg.onclick = sizeGuide;
+    $$('#modal [data-rimg]').forEach(x => x.onclick = () => window.open(x.dataset.rimg, '_blank'));
     const la = $('#lookAdd'); if (la) la.onclick = () => { addToBag(p.id,size,colour); la.dataset.ids.split(',').forEach(id => addToBag(id)); toast('<i>💍</i> Look added · −' + SETTINGS.look.pct + '%'); clearInterval(cdT); $('#modal').classList.remove('on'); openBag('bag'); };
     $$('#modal [data-lp]').forEach(x => x.onclick = () => openProduct(x.dataset.lp));
     $('#bAdd').onclick = () => { addToBag(p.id,size,colour); closeAll(); };
@@ -956,17 +1043,15 @@ function openBag(tab='bag', toCheckout=false){
     const g=$('#goShop'); if(g) g.onclick=closeAll;
     const c=$('#toCo'); if(c) c.onclick=()=>checkout();
   };
+  const toPay = () => CODE.amount != null ? CODE.amount : total();
   const checkout = () => {
+    CODE = { code: '', amount: null };
     d.innerHTML = `<div class="dh"><button class="tab" id="bk">← Bag</button><div style="flex:1"></div><button class="dx" id="dx" aria-label="Close">×</button></div>
       <form class="db" id="co" novalidate>
         <h3 class="disp" style="font-size:30px;font-weight:800">Delivery details</h3>
-        <div class="f2"><label>Full name<input name="name" required autocomplete="name"></label>
-          <label>WhatsApp number<input name="phone" required inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" autocomplete="tel-national" placeholder="10 digits"></label></div>
-        <label>Email (optional)<input name="email" type="email" autocomplete="email"></label>
-        <label>Address<textarea name="addr" required rows="2" autocomplete="street-address" placeholder="House no., street, area, landmark"></textarea></label>
-        <div class="f3"><label>Pincode<input name="pin" required inputmode="numeric" maxlength="6" pattern="[1-9][0-9]{5}" autocomplete="postal-code"></label>
-          <label>City<input name="city" required autocomplete="address-level2"></label><label>State<input name="state" required autocomplete="address-level1"></label></div>
-        <div class="tot" style="border-top:1px dashed var(--line);padding-top:12px">${bag.map(i=>{const p=byId(i.id);return `<span>${p.name}${i.qty>1?' × '+i.qty:''}</span><span>${rupee(bp(i)*i.qty)}</span>`}).join('')}<span>Shipping</span><span>Free</span><b>To pay</b><b>${rupee(total())}</b></div>
+        ${custFields()}
+        <div class="tot" style="border-top:1px dashed var(--line);padding-top:12px">${bag.map(i=>{const p=byId(i.id);return `<span>${p.name}${i.qty>1?' × '+i.qty:''}</span><span>${rupee(bp(i)*i.qty)}</span>`}).join('')}<span>Shipping</span><span>Free</span><span id="cOffL" style="display:none;color:#1f7a4d;font-weight:700"></span><span id="cOff" style="display:none;color:#1f7a4d;font-weight:700"></span><b>To pay</b><b id="toPay">${rupee(total())}</b></div>
+        ${SETTINGS.codes?`<div class="codebox"><input id="cCode" placeholder="Coupon or squad code" autocomplete="off" value="${esc(store.get('code',''))}"><button type="button" class="btn ghost" id="cApply" style="padding:10px 16px">Apply</button></div><div class="cmsg" id="cMsg"></div>`:''}
         ${SETTINGS.seeBeforePay?`<div class="pm">
           <label class="pmo on"><input type="radio" name="pm" value="pay" checked><div><b>Pay now</b><span>Fastest dispatch. UPI, cards & netbanking.</span></div></label>
           <label class="pmo"><input type="radio" name="pm" value="see"><div><b>See it before you pay ✨</b><span>Book free. We WhatsApp you a video of your exact piece, and you pay only if you love it.</span></div></label></div>`:''}
@@ -979,11 +1064,23 @@ function openBag(tab='bag', toCheckout=false){
     $('#co').onsubmit = e => { e.preventDefault(); const f=e.target; const bad=[...f.elements].filter(el=>el.willValidate&&!el.checkValidity());
       f.querySelectorAll('.bad').forEach(el=>el.classList.remove('bad')); bad.forEach(el=>el.classList.add('bad'));
       if(bad.length){ $('#err').textContent='Please check the highlighted fields.'; return; }
-      const cust = Object.fromEntries(new FormData(f)); (cust.pm === 'see' ? book : pay)(f, cust); };
+      const cust = Object.fromEntries(new FormData(f)); saveCust(cust); (cust.pm === 'see' ? book : pay)(f, cust); };
+    const btnText = () => { const see = $('#co [name=pm]:checked')?.value === 'see'; $('#coBtn').textContent = see ? '✨ Book now, pay later' : '🔒 Pay ' + rupee(toPay()) + ' securely'; };
+    const apply = async () => { const inp = $('#cCode'), m = $('#cMsg'); if (!inp) return; const code = inp.value.trim().toUpperCase();
+      CODE = { code: '', amount: null }; $('#cOff').style.display = $('#cOffL').style.display = 'none'; $('#toPay').textContent = rupee(total()); m.className = 'cmsg'; m.textContent = '';
+      if (!code) { btnText(); return; }
+      try { const r = await fetch('/api/quote', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ items: bag.map(i=>({id:i.id,size:i.size,colour:i.colour,qty:i.qty})), code }) });
+        const o = await r.json(); if (!r.ok) throw new Error(o.error || 'Code not valid');
+        CODE = { code, amount: o.amount }; store.set('code', code); $('#toPay').textContent = rupee(o.amount);
+        if (o.coupon) { $('#cOffL').textContent = 'Code ' + code; $('#cOff').textContent = '−' + rupee(o.coupon.off); $('#cOff').style.display = $('#cOffL').style.display = ''; m.textContent = '🎉 You save ' + rupee(o.coupon.off); }
+        else if (o.squad) m.textContent = '👯 You\'re joining Drop Squad ' + code + '. Cashback when the squad fills up!';
+        m.className = 'cmsg ok'; btnText();
+      } catch (e) { m.className = 'cmsg no'; m.textContent = e.message; btnText(); } };
+    const ca = $('#cApply'); if (ca) { ca.onclick = apply; $('#cCode').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); apply(); } }; if ($('#cCode').value) apply(); }
     $$('#co [name=pm]').forEach(r => r.onchange = () => {
       const see = $('#co [name=pm]:checked').value === 'see';
       $$('#co .pmo').forEach(l => l.classList.toggle('on', l.querySelector('input').checked));
-      $('#coBtn').textContent = see ? '✨ Book now, pay later' : '🔒 Pay ' + rupee(total()) + ' securely';
+      btnText();
       $('#coTrust').style.display = see ? 'none' : '';
       $('#coNote').textContent = see ? "No payment now. We'll WhatsApp you a short video of your piece within a few hours, with a secure link to pay if you love it." : '100% prepaid, no Cash on Delivery. Your order is confirmed only after payment succeeds.';
     });
@@ -995,31 +1092,33 @@ function openBag(tab='bag', toCheckout=false){
 
 /* ================= PAYMENT (Razorpay) ================= */
 function loadRzp(){ return window.Razorpay ? Promise.resolve() : new Promise((ok,no)=>{ const s=document.createElement('script'); s.src='https://checkout.razorpay.com/v1/checkout.js'; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
-async function pay(form, cust){
-  const btn = form.querySelector('button[type=submit]'); const err = $('#err');
+async function pay(form, cust, auc){
+  const btn = form.querySelector('button[type=submit]'); const err = $('#err'); const label = btn.textContent;
   btn.disabled = true; btn.textContent = 'Opening secure payment…'; err.textContent = '';
   try {
-    const [_, res] = await Promise.all([ loadRzp(), fetch('/api/create-order', { method:'POST', headers:{'content-type':'application/json'},
-      body: JSON.stringify({ items: bag.map(i=>({id:i.id,size:i.size,colour:i.colour,qty:i.qty})), customer: cust }) }) ]);
+    const [_, res] = await Promise.all([ loadRzp(), auc
+      ? fetch('/api/auction', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ customer: cust, size: auc.size, colour: auc.colour }) })
+      : fetch('/api/create-order', { method:'POST', headers:{'content-type':'application/json'},
+      body: JSON.stringify({ items: bag.map(i=>({id:i.id,size:i.size,colour:i.colour,qty:i.qty})), customer: cust, code: CODE.code }) }) ]);
     const o = await res.json();
     if(!res.ok) throw new Error(o.error || 'Could not start payment');
     const rzp = new Razorpay({
       key: o.keyId, order_id: o.orderId, amount: o.amount, currency: 'INR',
       name: 'Snazzify', description: 'Order ' + o.ref, image: '/snazzify-icon.png',
       prefill: { name: cust.name, contact: '+91' + cust.phone, email: cust.email || '' },
-      notes: { ref: o.ref }, theme: { color: '#111014' },
+      notes: { ref: o.ref }, theme: { color: '#111014' }, ...(o.timeout ? { timeout: o.timeout } : {}),
       handler: async r => {
         form.innerHTML = '<h3 class="disp" style="font-size:30px;font-weight:800">Confirming…</h3><div class="note">Please don\'t close this page.</div>';
         const v = await fetch('/api/verify-payment', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(r) }).then(x=>x.json()).catch(()=>({}));
-        if(v.ok){ bag = []; counts(); success(form, o.ref, cust); }
+        if(v.ok){ if (!auc) { bag = []; counts(); store.set('code',''); } else loadAuction(); success(form, o.ref, cust); }
         else form.innerHTML = `<h3 class="disp" style="font-size:30px;font-weight:800">Almost there</h3><div class="demo">We received a response from the bank but couldn't confirm it automatically. Don't pay again. Message us on WhatsApp with reference <b>${o.ref}</b> and payment ID <b>${r.razorpay_payment_id}</b>.</div>`;
       },
-      modal: { ondismiss: () => { btn.disabled=false; btn.textContent='🔒 Pay '+rupee(o.amount/100)+' securely'; err.textContent='Payment cancelled. You can try again.'; } }
+      modal: { ondismiss: () => { btn.disabled=false; btn.textContent=label; err.textContent= auc ? 'Payment not finished. Your price is held until ' + new Date(o.until).toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'}) + '. Tap to try again.' : 'Payment cancelled. You can try again.'; } }
     });
     rzp.on('payment.failed', e => { err.textContent = 'Payment failed: ' + (e.error && e.error.description || 'please try again.'); });
     rzp.open();
   } catch(e) {
-    btn.disabled = false; btn.textContent = 'Try again'; err.textContent = e.message || 'Something went wrong. Please try again.';
+    btn.disabled = false; btn.textContent = auc ? label : 'Try again'; err.textContent = e.message || 'Something went wrong. Please try again.'; if (auc) loadAuction();
   }
 }
 async function book(form, cust){
@@ -1027,8 +1126,9 @@ async function book(form, cust){
   btn.disabled = true; btn.textContent = 'Booking…'; err.textContent = '';
   try {
     const r = await fetch('/api/book', { method:'POST', headers:{'content-type':'application/json'},
-      body: JSON.stringify({ items: bag.map(i=>({id:i.id,size:i.size,colour:i.colour,qty:i.qty})), customer: cust }) });
+      body: JSON.stringify({ items: bag.map(i=>({id:i.id,size:i.size,colour:i.colour,qty:i.qty})), customer: cust, code: CODE.code }) });
     const o = await r.json(); if (!r.ok) throw new Error(o.error || 'Could not book. Please try again.');
+    rememberOrder(o.ref, cust.phone);
     bag = []; counts();
     form.innerHTML = `<div style="font-size:54px">📹</div><h3 class="disp" style="font-size:34px;font-weight:800;line-height:1">Booked!</h3>
       <div class="sum" style="display:block;background:var(--lime);border-radius:14px;padding:14px">Booking ID <b>${o.ref}</b></div>
@@ -1037,12 +1137,192 @@ async function book(form, cust){
     $('#dn').onclick = closeAll;
   } catch(e) { btn.disabled = false; btn.textContent = '✨ Book now, pay later'; err.textContent = e.message; }
 }
+function rememberOrder(ref, phone){ store.set('orders', [{ ref, phone }, ...store.get('orders', []).filter(x => x.ref !== ref)].slice(0, 10)); }
 function success(form, ref, cust){
+  rememberOrder(ref, cust.phone);
+  const sq = SETTINGS.squad?.on && !CODE.code.startsWith('SQ');
   form.innerHTML = `<div style="font-size:54px">🎉</div><h3 class="disp" style="font-size:34px;font-weight:800;line-height:1">Order confirmed!</h3>
     <div class="sum" style="display:block;background:var(--lime);border-radius:14px;padding:14px">Your order ID is <b>${ref}</b></div>
-    <p class="note" style="font-size:15px">Thank you, ${cust.name.split(' ')[0]}! We've received your payment. Your order ships in 3–5 days and we'll send tracking to +91 ${cust.phone} on WhatsApp.</p>
+    <p class="note" style="font-size:15px">Thank you, ${esc(cust.name.split(' ')[0])}! We've received your payment. Your order ships in 3–5 days and we'll send tracking to +91 ${cust.phone} on WhatsApp.</p>
+    <a class="buy alt" href="#track?ref=${ref}&phone=${cust.phone}" id="dt" style="text-align:center;text-decoration:none">📦 Track this order</a>
+    ${sq?`<div class="squad" id="sqBox"><b style="font-size:18px">👯 Start a Drop Squad</b><span>Get ${SETTINGS.squad.size-1} friend${SETTINGS.squad.size>2?'s':''} to order within ${SETTINGS.squad.hours} hours with your code and you <b>all</b> get ${rupee(SETTINGS.squad.cashback)} back.</span><button type="button" class="buy" id="sqGo">Get my squad code</button></div>`:''}
     <button type="button" class="buy" id="dn">Keep shopping</button>`;
-  $('#dn').onclick = closeAll;
+  CODE = { code: '', amount: null };
+  $('#dn').onclick = closeAll; $('#dt').onclick = () => closeAll();
+  const g = $('#sqGo'); if (g) g.onclick = async () => { g.disabled = true; g.textContent = 'Creating…';
+    try { const r = await fetch('/api/squad', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ ref, phone: cust.phone }) }); const o = await r.json(); if (!r.ok) throw new Error(o.error);
+      store.set('mySquad', o.code); squadBox($('#sqBox'), o); } catch (e) { g.disabled = false; g.textContent = 'Try again'; toast(e.message || 'Could not create squad'); } };
+}
+function squadMsg(o){ return `I just ordered from Snazzify ✨ Join my Drop Squad: use code *${o.code}* at checkout (or tap ${SITE}/?squad=${o.code}) within ${SETTINGS.squad.hours} hours. When ${o.size} of us order, we ALL get ${rupee(o.cashback)} back! 👯`; }
+function squadBox(el, o){
+  el.innerHTML = `<b style="font-size:18px">👯 Your Drop Squad</b><div class="code">${o.code}</div>
+    <div class="mem">${Array.from({length:o.size},(_,i)=>o.members[i]?`<span>✓ ${esc(o.members[i].name)}</span>`:'<span class="e">waiting…</span>').join('')}</div>
+    <span>${o.done?`🎉 Squad complete! ${rupee(o.cashback)} cashback for everyone, within 7 days.`:`${o.size-o.members.length} more to go · closes ${new Date(o.closesAt).toLocaleString('en-IN',{weekday:'short',hour:'numeric',minute:'2-digit'})}`}</span>
+    ${o.done?'':`<a class="btn wa" style="background:#25D366;color:#fff;text-align:center" href="#" target="_blank" rel="noopener" id="sqWa">💬 Invite friends on WhatsApp</a>`}`;
+  const a = el.querySelector('#sqWa'); if (a) a.href = 'https://wa.me/?text=' + encodeURIComponent(squadMsg(o));
+}
+
+
+/* ================= GROWTH FEATURES ================= */
+function custFields(){
+  const c = store.get('cust', {});
+  const v = k => esc(c[k] || '');
+  return `<div class="f2"><label>Full name<input name="name" required autocomplete="name" value="${v('name')}"></label>
+      <label>WhatsApp number<input name="phone" required inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" autocomplete="tel-national" placeholder="10 digits" value="${v('phone')}"></label></div>
+    <label>Email (optional)<input name="email" type="email" autocomplete="email" value="${v('email')}"></label>
+    <label>Address<textarea name="addr" required rows="2" autocomplete="street-address" placeholder="House no., street, area, landmark">${v('addr')}</textarea></label>
+    <div class="f3"><label>Pincode<input name="pin" required inputmode="numeric" maxlength="6" pattern="[1-9][0-9]{5}" autocomplete="postal-code" value="${v('pin')}"></label>
+      <label>City<input name="city" required autocomplete="address-level2" value="${v('city')}"></label><label>State<input name="state" required autocomplete="address-level1" value="${v('state')}"></label></div>`;
+}
+function saveCust(c){ const { pm, ...rest } = c; store.set('cust', rest); }
+function validForm(f){ const bad=[...f.elements].filter(el=>el.willValidate&&!el.checkValidity());
+  f.querySelectorAll('.bad').forEach(el=>el.classList.remove('bad')); bad.forEach(el=>el.classList.add('bad')); return !bad.length; }
+
+/* --- share & size guide --- */
+async function shareProduct(p){
+  const url = pUrl(p), text = `${p.name} for ${rupee(ep(p))} on Snazzify ✨ Only live for ${left(p)}!`;
+  try { if (navigator.share) { await navigator.share({ title: p.name, text, url }); return; } } catch (e) { if (e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(url); toast('🔗 Link copied'); } catch (e) { window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank'); }
+}
+function sheet2(html){ let el = $('#sheet2'); if (!el) { el = document.createElement('div'); el.id = 'sheet2'; el.className = 'sheet2'; document.body.appendChild(el); }
+  el.innerHTML = html; el.hidden = false; const x = el.querySelector('[data-x]'); if (x) x.onclick = () => el.hidden = true; return el; }
+function sizeGuide(){
+  const rows = [['S (36)','36','30','38'],['M (38)','38','32','40'],['L (40)','40','34','42'],['XL (42)','42','36','44'],['XXL (44)','44','38','46'],['3XL (46)','46','40','48']];
+  sheet2(`<div class="sh2"><h3>📏 Size guide</h3><button class="x2" data-x aria-label="Close">×</button></div><div class="sg">
+    <table><tr><th>Size</th><th>Bust</th><th>Waist</th><th>Hip</th></tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table>
+    <p class="note" style="margin-top:12px">All measurements are body measurements in inches. Most suits have 1–2" margin for alterations. Between sizes? Pick the bigger one. Still unsure? <a href="${wa('Hi! Can you help me pick a size?')}" target="_blank" rel="noopener">Ask us on WhatsApp</a>.</p>
+    <p class="note"><b>How to measure:</b> Bust around the fullest part, waist at the narrowest part, hip around the widest part.</p></div>`);
+}
+
+/* --- reviews --- */
+function revCard(r, withProduct=true){
+  return `<div class="rv">${r.img?`<img class="ph" src="/img/${r.img}" alt="Customer photo" loading="lazy" data-rimg="/img/${r.img}">`:''}
+    <div class="st">${stars(r.stars)}</div><p>${esc(r.text)}</p><small>— ${esc(r.name)}${r.city?', '+esc(r.city):''} · verified buyer</small>
+    ${withProduct&&r.pname?`<div class="pp" ${byId(r.pid)?`data-open="${r.pid}"`:''}><img src="/img/${r.pimg}" alt="">${esc(r.pname)}</div>`:''}</div>`;
+}
+function prodReviews(p){
+  const mine = REVIEWS.reviews.filter(r => r.pid === p.id);
+  if (mine.length) return `<div><div class="lbl">Reviews · ${stars(Math.round(mine.reduce((a,r)=>a+r.stars,0)/mine.length))}</div><div class="revs">${mine.map(r=>revCard(r,false)).join('')}</div></div>`;
+  return REVIEWS.count ? `<div class="rsum"><b>★ ${REVIEWS.avg}</b> from ${REVIEWS.count} Snazzify shopper${REVIEWS.count===1?'':'s'}</div>` : '';
+}
+function reviewsSection(){
+  if (!REVIEWS.count) return '';
+  return `<section class="wrap sec" id="reviews"><div class="sh"><h2>Real people.<br>Real unboxings<em>.</em></h2><p class="rsum"><b>★ ${REVIEWS.avg}</b> average from ${REVIEWS.count} verified buyer${REVIEWS.count===1?'':'s'}</p></div>
+    <div class="revs">${REVIEWS.reviews.slice(0,12).map(r=>revCard(r)).join('')}</div></section>`;
+}
+
+/* --- 🔥 Price Drop Live --- */
+let aucT;
+const aucPrice = a => Math.max(a.floor, a.start - Math.max(0, Math.floor((nowS() - a.startAt) / (a.every * 6e4))) * a.drop);
+async function loadAuction(){ try { AUCTION = await fetch('/api/auction', {cache:'no-store'}).then(r=>r.json()); } catch(e) { AUCTION = { on:false }; } const el = $('#pdl'); if (el) el.outerHTML = auctionSection(); wireAuction(); }
+function auctionSection(){
+  const a = AUCTION; if (!a.on) return '<div id="pdl"></div>';
+  const p = a.product, img = `<img src="/img/${p.img}" alt="${esc(p.name)}" data-pdlopen>`;
+  let body;
+  if (a.status === 'sold') body = `<div class="sold">SOLD at ${rupee(a.soldPrice)}</div><p class="rule">Grabbed by ${esc(a.soldTo||'a lucky shopper')} 🎉 The next Price Drop could start any time. Turn on alerts so you don't miss it.</p>
+    <a class="buy" style="text-align:center;text-decoration:none" href="${wa('Hi Snazzify! 🔥 Alert me for the next Price Drop Live')}" target="_blank" rel="noopener">🔔 Alert me next time</a>`;
+  else if (a.status === 'soon') body = `<div class="now">${rupee(a.start)}</div><p class="rule">Starts in <b class="cdn" data-to="${a.startAt}">--:--</b>. Then the price drops ${rupee(a.drop)} every ${a.every===1?'minute':a.every+' minutes'} until someone grabs it. Wait too long and someone else gets it!</p>`;
+  else body = `<div class="now" id="pdlP">${rupee(aucPrice(a))}</div><div class="was">Started at <s>${rupee(a.start)}</s> · drops ${rupee(a.drop)} every ${a.every===1?'minute':a.every+' min'}</div>
+    <p class="rule">Only one piece. The price keeps falling until someone grabs it. Grab now, or gamble on a lower price? 👀</p>
+    ${a.held?`<div class="held">🔒 Someone is paying right now. If they don't finish, it's back in <b class="cdn" data-to="${a.held}">--:--</b></div>`:''}
+    <button class="buy" id="pdlGo" ${a.held?'disabled style="opacity:.5"':''}>Grab it at <span id="pdlB">${rupee(aucPrice(a))}</span></button>`;
+  return `<section class="wrap sec" id="pdl"><div class="pdl"><div>${img}</div><div><span class="k"><i></i>PRICE DROP LIVE</span><h2>${esc(p.name)}</h2>${body}</div></div></section>`;
+}
+function wireAuction(){
+  clearInterval(aucT); const a = AUCTION; if (!a.on) return;
+  const im = $('[data-pdlopen]'); if (im && byId(a.product.id)) im.onclick = () => openProduct(a.product.id);
+  const go = $('#pdlGo'); if (go) go.onclick = openAuction;
+  let n = 0;
+  aucT = setInterval(() => { if (!$('#pdl')) return clearInterval(aucT);
+    if (a.status === 'live') { const v = rupee(aucPrice(a)); const el = $('#pdlP'); if (el && el.textContent !== v) { el.textContent = v; $('#pdlB').textContent = v; el.animate([{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:350}); } }
+    if (++n % 15 === 0 || (a.held && nowS() > a.held) || (a.status === 'soon' && nowS() >= a.startAt)) loadAuction(); }, 1000);
+}
+function openAuction(){
+  const a = AUCTION, p = a.product, d = $('#drawer'); let size = p.sizes?.[0] || '', colour = p.colours?.[0] || '';
+  d.innerHTML = `<div class="dh"><b style="font-family:var(--disp);font-size:20px">🔥 Price Drop Live</b><div style="flex:1"></div><button class="dx" id="dx" aria-label="Close">×</button></div>
+    <form class="db" id="ac" novalidate>
+      <div class="li"><img src="/img/${p.img}" alt=""><div><b>${esc(p.name)}</b><small>Price right now</small></div><div class="pr" id="acP">${rupee(aucPrice(a))}</div></div>
+      ${p.sizes?.length?`<label>Size<select name="size">${p.sizes.map(x=>`<option>${esc(x)}</option>`).join('')}</select></label>`:''}
+      ${p.colours?.length?`<label>Colour<select name="colour">${p.colours.map(x=>`<option>${esc(x)}</option>`).join('')}</select></label>`:''}
+      <h3 class="disp" style="font-size:24px;font-weight:800">Delivery details</h3>
+      ${custFields()}
+      <div class="err" id="err"></div>
+      <button class="buy" type="submit">🔒 Lock this price & pay</button>
+      <div class="note">Your price is locked for 10 minutes once you tap. Prepaid only, free shipping.</div>
+    </form>`;
+  $('#dx').onclick = closeAll;
+  const t = setInterval(() => { const el = $('#acP'); if (!el) return clearInterval(t); el.textContent = rupee(aucPrice(a)); }, 1000);
+  $('#ac').onsubmit = e => { e.preventDefault(); const f = e.target; if (!validForm(f)) { $('#err').textContent = 'Please check the highlighted fields.'; return; }
+    const c = Object.fromEntries(new FormData(f)); const { size: sz, colour: cl, ...cust } = c; saveCust(cust); pay(f, cust, { size: sz || size, colour: cl || colour }); };
+  openOverlay(d);
+}
+
+/* --- 🎯 Guess the Price --- */
+let GUESS = null;
+const devId = () => { let v = store.get('dev', ''); if (!v) { v = Math.random().toString(36).slice(2) + Date.now().toString(36); store.set('dev', v); } return v; };
+async function loadGuess(){ try { GUESS = await fetch('/api/guess?who=' + devId(), {cache:'no-store'}).then(r=>r.json()); } catch(e) { GUESS = { on:false }; } }
+function guessTeaser(){
+  if (!GUESS?.on) return '';
+  return `<section class="wrap sec" style="padding-top:0"><a class="gx" href="#guess"><img src="/img/${GUESS.product.img}" alt="">
+    <div><b>🎯 Guess the Price</b><span>${GUESS.revealed?`Revealed! It was ${rupee(GUESS.price)}. See who won →`:`Closest guess wins a ${esc(GUESS.prize)}. ${GUESS.players} playing today.`}</span></div><em>${GUESS.revealed?'See result':GUESS.myGuess?'Your guess: '+rupee(GUESS.myGuess):'Play now'}</em></a></section>`;
+}
+function guessView(){
+  const g = GUESS;
+  if (!g || !g.on) return `<section class="wrap page"><h1>🎯 Guess the Price</h1><p>No game today. A new one starts soon, so turn on WhatsApp alerts!</p><div class="ctas"><a class="btn dark" href="#home">Back to the shop →</a></div></section>`;
+  const p = g.product, share = `🎯 Can you guess the price of this? Closest guess wins a ${g.prize} on Snazzify! ${SITE}/#guess`;
+  let right;
+  if (g.revealed) right = `<div class="gform"><div class="lbl">The real price</div><div class="gbig">${rupee(g.price)}</div>
+      ${g.winner?`<p style="font-size:16px">🏆 Winner: <b>${esc(g.winner.name)}</b> (${g.winner.phone}) guessed <b>${rupee(g.winner.guess)}</b></p>`:'<p>No guesses today.</p>'}
+      ${g.myGuess?`<p>Your guess: <b>${rupee(g.myGuess)}</b> (${g.myGuess===g.price?'spot on! 🤯':'off by '+rupee(Math.abs(g.myGuess-g.price))})</p>`:''}
+      ${byId(p.id)?`<a class="buy" style="text-align:center;text-decoration:none" href="${SITE}/p/${g.slug}">Shop it now →</a>`:''}</div>`;
+  else if (g.myGuess) right = `<div class="gform"><div class="lbl">Your guess</div><div class="gbig">${rupee(g.myGuess)}</div><p>Reveal at <b>${new Date(g.closesAt).toLocaleTimeString('en-IN',{hour:'numeric',minute:'2-digit'})}</b> today (in <b class="cdn" data-to="${g.closesAt}">--:--</b>). Winner hears from us on WhatsApp.</p>
+      <a class="btn wa" style="background:#25D366;color:#fff;text-align:center" href="https://wa.me/?text=${encodeURIComponent(share)}" target="_blank" rel="noopener">💬 Challenge your friends</a></div>`;
+  else right = `<form class="gform" id="gF"><div class="lbl">Your guess (₹)</div><input name="guess" inputmode="numeric" placeholder="e.g. 1999" required pattern="[0-9]{1,6}">
+      <input name="name" placeholder="Your name" required value="${esc(store.get('cust',{}).name||'')}"><input name="phone" placeholder="WhatsApp number (to tell you if you win)" inputmode="numeric" maxlength="10" required pattern="[6-9][0-9]{9}" value="${esc(store.get('cust',{}).phone||'')}">
+      <div class="err" id="gErr"></div><button class="buy">🎯 Lock my guess</button><div class="note">One guess per person. Closes in <b class="cdn" data-to="${g.closesAt}">--:--</b>.</div></form>`;
+  return `<section class="wrap page"><h1>🎯 Guess the Price</h1><p style="margin-bottom:18px">Closest guess wins a <b>${esc(g.prize)}</b>. ${g.players} ${g.players===1?'person has':'people have'} played today.</p>
+    <div class="gpage"><div class="gim"><img src="/img/${p.img}" alt="${esc(p.name)}"><span class="gq">₹ ???</span></div>
+      <div><h3 style="font-family:var(--disp);font-size:28px;letter-spacing:-.02em;margin-bottom:8px">${esc(p.name)}</h3><ul class="desc" style="margin-bottom:14px">${(p.details||[]).map(d=>`<li>${esc(d)}</li>`).join('')}</ul>${right}</div></div></section>`;
+}
+function wireGuess(){
+  const f = $('#gF'); if (!f) return;
+  f.onsubmit = async e => { e.preventDefault(); if (!validForm(f)) { $('#gErr').textContent = 'Please fill in all fields.'; return; }
+    const b = Object.fromEntries(new FormData(f)); const btn = f.querySelector('button'); btn.disabled = true;
+    try { const r = await fetch('/api/guess', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ ...b, who: devId() }) }); const o = await r.json(); if (!r.ok) throw new Error(o.error);
+      await loadGuess(); route(); toast('🎯 Guess locked!'); } catch (err) { btn.disabled = false; $('#gErr').textContent = err.message; } };
+}
+
+/* --- 🪔 festival pages --- */
+let FEST_KEY = BOOT.festival || '';
+const FEST_COPY = { teej:{intro:'Greens, lehariya prints, mehendi-ready jewellery and everything you need for the swing.', cats:['Suits & Sets','Sarees','Jewellery','Accessories']},
+  gangaur:{intro:'Rajputi suits, gota-patti odhnas and temple jewellery for Gangaur puja and the procession.', cats:['Suits & Sets','Sarees','Jewellery','Home & Festive']},
+  'karva-chauth':{intro:'Reds, rani pinks and gold for the moonrise, plus pooja thali essentials.', cats:['Sarees','Suits & Sets','Jewellery','Home & Festive']},
+  'wedding-season':{intro:'Haldi yellows, mehendi greens and sangeet sparkle: outfits, potlis and jewellery for every function.', cats:['Sarees','Suits & Sets','Jewellery','Bags','Accessories']} };
+function festRow(){ return `<div class="fests">${Object.entries(FESTS).map(([k,[e,n]])=>`<a class="fest" href="/festival/${k}">${e} ${n}</a>`).join('')}${SETTINGS.guess?.on?'<a class="fest" href="#guess">🎯 Guess the Price</a>':''}</div>`; }
+function festivalView(){
+  const k = FEST_KEY, f = FESTS[k], c = FEST_COPY[k];
+  if (!f) return views.home();
+  const list = live.filter(p => c.cats.includes(p.cat));
+  return `<section class="wrap"><div class="festhero"><span class="pill">${f[0]} Festival edit</span><h1>${f[1]} edit<em>.</em></h1><p>${c.intro} Every piece is live for 7 days only. Prepaid, free shipping across India.</p></div></section>
+    <section class="wrap sec"><div class="toolbar">${festRow()}</div><div class="grid">${list.length?list.map(card).join(''):'<div class="empty">New festive pieces are dropping soon ✦</div>'}</div></section>`;
+}
+
+/* --- 📦 order tracking --- */
+async function doTrack(ref, phone){
+  const out = $('#tOut'); if (!out) return; out.innerHTML = '<div class="tres2">Checking…</div>';
+  try { const r = await fetch(`/api/track?ref=${encodeURIComponent(ref)}&phone=${encodeURIComponent(phone)}`, {cache:'no-store'}); const o = await r.json(); if (!r.ok) throw new Error(o.error);
+    rememberOrder(o.ref, phone);
+    const steps = [['Order placed', o.placedAt], ['Payment confirmed', o.paidAt], ['Packed & handed to courier', o.shippedAt], ['Delivered', o.deliveredAt]];
+    const done = o.step;
+    out.innerHTML = `<div class="tres2"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><b style="font-family:var(--disp);font-size:24px">${o.ref}</b><span class="pill">${esc(o.label)}</span></div>
+      ${['cancelled','refunded'].includes(o.status)?`<div class="demo">This order was ${o.status}. ${o.status==='refunded'?'The refund goes back to your original payment method in 5–7 working days.':''}</div>`
+       : ['created','booked','video_sent'].includes(o.status)?`<div class="demo">${o.status==='created'?'Payment for this order was not completed. If money left your account, it is refunded automatically by your bank within 5–7 days.':'We\'ll WhatsApp you a video of your piece with a link to pay.'}</div>`
+       : `<div class="tl">${steps.map((st,i)=>`<div class="${i<=done-1||i===0?'on':''}"><span><b>${st[0]}</b><small>${st[1]?new Date(st[1]).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'numeric',minute:'2-digit'}):i===2&&done>=2?'Packing now · ships in 3–5 days':''}</small></span></div>`).join('')}</div>`}
+      ${o.tracking?`<div class="sum" style="display:block;background:var(--lime);border-radius:14px;padding:12px">🚚 ${esc(o.courier||'Courier')} · <b>${esc(o.tracking)}</b> <button class="lnk2" id="cpT">Copy</button></div>`:''}
+      ${o.items.map(i=>`<div class="li"><img src="/img/${i.img}" alt=""><div><b>${esc(i.name)}</b><small>${[i.size,i.colour].filter(Boolean).map(esc).join(' · ')} × ${i.qty}</small></div><div class="pr">${rupee(i.price*i.qty)}</div></div>`).join('')}
+      <a class="btn ghost" href="${wa(`Hi Snazzify! Question about my order ${o.ref}`)}" target="_blank" rel="noopener">💬 Questions? WhatsApp us</a></div>`;
+    const cp = $('#cpT'); if (cp) cp.onclick = () => navigator.clipboard.writeText(o.tracking).then(()=>toast('Copied'));
+  } catch (e) { out.innerHTML = `<div class="tres2"><div class="err">${esc(e.message || 'Could not check right now.')}</div></div>`; }
 }
 
 /* ================= COMPLETE THE LOOK ================= */
@@ -1228,7 +1508,11 @@ function flashSection(){
 (async function init(){
   try { PRODUCTS = await fetch('/api/products', {cache:'no-store'}).then(r => r.json()); } catch(e) { PRODUCTS = []; }
   try { SETTINGS = await fetch('/api/settings', {cache:'no-store'}).then(r => r.json()); } catch(e) {}
-  await loadFlash();
+  await Promise.all([ loadFlash(),
+    fetch('/api/reviews').then(r=>r.json()).then(o=>{ REVIEWS=o; }).catch(()=>{}),
+    fetch('/api/auction',{cache:'no-store'}).then(r=>r.json()).then(o=>{ AUCTION=o; }).catch(()=>{}),
+    SETTINGS.guess?.on ? loadGuess() : null ]);
+  { const sq = new URLSearchParams(location.search).get('squad'); if (sq && /^SQ[A-Z0-9]{4,8}$/i.test(sq)) { store.set('code', sq.toUpperCase()); setTimeout(()=>toast('👯 Squad code '+sq.toUpperCase()+' saved for checkout'), 800); } }
   PRODUCTS.forEach(p => { p.addedAt = Date.parse(p.addedAt); p.expiresAt = p.addedAt + LIFE; });
   const showHidden = /[?&]test\b/.test(location.search);
   live = PRODUCTS.filter(p => p.expiresAt > NOW && p.addedAt <= NOW && (!p.hidden || showHidden));
@@ -1236,6 +1520,7 @@ function flashSection(){
   bag = store.get('bag', []).filter(i => byId(i.id));
   $('#mq').innerHTML = (`<span>${live.length?live.filter(isNew).length+' new pieces dropped today':'New drops landing soon'}</span><span>Every piece live for 7 days only</span><span>⚡ Pick it up in 30 mins: up to 25% off every 2 hours</span><span>Free shipping across India</span><span>Prepaid via UPI, cards & netbanking</span><span>New drop daily at ${DROP_HOUR_IST} AM</span>`).repeat(4);
   counts(); route();
+  if (BOOT.product) { if (byId(BOOT.product) && !BOOT.gone) openProduct(BOOT.product); else toast('That piece has left the shop. Here\'s what\'s live now ✦'); }
 })();
 </script>
 </body>
