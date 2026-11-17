@@ -482,6 +482,8 @@ select{font:inherit;font-weight:600;font-size:14px;border:1.5px solid var(--line
 .spin{width:54px;height:54px;border-radius:50%;border:5px solid var(--line);border-top-color:var(--pink);animation:sp 0.9s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .tres{position:relative;border-radius:18px;overflow:hidden;background:#eee}.tres img{width:100%;display:block;max-height:62vh;object-fit:contain;background:#111}
+.consent{font-size:13.5px;font-weight:700;text-align:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px}
+.ailabel{position:absolute;left:10px;top:10px;background:rgba(17,16,20,.78);color:#fff;font-size:11.5px;font-weight:700;border-radius:8px;padding:6px 9px}
 .tba{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:rgba(17,16,20,.75);color:#fff;font-weight:700;font-size:12.5px;border-radius:999px;padding:8px 14px;user-select:none;-webkit-user-select:none;touch-action:none}
 .swipe{position:fixed;inset:0;z-index:35;background:#000;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none}
 .swipe::-webkit-scrollbar{display:none}
@@ -811,7 +813,7 @@ privacy(){ return legalPage('Privacy Policy', `
   <h3>What we collect</h3><ul><li>Name, mobile/WhatsApp number, email (optional) and delivery address, when you place an order or join drop alerts.</li><li>Order details: products, sizes, amounts and payment status.</li><li>Basic technical data such as browser type, collected automatically to keep the Website working.</li></ul>
   <p>We do <b>not</b> collect or store card numbers, UPI PINs or bank passwords. Payments are processed by Razorpay under its own privacy policy.</p>
   <h3>Why we use it</h3><ul><li>To process, ship and deliver your order.</li><li>To send order confirmations, shipping and tracking updates on WhatsApp, SMS or email.</li><li>To handle refunds, exchanges and support requests.</li><li>To send new-drop alerts, only if you've opted in. You can opt out any time by replying STOP.</li><li>To prevent fraud and meet legal and tax obligations.</li></ul>
-  <h3>Who we share it with</h3><p>Only with those who need it to fulfil your order: the maker or supplier who dispatches your product, courier partners, our payment partner Razorpay, and WhatsApp (Meta) for messages. We never sell your personal data.</p>
+  <h3>Who we share it with</h3><p>Only with those who need it to fulfil your order: the maker or supplier who dispatches your product, courier partners, our payment partner Razorpay, and WhatsApp (Meta) for messages. We never sell your personal data.</p><h3>Try Me On (AI preview)</h3><p>If you use Try Me On, the photo you choose is sent directly from your browser to Google (Gemini, via Firebase AI Logic) only to create the preview image. Snazzify does not receive, store or share your photo or the preview. The preview is an AI image: colour, size and fit may differ from the real product.</p>
   <h3>How long we keep it</h3><p>We keep order records for as long as required under tax and accounting laws, typically up to 8 years, and other data only as long as needed for the purposes above.</p>
   <h3>Your rights</h3><p>You can ask to access, correct or delete your personal data, or withdraw consent for marketing messages, by writing to ${B('email')}. We will respond within 30 days.</p>
   <h3>Cookies and storage</h3><p>The Website saves your bag and saved items in your own browser so they're still there when you come back. We don't use advertising cookies.</p>
@@ -894,7 +896,7 @@ function openProduct(id){
         ${p.colours?`<div><div class="lbl">Colour · ${colour}</div><div class="opts">${p.colours.map(s=>`<button class="opt ${s===colour?'on':''}" data-k="${s}">${s}</button>`).join('')}</div></div>`:''}
         <ul class="desc">${p.details.map(d=>`<li>${d}</li>`).join('')}</ul>
         <div class="tools">
-          ${SETTINGS.tryon?.on && OUTFIT.includes(p.cat) ? `<button class="tool try" id="tTry"><b>✨ Try me on</b><span>See it on you · photo not saved</span></button>` : ''}
+          ${SETTINGS.tryon?.on && TRY_READY.v && OUTFIT.includes(p.cat) ? `<button class="tool try" id="tTry"><b>✨ Try me on</b><span>See it on you · photo not saved</span></button>` : ''}
           <button class="tool" id="tPoll"><b>👭 Buy or Bye?</b><span>Ask friends on WhatsApp</span></button>
         </div>
         ${lookBlock(p)}
@@ -1071,37 +1073,62 @@ async function askFriends(p, colour){
   } catch(e) { toast('Could not create poll'); }
 }
 
-/* ================= TRY ME ON ================= */
-function resizeImg(file, max=1024){ return new Promise((ok,no)=>{ const im=new Image(); im.onload=()=>{ const s=Math.min(1,max/Math.max(im.width,im.height)); const c=document.createElement('canvas'); c.width=Math.round(im.width*s); c.height=Math.round(im.height*s); c.getContext('2d').drawImage(im,0,0,c.width,c.height); URL.revokeObjectURL(im.src); ok(c.toDataURL('image/jpeg',.86)); }; im.onerror=no; im.src=URL.createObjectURL(file); }); }
+/* ================= TRY ME ON (Gemini via Firebase AI Logic) ================= */
+let TRYMOD = null;
+const loadTry = async () => TRYMOD || (TRYMOD = await import('/js/tryon-firebase.js'));
+const tryUsed = () => { const d = new Date().toISOString().slice(0,10); const v = store.get('tryon', {}); return v.d === d ? v.n : 0; };
+const tryBump = () => { const d = new Date().toISOString().slice(0,10); store.set('tryon', { d, n: tryUsed() + 1 }); };
+const tryLimit = () => SETTINGS.tryon?.perDevice || 5;
+const productType = p => p.cat === 'Sarees' ? `saree (${p.name})` : `outfit (${p.name}) including the top, skirt or bottom, and dupatta/odhni exactly as shown`;
 function tryOn(p, colour){
   const garment = (colour && p.colourImg?.[colour]) || p.img;
-  const sh = $('#tryon'); let photo = null, result = null;
+  const sh = $('#tryon'); let photoUrl = null, photoB64 = null, result = null;
+  const close = () => { sh.hidden = true; sh.innerHTML = ''; if (photoUrl) URL.revokeObjectURL(photoUrl); photoUrl = photoB64 = result = null; };
   const draw = (state, err='') => {
+    const left = Math.max(0, tryLimit() - tryUsed());
     sh.innerHTML = `<div class="tbox2">
       <div class="tth"><b>✨ Try me on</b><button class="x2" id="tX" aria-label="Close">×</button></div>
       ${state==='pick'?`
-        <div class="tpair"><div class="tslot">${photo?`<img src="${photo}" alt="">`:'<span>📷<br>Your photo</span>'}</div><div class="tplus">+</div><div class="tslot"><img src="/img/${garment}" alt=""></div></div>
-        <p class="tnote">Use a <b>clear, full-length, front-facing photo</b> in good light. Your photo is used once to create the preview and is <b>never saved</b> by Snazzify.</p>
-        <div class="two2"><label class="btn ghost">📸 Take photo<input type="file" accept="image/*" capture="user" hidden id="tCam"></label><label class="btn ghost">🖼️ Choose photo<input type="file" accept="image/*" hidden id="tGal"></label></div>
-        ${photo?`<button class="buy" id="tGo">✨ Show me in it</button>`:''}
+        <div class="tpair"><div class="tslot">${photoUrl?`<img src="${photoUrl}" alt="">`:'<span>📷<br>Your photo</span>'}</div><div class="tplus">+</div><div class="tslot"><img src="/img/${garment}" alt=""></div></div>
+        <p class="consent">🔒 Your photo is used only to create this preview and is not stored.</p>
+        <p class="tnote">Use a clear, full-length, front-facing photo in good light. ${left} of ${tryLimit()} tries left today.</p>
+        ${left > 0 ? `<div class="two2"><label class="btn ghost">📸 Take photo<input type="file" accept="image/*" capture="user" hidden id="tCam"></label><label class="btn ghost">🖼️ Choose photo<input type="file" accept="image/*" hidden id="tGal"></label></div>
+        ${photoB64?`<button class="buy" id="tGo">✨ Show me in it</button>`:''}` : `<div class="demo">You've used all ${tryLimit()} try-ons for today. Come back tomorrow for more! 💛</div>`}
         <div class="err">${err}</div>`:''}
-      ${state==='busy'?`<div class="tbusy"><div class="spin"></div><b>Styling you…</b><span>This takes about 15–30 seconds</span></div>`:''}
-      ${state==='done'?`<div class="tres"><img src="${result}" alt="You wearing ${p.name}" id="tImg"><button class="tba" id="tBA">Hold to see before</button></div>
+      ${state==='busy'?`<div class="tbusy"><div class="spin"></div><b>Styling you…</b><span>This usually takes 10–30 seconds</span></div>`:''}
+      ${state==='done'?`<div class="tres"><img src="${result}" alt="AI preview of you wearing ${p.name}" id="tImg"><span class="ailabel">AI preview — colour, size and fit may differ.</span><button class="tba" id="tBA">Hold to see before</button></div>
         <div class="two2"><button class="buy" id="tBuy">Add to bag · ${rupee(ep(p))}</button><button class="btn ghost" id="tAgain">Try another photo</button></div>
-        <p class="tnote">Not saved anywhere. Take a screenshot if you want to keep it. ${result?'':''}</p>`:''}
+        <p class="tnote">Not stored anywhere. Take a screenshot if you'd like to keep it.</p>`:''}
     </div>`;
-    $('#tX').onclick = () => { sh.hidden = true; result = photo = null; sh.innerHTML=''; };
-    ['tCam','tGal'].forEach(id => { const el=$('#'+id); if(el) el.onchange = async e => { const f=e.target.files[0]; if(!f) return; try { photo = await resizeImg(f); draw('pick'); } catch { draw('pick','Could not read that photo.'); } }; });
-    const go=$('#tGo'); if(go) go.onclick = async () => { draw('busy');
-      try { const r = await fetch('/api/tryon',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({productId:p.id,colour,image:photo})}); const o = await r.json();
-        if (!r.ok) throw new Error(o.error||'Something went wrong'); result = o.image; draw('done'); }
-      catch(e) { draw('pick', e.message); } };
-    const ba=$('#tBA'); if(ba){ const im=$('#tImg'); const show=v=>{ im.src = v ? photo : result; }; ['pointerdown','touchstart'].forEach(ev=>ba.addEventListener(ev,()=>show(true),{passive:true})); ['pointerup','pointerleave','touchend'].forEach(ev=>ba.addEventListener(ev,()=>show(false),{passive:true})); }
-    const tb=$('#tBuy'); if(tb) tb.onclick = () => { addToBag(p.id,'',colour); sh.hidden=true; sh.innerHTML=''; };
-    const ta=$('#tAgain'); if(ta) ta.onclick = () => { photo=null; result=null; draw('pick'); };
+    $('#tX').onclick = close;
+    ['tCam','tGal'].forEach(id => { const el=$('#'+id); if(el) el.onchange = async e => { const f=e.target.files[0]; if(!f) return;
+      try { const m = await loadTry(); photoB64 = await m.toJpegBase64(f); if (photoUrl) URL.revokeObjectURL(photoUrl); photoUrl = URL.createObjectURL(f); draw('pick'); }
+      catch { draw('pick','Could not read that photo. Please try another one.'); } }; });
+    const go=$('#tGo'); if(go) go.onclick = async () => {
+      if (tryUsed() >= tryLimit()) return draw('pick');
+      draw('busy');
+      try {
+        const m = await loadTry();
+        const garmentB64 = await m.toJpegBase64('/img/' + garment);
+        result = await m.tryOn({ personB64: photoB64, garmentB64, productType: productType(p) });
+        tryBump(); draw('done');
+      } catch(e) {
+        const msg = e.code === 'busy' ? "Lots of people are trying things on right now. Please try again in a minute. 💛"
+          : e.code === 'blocked' ? "We couldn't use that photo. Please try a different, clear photo of just yourself."
+          : e.code === 'no-image' ? "The preview didn't come out this time. Please try again, or use a brighter full-length photo."
+          : e.code === 'appcheck' ? "Try Me On couldn't verify this browser. Please refresh the page and try again."
+          : "Try Me On is busy. Please try again in a minute.";
+        draw('pick', msg);
+      } };
+    const ba=$('#tBA'); if(ba){ const im=$('#tImg'); const show=v=>{ im.src = v ? photoUrl : result; }; ['pointerdown','touchstart'].forEach(ev=>ba.addEventListener(ev,()=>show(true),{passive:true})); ['pointerup','pointerleave','touchend'].forEach(ev=>ba.addEventListener(ev,()=>show(false),{passive:true})); }
+    const tb=$('#tBuy'); if(tb) tb.onclick = () => { addToBag(p.id,'',colour); close(); };
+    const ta=$('#tAgain'); if(ta) ta.onclick = () => { result=null; draw('pick'); };
   };
   sh.hidden = false; draw('pick');
 }
+// Try Me On is shown only when the admin switch is on AND Firebase is configured
+const TRY_READY = { v: false };
+import('/js/firebase-config.js').then(c => { TRY_READY.v = !!(c.firebaseConfig && c.firebaseConfig.apiKey && c.RECAPTCHA_SITE_KEY); }).catch(() => {});
 
 /* ================= SWIPE FEED ================= */
 function swipeView(){
@@ -1113,7 +1140,7 @@ function swipeView(){
       <div class="stop">${d?`<span class="tag flash">⚡ ${d.pct}% OFF · <b class="cdn" data-to="${FLASH.endsAt}">--:--</b></span>`:isNew(p)?'<span class="tag new">Just dropped</span>':`<span class="tag">${left(p)}</span>`}</div>
       <div class="sact">
         <button data-ss="${p.id}" class="${saved.includes(p.id)?'on':''}"><i>${saved.includes(p.id)?'♥':'♡'}</i><span>Save</span></button>
-        ${SETTINGS.tryon?.on && OUTFIT.includes(p.cat)?`<button data-st="${p.id}"><i>✨</i><span>Try on</span></button>`:''}
+        ${SETTINGS.tryon?.on && TRY_READY.v && OUTFIT.includes(p.cat)?`<button data-st="${p.id}"><i>✨</i><span>Try on</span></button>`:''}
         <button data-spoll="${p.id}"><i>👭</i><span>Ask</span></button>
         <button data-sopen="${p.id}"><i>🛍️</i><span>Buy</span></button>
       </div>

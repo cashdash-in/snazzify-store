@@ -64,8 +64,13 @@ icons in `public/icons`. On phones it shows a bottom tab bar (Home · Shop · �
 categories, swipeable product photos and a sticky buy bar. `/api` responses are never cached, so prices and deals are always live.
 
 ## Wow features
-- **✨ Try Me On** (`/api/tryon`): customer photo + product photo → FASHN try-on via fal.ai (`sync_mode`, nothing stored).
-  Needs Cloudflare secret `FAL_KEY` and the admin switch ON. Limits per device and per day in admin.
+- **✨ Try Me On**: Gemini image editing (`gemini-3.1-flash-image`) via **Firebase AI Logic** in the browser
+  (Agent Platform / Vertex AI Gemini API backend, location `global`). No AI API keys anywhere: access is protected by
+  **Firebase App Check (reCAPTCHA Enterprise)**. Config lives in `public/js/firebase-config.js` (public by design).
+  Source: `tools/tryon-firebase.src.js`, bundled to `public/js/tryon-firebase.js` with
+  `esbuild tools/tryon-firebase.src.js --bundle --format=esm --minify --external:./firebase-config.js --outfile=public/js/tryon-firebase.js`
+  (firebase@13). Customer photos are sent from the browser to Google only; nothing is stored by Snazzify.
+  Per-visitor daily limit (browser) is set in admin; set a Cloud Billing budget alert too.
 - **🎬 Swipe feed** (`#swipe`): Reels-style full-screen product feed, double-tap to save.
 - **👭 Buy or Bye?** (`/api/poll`, page `/v/#id`): WhatsApp poll for friends, one vote per device, results in Saved → Polls.
 - **💍 Complete the look**: jewellery/bag/accessory bought with a suit or saree gets the look % off (admin), enforced at checkout, never stacked on a flash deal.

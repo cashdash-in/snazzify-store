@@ -233,11 +233,11 @@ function today(){
         <button class="btn ghost sm">Save drop settings</button></form></div>
     <h2>Shopping features</h2>
     <div class="card"><div class="sw"><div><b style="font-size:16px">✨ Try Me On (AI)</b>
-      <div class="hint" style="margin-top:4px">Customers see themselves wearing suits and sarees. Photos are never saved. Each try costs a few rupees at the AI service. Needs the FAL_KEY secret in Cloudflare.</div></div>
+      <div class="hint" style="margin-top:4px">Customers see themselves wearing suits and sarees, made by Google Gemini through Firebase AI Logic. Photos go straight from the customer's phone to Google and are never stored by Snazzify. Protected by App Check, so only your website can use it.</div></div>
       <button class="tg ${SETTINGS.tryon?.on?'on':''}" id="tyo" aria-label="Turn Try Me On on or off"></button></div>
-      <form id="tyf" class="two"><label>Tries per customer / day<input name="perDevice" type="number" min="1" max="20" value="${SETTINGS.tryon?.perDevice??3}"></label>
-        <label>Max tries per day (all)<input name="dailyCap" type="number" min="1" max="2000" value="${SETTINGS.tryon?.dailyCap??40}"></label>
-        <button class="btn ghost sm" style="grid-column:1/-1">Save try-on limits</button></form></div>
+      <form id="tyf" class="two"><label>Tries per visitor / day<input name="perDevice" type="number" min="1" max="20" value="${SETTINGS.tryon?.perDevice??5}"></label>
+        <button class="btn ghost sm" style="align-self:end">Save</button></form>
+      <div class="hint">Set a monthly budget alert in Google Cloud Billing too, so you always know what Try Me On costs.</div></div>
     <div class="card" style="margin-top:10px"><div class="sw"><div><b style="font-size:16px">💍 Complete the look</b>
       <div class="hint" style="margin-top:4px">Suits and sarees show matching jewellery and a bag. When bought together, those get a discount (never on top of a flash deal).</div></div>
       <button class="tg ${SETTINGS.look?.on?'on':''}" id="lko" aria-label="Turn Complete the look on or off"></button></div>

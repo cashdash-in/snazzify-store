@@ -8,8 +8,7 @@ export async function onRequestPost({ request, env }) {
   if (b.tryon && typeof b.tryon === 'object') {
     const n = (v, lo, hi, d) => { v = Math.round(Number(v)); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d; };
     s.tryon = { ...s.tryon, ...(typeof b.tryon.on === 'boolean' ? { on: b.tryon.on } : {}),
-      ...('perDevice' in b.tryon ? { perDevice: n(b.tryon.perDevice, 1, 20, s.tryon.perDevice) } : {}),
-      ...('dailyCap' in b.tryon ? { dailyCap: n(b.tryon.dailyCap, 1, 2000, s.tryon.dailyCap) } : {}) };
+      ...('perDevice' in b.tryon ? { perDevice: n(b.tryon.perDevice, 1, 20, s.tryon.perDevice) } : {}) };
   }
   if (b.look && typeof b.look === 'object') {
     s.look = { ...s.look, ...(typeof b.look.on === 'boolean' ? { on: b.look.on } : {}),
