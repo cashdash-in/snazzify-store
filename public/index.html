@@ -1113,7 +1113,7 @@ async function pay(form, cust, auc){
       key: o.keyId, order_id: o.orderId, amount: o.amount, currency: 'INR',
       name: 'Snazzify', description: 'Order ' + o.ref, image: '/snazzify-icon.png',
       prefill: { name: cust.name, contact: '+91' + cust.phone, email: cust.email || '' },
-      notes: { ref: o.ref }, theme: { color: '#111014' }, ...(o.timeout ? { timeout: o.timeout } : {}),
+      notes: { ref: o.ref }, theme: { color: '#111014' }, config: { display: { hide: [{ method: 'upi', flows: ['collect'] }], preferences: { show_default_blocks: true } } }, ...(o.timeout ? { timeout: o.timeout } : {}),
       handler: async r => {
         form.innerHTML = '<h3 class="disp" style="font-size:30px;font-weight:800">Confirming…</h3><div class="note">Please don\'t close this page.</div>';
         const v = await fetch('/api/verify-payment', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(r) }).then(x=>x.json()).catch(()=>({}));

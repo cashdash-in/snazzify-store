@@ -74,7 +74,7 @@ async function pay(){
     const [, r] = await Promise.all([loadRzp(), fetch('/api/pay-order', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ref, t})})]);
     const o = await r.json(); if (!r.ok) throw new Error(o.error || 'Could not start payment');
     const rzp = new Razorpay({ key: o.keyId, order_id: o.orderId, amount: o.amount, currency: 'INR', name: 'Snazzify', description: 'Order ' + o.ref,
-      image: '/snazzify-icon.png', prefill: o.prefill, theme: { color: '#111014' },
+      image: '/snazzify-icon.png', prefill: o.prefill, theme: { color: '#111014' }, config: { display: { hide: [{ method: 'upi', flows: ['collect'] }], preferences: { show_default_blocks: true } } },
       handler: async res => {
         $('#w').innerHTML = head + '<h1>Confirming…</h1><p class="note">Please don\'t close this page.</p>';
         const v = await fetch('/api/verify-payment', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(res)}).then(x=>x.json()).catch(()=>({}));
