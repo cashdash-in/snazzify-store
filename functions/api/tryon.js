@@ -31,7 +31,7 @@ export async function onRequestPost({ request, env }) {
       method: 'POST',
       headers: { authorization: 'Key ' + env.FAL_KEY, 'content-type': 'application/json' },
       body: JSON.stringify({ model_image: img, garment_image: `${origin}/img/${garment}`, category: 'one-pieces',
-        garment_photo_type: 'model', mode: 'balanced', output_format: 'jpeg', sync_mode: true, num_samples: 1 }),
+        garment_photo_type: 'model', mode: 'quality', output_format: 'jpeg', sync_mode: true, num_samples: 1 }),
     });
     out = await r.json();
     if (!r.ok || !out?.images?.[0]?.url) return json({ error: 'Could not create your try-on. Try a brighter, front-facing, full-length photo.' }, 502);

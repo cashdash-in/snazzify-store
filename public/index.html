@@ -1085,7 +1085,7 @@ function tryOn(p, colour){
         <div class="two2"><label class="btn ghost">📸 Take photo<input type="file" accept="image/*" capture="user" hidden id="tCam"></label><label class="btn ghost">🖼️ Choose photo<input type="file" accept="image/*" hidden id="tGal"></label></div>
         ${photo?`<button class="buy" id="tGo">✨ Show me in it</button>`:''}
         <div class="err">${err}</div>`:''}
-      ${state==='busy'?`<div class="tbusy"><div class="spin"></div><b>Styling you…</b><span>This takes about 10–20 seconds</span></div>`:''}
+      ${state==='busy'?`<div class="tbusy"><div class="spin"></div><b>Styling you…</b><span>This takes about 15–30 seconds</span></div>`:''}
       ${state==='done'?`<div class="tres"><img src="${result}" alt="You wearing ${p.name}" id="tImg"><button class="tba" id="tBA">Hold to see before</button></div>
         <div class="two2"><button class="buy" id="tBuy">Add to bag · ${rupee(ep(p))}</button><button class="btn ghost" id="tAgain">Try another photo</button></div>
         <p class="tnote">Not saved anywhere. Take a screenshot if you want to keep it. ${result?'':''}</p>`:''}
