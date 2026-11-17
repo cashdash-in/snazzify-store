@@ -564,6 +564,8 @@ body.swiping header,body.swiping .mq,body.swiping .fbar,body.swiping footer,body
 .festhero{background:var(--lime);border-radius:28px;padding:30px;margin-top:20px}.festhero h1{font-family:var(--disp);font-weight:800;font-size:clamp(36px,6vw,64px);letter-spacing:-.04em;line-height:.95}.festhero p{max-width:560px;margin-top:12px;font-size:16px;line-height:1.5}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "OnlineStore", "name": "Snazzify", "legalName": "Snazzify.co.in", "url": "https://www.snazzify.co.in", "logo": "https://www.snazzify.co.in/icons/icon-512.png", "email": "customer.service@snazzify.co.in", "telephone": "+91-9920380790", "address": {"@type": "PostalAddress", "streetAddress": "114B Robert Compound, Kalina, Kolovery Village, Santacruz East", "addressLocality": "Mumbai", "addressRegion": "Maharashtra", "postalCode": "400098", "addressCountry": "IN"}, "contactPoint": {"@type": "ContactPoint", "contactType": "customer service", "telephone": "+91-9920380790", "email": "customer.service@snazzify.co.in", "areaServed": "IN", "availableLanguage": ["English", "Hindi"]}}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GPDLFW0K78"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-GPDLFW0K78');</script>
 </head>
 <body>
 
@@ -673,7 +675,9 @@ const waSvg = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColo
 function toast(msg){ const t=$('#toast'); t.innerHTML=msg; t.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('on'),2200); }
 function counts(){ const _b=bag.reduce((a,i)=>a+i.qty,0); const tb=$('#tB'), ts=$('#tS'); if(tb) tb.textContent=_b||''; if(ts) ts.textContent=saved.length||''; $('#wN').textContent = saved.length || ''; $('#cN').textContent = bag.reduce((a,i)=>a+i.qty,0) || ''; store.set('saved',saved); store.set('bag',bag); }
 function toggleSave(id){ saved = saved.includes(id) ? saved.filter(x=>x!==id) : [...saved,id]; counts(); $$(`.heart[data-id="${id}"],.sq[data-id="${id}"]`).forEach(h=>h.classList.toggle('on',saved.includes(id))); toast(saved.includes(id)?'<i>♥</i> Saved for later':'Removed from saved'); }
-function addToBag(id,size,colour){ try{navigator.vibrate&&navigator.vibrate(18)}catch(e){} const p=byId(id); size = size || p.sizes?.[0] || ''; colour = colour || p.colours?.[0] || ''; const k=id+'|'+size+'|'+colour; const ex=bag.find(i=>i.k===k); ex?ex.qty++:bag.push({k,id,size,colour,qty:1}); counts(); toast('<i>✦</i> Added to bag'); }
+const ga=(e,p)=>{ try{ window.gtag && gtag('event', e, { currency:'INR', ...p }); }catch(x){} };
+const gaItem=(p,q=1,price)=>({ item_id:p.code||p.id, item_name:p.name, item_category:p.cat, price: price ?? ep(p), quantity:q });
+function addToBag(id,size,colour){ try{navigator.vibrate&&navigator.vibrate(18)}catch(e){} const p=byId(id); size = size || p.sizes?.[0] || ''; colour = colour || p.colours?.[0] || ''; const k=id+'|'+size+'|'+colour; const ex=bag.find(i=>i.k===k); ex?ex.qty++:bag.push({k,id,size,colour,qty:1}); counts(); toast('<i>✦</i> Added to bag'); ga('add_to_cart',{ value:ep(p), items:[gaItem(p)] }); }
 
 function card(p){
   const used = Math.min(1,(Date.now()-p.addedAt)/LIFE);
@@ -886,7 +890,7 @@ privacy(){ return legalPage('Privacy Policy', `
   <h3>What we collect</h3><ul><li>Name, mobile/WhatsApp number, email (optional) and delivery address, when you place an order or join drop alerts.</li><li>Order details: products, sizes, amounts and payment status.</li><li>Basic technical data such as browser type, collected automatically to keep the Website working.</li></ul>
   <p>We do <b>not</b> collect or store card numbers, UPI PINs or bank passwords. Payments are processed by Razorpay under its own privacy policy.</p>
   <h3>Why we use it</h3><ul><li>To process, ship and deliver your order.</li><li>To send order confirmations, shipping and tracking updates on WhatsApp, SMS or email.</li><li>To handle refunds, exchanges and support requests.</li><li>To send new-drop alerts, only if you've opted in. You can opt out any time by replying STOP.</li><li>To prevent fraud and meet legal and tax obligations.</li></ul>
-  <h3>Who we share it with</h3><p>Only with those who need it to fulfil your order: the maker or supplier who dispatches your product, courier partners, our payment partner Razorpay, and WhatsApp (Meta) for messages. We never sell your personal data.</p><h3>Try Me On (AI preview)</h3><p>If you use Try Me On, the photo you choose is sent directly from your browser to Google (Gemini, via Firebase AI Logic) only to create the preview image. Snazzify does not receive, store or share your photo or the preview. The preview is an AI image: colour, size and fit may differ from the real product.</p><h3>Reviews, games and squads</h3><p>If you post a review, we show your first name, city, rating, review and any photo you add on the Website; you can ask us to remove it at any time. If you play Guess the Price or join a Drop Squad, we keep your name, WhatsApp number and guess or order reference only to run the game, contact winners and pay cashback.</p>
+  <h3>Who we share it with</h3><p>Only with those who need it to fulfil your order: the maker or supplier who dispatches your product, courier partners, our payment partner Razorpay, and WhatsApp (Meta) for messages. We never sell your personal data.</p><h3>Try Me On (AI preview)</h3><p>If you use Try Me On, the photo you choose is sent directly from your browser to Google (Gemini, via Firebase AI Logic) only to create the preview image. Snazzify does not receive, store or share your photo or the preview. The preview is an AI image: colour, size and fit may differ from the real product.</p><h3>Analytics</h3><p>We use Google Analytics to understand how visitors use the Website (pages viewed, products viewed, items added to the bag and completed orders), so we can improve it. Google Analytics uses cookies and receives your IP address and device information; it does not receive your name, phone number, address or payment details.</p><h3>Reviews, games and squads</h3><p>If you post a review, we show your first name, city, rating, review and any photo you add on the Website; you can ask us to remove it at any time. If you play Guess the Price or join a Drop Squad, we keep your name, WhatsApp number and guess or order reference only to run the game, contact winners and pay cashback.</p>
   <h3>How long we keep it</h3><p>We keep order records for as long as required under tax and accounting laws, typically up to 8 years, and other data only as long as needed for the purposes above.</p>
   <h3>Your rights</h3><p>You can ask to access, correct or delete your personal data, or withdraw consent for marketing messages, by writing to ${B('email')}. We will respond within 30 days.</p>
   <h3>Cookies and storage</h3><p>The Website saves your bag and saved items in your own browser so they're still there when you come back. We don't use advertising cookies.</p>
@@ -960,7 +964,7 @@ addEventListener('popstate', () => { if ($('#modal').classList.contains('on') ||
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeAll(); });
 
 function openProduct(id){
-  const p = byId(id); let size = p.sizes?.[0]||'', colour = p.colours?.[0]||'';
+  const p = byId(id); ga('view_item',{ value:ep(p), items:[gaItem(p)] }); let size = p.sizes?.[0]||'', colour = p.colours?.[0]||'';
   const gallery = [p.img, ...(p.imgs||[]).filter(x => x !== p.img)];
   let shown = (colour && p.colourImg?.[colour]) || p.img;
   const draw = () => {
@@ -1047,6 +1051,7 @@ function openBag(tab='bag', toCheckout=false){
   const toPay = () => CODE.amount != null ? CODE.amount : total();
   const checkout = () => {
     CODE = { code: '', amount: null };
+    ga('begin_checkout',{ value: total(), items: bag.map(i=>gaItem(byId(i.id), i.qty, bp(i))) });
     d.innerHTML = `<div class="dh"><button class="tab" id="bk">← Bag</button><div style="flex:1"></div><button class="dx" id="dx" aria-label="Close">×</button></div>
       <form class="db" id="co" novalidate>
         <h3 class="disp" style="font-size:30px;font-weight:800">Delivery details</h3>
@@ -1096,6 +1101,7 @@ function loadRzp(){ return window.Razorpay ? Promise.resolve() : new Promise((ok
 async function pay(form, cust, auc){
   const btn = form.querySelector('button[type=submit]'); const err = $('#err'); const label = btn.textContent;
   btn.disabled = true; btn.textContent = 'Opening secure payment…'; err.textContent = '';
+  const gaItems = auc ? [gaItem(AUCTION.product, 1, aucPrice(AUCTION))] : bag.map(i=>gaItem(byId(i.id), i.qty, bp(i)));
   try {
     const [_, res] = await Promise.all([ loadRzp(), auc
       ? fetch('/api/auction', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ customer: cust, size: auc.size, colour: auc.colour }) })
@@ -1111,6 +1117,7 @@ async function pay(form, cust, auc){
       handler: async r => {
         form.innerHTML = '<h3 class="disp" style="font-size:30px;font-weight:800">Confirming…</h3><div class="note">Please don\'t close this page.</div>';
         const v = await fetch('/api/verify-payment', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(r) }).then(x=>x.json()).catch(()=>({}));
+        if(v.ok) ga('purchase',{ transaction_id:o.ref, value:o.amount/100, coupon: CODE.code||undefined, items: gaItems });
         if(v.ok){ if (!auc) { bag = []; counts(); store.set('code',''); } else loadAuction(); success(form, o.ref, cust); }
         else form.innerHTML = `<h3 class="disp" style="font-size:30px;font-weight:800">Almost there</h3><div class="demo">We received a response from the bank but couldn't confirm it automatically. Don't pay again. Message us on WhatsApp with reference <b>${o.ref}</b> and payment ID <b>${r.razorpay_payment_id}</b>.</div>`;
       },
@@ -1181,6 +1188,7 @@ function validForm(f){ const bad=[...f.elements].filter(el=>el.willValidate&&!el
 
 /* --- share & size guide --- */
 async function shareProduct(p){
+  ga('share',{ method:'product', item_id:p.code||p.id });
   const url = pUrl(p), text = `${p.name} for ${rupee(ep(p))} on Snazzify ✨ Only live for ${left(p)}!`;
   try { if (navigator.share) { await navigator.share({ title: p.name, text, url }); return; } } catch (e) { if (e.name === 'AbortError') return; }
   try { await navigator.clipboard.writeText(url); toast('🔗 Link copied'); } catch (e) { window.open('https://wa.me/?text=' + encodeURIComponent(text + '\n' + url), '_blank'); }

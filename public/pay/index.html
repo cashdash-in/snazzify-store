@@ -30,6 +30,8 @@ h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:34px;l
 .ok{background:var(--lime);border-radius:16px;padding:16px;font-weight:700;text-align:center;line-height:1.5}
 .free{font-size:12px;font-weight:800;background:var(--mint);border-radius:999px;padding:4px 9px}
 </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GPDLFW0K78"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-GPDLFW0K78');</script>
 </head>
 <body>
 <div class="w" id="w"><img class="logo" src="/snazzify-logo.svg" alt="Snazzify"><p class="note">Loading your order…</p></div>
@@ -76,6 +78,7 @@ async function pay(){
       handler: async res => {
         $('#w').innerHTML = head + '<h1>Confirming…</h1><p class="note">Please don\'t close this page.</p>';
         const v = await fetch('/api/verify-payment', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify(res)}).then(x=>x.json()).catch(()=>({}));
+        if (v.ok) try { gtag('event','purchase',{ transaction_id:o.ref, value:o.amount/100, currency:'INR' }); } catch(x) {}
         $('#w').innerHTML = head + (v.ok
           ? `<div style="font-size:54px;text-align:center">🎉</div><h1>Order confirmed!</h1><div class="ok">Order ${esc(o.ref)} is paid. Your piece ships in 3–5 days and we'll WhatsApp you the tracking.</div><p class="note"><a href="/">Keep shopping →</a></p>`
           : `<h1>Almost there</h1><p class="err">We couldn't confirm the payment automatically. Please don't pay again. Message us on WhatsApp with order ${esc(o.ref)} and payment ID ${esc(res.razorpay_payment_id)}.</p>`);
